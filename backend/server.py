@@ -766,7 +766,7 @@ def compute_channel_analytics(videos: List[dict]) -> dict:
         try:
             pub_date = datetime.fromisoformat(video["published_at"].replace("Z", "+00:00"))
             publish_dates.append(pub_date)
-        except:
+        except (ValueError, TypeError):
             pass
     
     # Average engagement rate
