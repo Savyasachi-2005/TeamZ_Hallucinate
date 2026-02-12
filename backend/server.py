@@ -481,8 +481,8 @@ async def get_playlist_videos(playlist_id: str, max_results: int = 20) -> List[d
 # ==================== ANALYTICS FUNCTIONS ====================
 
 # ==================== TRENDING DETECTION ENGINE ====================
-# TRUE Trending = High Growth Momentum + High Engagement + Strong Recency + Low Competition
-# Old viral videos are filtered out - only recent, fast-growing content qualifies
+# TRUE Trending = Recent + Fast Growing + Engaged
+# Key insight: A video is TRENDING if it's NEW and GROWING FAST
 
 import math
 
@@ -506,21 +506,30 @@ def calculate_engagement_rate(views: int, likes: int, comments: int) -> float:
     """Calculate engagement rate: (likes + comments) / views"""
     return (likes + comments) / max(views, 1)
 
-def calculate_adjusted_velocity(views: int, days: int) -> float:
+def calculate_recency_multiplier(days: int) -> float:
     """
-    Calculate momentum-adjusted velocity with recency multiplier.
-    adjusted_velocity = views_per_day * (1 / sqrt(days_since_upload))
-    This naturally penalizes older videos.
+    Exponential decay recency multiplier.
+    Recent videos get massive boost, old videos get heavily penalized.
+    
+    1 day = 1.0 (full score)
+    3 days = 0.7
+    7 days = 0.37
+    14 days = 0.14
+    30 days = 0.02
+    """
+    return math.exp(-days / 7)
+
+def calculate_velocity_score(views: int, days: int) -> float:
+    """
+    Calculate velocity with strong recency weighting.
+    Formula: (views_per_day) * recency_multiplier
     """
     views_per_day = views / max(days, 1)
-    recency_multiplier = 1 / math.sqrt(max(days, 1))
-    return views_per_day * recency_multiplier
+    recency_mult = calculate_recency_multiplier(days)
+    return views_per_day * recency_mult
 
 def calculate_competition_score(video_keywords: List[str], all_keywords_list: List[List[str]]) -> tuple:
-    """
-    Calculate competition score based on title similarity.
-    Returns (score, level_string)
-    """
+    """Calculate competition score based on title similarity."""
     if not video_keywords or not all_keywords_list:
         return 100, "Low"
     
@@ -528,8 +537,7 @@ def calculate_competition_score(video_keywords: List[str], all_keywords_list: Li
     video_keywords_set = set(video_keywords)
     
     for other_keywords in all_keywords_list:
-        other_set = set(other_keywords)
-        if video_keywords_set & other_set:
+        if video_keywords_set & set(other_keywords):
             similar_count += 1
     
     similar_count = max(0, similar_count - 1)
@@ -541,45 +549,33 @@ def calculate_competition_score(video_keywords: List[str], all_keywords_list: Li
     else:
         return 100, "Low"
 
-def calculate_recency_penalty_score(days: int) -> float:
-    """
-    Calculate recency penalty score.
-    Formula: clip(100 - days * 2, 0, 100)
-    Recent videos score high, old videos score low.
-    """
-    return min(100, max(0, 100 - days * 2))
-
 def normalize_scores(values: List[float]) -> List[float]:
     """Normalize a list of values to 0-100 scale"""
     if not values:
         return []
-    
     max_val = max(values)
     if max_val == 0:
         return [0.0] * len(values)
-    
     return [min(100, max(0, (v / max_val) * 100)) for v in values]
 
-def calculate_median(values: List[float]) -> float:
-    """Calculate median of a list"""
-    if not values:
-        return 0
-    sorted_vals = sorted(values)
-    n = len(sorted_vals)
-    if n % 2 == 0:
-        return (sorted_vals[n//2 - 1] + sorted_vals[n//2]) / 2
-    return sorted_vals[n//2]
-
-def apply_hard_filters(videos: List[dict], stats: dict, max_days: int = 30, min_engagement: float = 0.005) -> List[dict]:
+def calculate_trend_scores_batch(videos: List[dict], stats: dict) -> List[dict]:
     """
-    Apply hard filters to remove non-trending videos.
+    Calculate trend scores using OPTIMIZED Trending Detection Engine.
     
-    Filters:
-    1. Exclude views < 100
-    2. Exclude engagement_rate < min_engagement (default 0.5%)
-    3. Exclude days_since_upload > max_days
+    Key principle: TRENDING = RECENT + FAST GROWING
+    
+    Formula: trend_score = 
+        (normalized_velocity_with_recency * 0.60) +  # Velocity already includes recency
+        (normalized_engagement * 0.30) + 
+        (competition_score * 0.10)
+    
+    Hard filters:
+    - views >= 500 (meaningful traction)
+    - days <= 30 (must be recent to be "trending")
     """
-    filtered = []
+    
+    # Step 1: Build candidates with basic filtering
+    candidates = []
     
     for video in videos:
         video_id = video["video_id"]
@@ -588,153 +584,96 @@ def apply_hard_filters(videos: List[dict], stats: dict, max_days: int = 30, min_
         views = video_stats.get("views", 0)
         likes = video_stats.get("likes", 0)
         comments = video_stats.get("comments", 0)
-        
-        # Filter 1: Minimum views
-        if views < 100:
-            continue
-        
-        # Filter 2: Minimum engagement rate
-        engagement_rate = calculate_engagement_rate(views, likes, comments)
-        if engagement_rate < min_engagement:
-            continue
-        
-        # Filter 3: Maximum age
         days = calculate_days_since_upload(video["published_at"])
-        if days > max_days:
+        
+        # Hard filter: minimum views
+        if views < 500:
             continue
         
-        filtered.append({
+        engagement_rate = calculate_engagement_rate(views, likes, comments)
+        velocity_score = calculate_velocity_score(views, days)
+        views_per_day = views / max(days, 1)
+        
+        candidates.append({
             **video,
             "stats": video_stats,
             "days": days,
-            "engagement_rate": engagement_rate
+            "engagement_rate": engagement_rate,
+            "velocity_score": velocity_score,
+            "views_per_day": views_per_day,
+            "title_keywords": extract_title_keywords(video["title"])
         })
     
-    return filtered
-
-def calculate_trend_scores_batch(videos: List[dict], stats: dict) -> List[dict]:
-    """
-    Calculate trend scores using TRUE Trending Detection Engine.
-    
-    Formula: trend_score = 
-        (normalized_velocity * 0.50) + 
-        (normalized_engagement * 0.25) + 
-        (recency_penalty_score * 0.15) + 
-        (competition_score * 0.10)
-    
-    Old viral videos are filtered out - only recent, fast-growing content qualifies.
-    """
-    
-    # Step 1: Apply hard filters with progressive relaxation
-    # Try strict filters first (30 days, 0.5% engagement)
-    filtered_videos = apply_hard_filters(videos, stats, max_days=30, min_engagement=0.005)
-    
-    # Relax to 60 days if needed
-    if len(filtered_videos) < 5:
-        logger.info("Relaxing recency filter to 60 days")
-        filtered_videos = apply_hard_filters(videos, stats, max_days=60, min_engagement=0.005)
-    
-    # Relax engagement to 0.1% and 90 days if needed
-    if len(filtered_videos) < 5:
-        logger.info("Relaxing filters: 90 days, 0.1% engagement")
-        filtered_videos = apply_hard_filters(videos, stats, max_days=90, min_engagement=0.001)
-    
-    # Final fallback: just filter by views >= 100, no time/engagement limit
-    if len(filtered_videos) < 3:
-        logger.info("Final fallback: minimal filters")
-        filtered_videos = []
-        for video in videos:
-            video_id = video["video_id"]
-            video_stats = stats.get(video_id, {"views": 0, "likes": 0, "comments": 0})
-            views = video_stats.get("views", 0)
-            if views >= 100:
-                likes = video_stats.get("likes", 0)
-                comments = video_stats.get("comments", 0)
-                days = calculate_days_since_upload(video["published_at"])
-                engagement_rate = calculate_engagement_rate(views, likes, comments)
-                filtered_videos.append({
-                    **video,
-                    "stats": video_stats,
-                    "days": days,
-                    "engagement_rate": engagement_rate
-                })
-    
-    if not filtered_videos:
+    if not candidates:
         return []
     
-    # Step 2: Calculate adjusted velocity for all videos
-    for video in filtered_videos:
-        views = video["stats"]["views"]
-        days = video["days"]
-        video["adjusted_velocity"] = calculate_adjusted_velocity(views, days)
-        video["views_per_day"] = views / max(days, 1)
-        video["title_keywords"] = extract_title_keywords(video["title"])
+    # Step 2: Separate into tiers by recency
+    # Tier 1: <= 7 days (truly trending)
+    # Tier 2: 8-30 days (recent)
+    # Tier 3: > 30 days (not trending, only use if needed)
     
-    # Step 3: Apply velocity threshold (exclude below median)
-    velocities = [v["adjusted_velocity"] for v in filtered_videos]
-    median_velocity = calculate_median(velocities)
+    tier1 = [c for c in candidates if c["days"] <= 7]
+    tier2 = [c for c in candidates if 7 < c["days"] <= 30]
+    tier3 = [c for c in candidates if c["days"] > 30]
     
-    # Keep videos above median velocity (or all if too few remain)
-    above_median = [v for v in filtered_videos if v["adjusted_velocity"] >= median_velocity]
-    if len(above_median) < 5:
-        # Keep at least 5 videos even if below median
-        above_median = sorted(filtered_videos, key=lambda x: x["adjusted_velocity"], reverse=True)[:max(5, len(filtered_videos))]
+    # Prioritize recent videos
+    if len(tier1) >= 5:
+        working_set = tier1
+        logger.info(f"Using Tier 1: {len(tier1)} videos from last 7 days")
+    elif len(tier1) + len(tier2) >= 5:
+        working_set = tier1 + tier2
+        logger.info(f"Using Tier 1+2: {len(working_set)} videos from last 30 days")
+    else:
+        # Fallback: use all but heavily penalize old videos
+        working_set = candidates
+        logger.info(f"Fallback: using all {len(working_set)} candidates")
     
-    if not above_median:
+    if not working_set:
         return []
     
-    # Step 4: Normalize velocity and engagement
-    adj_velocities = [v["adjusted_velocity"] for v in above_median]
-    engagements = [v["engagement_rate"] for v in above_median]
+    # Step 3: Normalize velocity and engagement
+    velocity_scores = [c["velocity_score"] for c in working_set]
+    engagements = [c["engagement_rate"] for c in working_set]
     
-    normalized_velocities = normalize_scores(adj_velocities)
-    normalized_engagements = normalize_scores(engagements)
+    norm_velocities = normalize_scores(velocity_scores)
+    norm_engagements = normalize_scores(engagements)
     
-    # Collect all keywords for competition calculation
-    all_title_keywords = [v["title_keywords"] for v in above_median]
+    all_keywords = [c["title_keywords"] for c in working_set]
     
-    # Step 5: Calculate final trend scores
+    # Step 4: Calculate final trend scores
     results = []
     
-    for i, video in enumerate(above_median):
-        video_stats = video["stats"]
-        days = video["days"]
+    for i, candidate in enumerate(working_set):
+        norm_velocity = norm_velocities[i]
+        norm_engagement = norm_engagements[i]
         
-        # Get normalized values
-        norm_velocity = normalized_velocities[i]
-        norm_engagement = normalized_engagements[i]
-        
-        # Calculate recency penalty score: clip(100 - days * 2, 0, 100)
-        recency_score = calculate_recency_penalty_score(days)
-        
-        # Calculate competition score
         competition_score, competition_level = calculate_competition_score(
-            video["title_keywords"], 
-            all_title_keywords
+            candidate["title_keywords"], 
+            all_keywords
         )
         
-        # Final trend score calculation
-        # trend_score = (velocity * 0.50) + (engagement * 0.25) + (recency * 0.15) + (competition * 0.10)
+        # OPTIMIZED FORMULA:
+        # - 60% velocity (already includes recency via exponential decay)
+        # - 30% engagement (quality signal)
+        # - 10% competition (uniqueness)
         trend_score = (
-            (norm_velocity * 0.50) +
-            (norm_engagement * 0.25) +
-            (recency_score * 0.15) +
+            (norm_velocity * 0.60) +
+            (norm_engagement * 0.30) +
             (competition_score * 0.10)
         )
         
-        # Clamp and round
         trend_score = round(min(100, max(0, trend_score)), 2)
         
         results.append({
-            "video_id": video["video_id"],
-            "title": video["title"],
-            "channel": video["channel"],
-            "views": video_stats["views"],
-            "published_at": video["published_at"],
+            "video_id": candidate["video_id"],
+            "title": candidate["title"],
+            "channel": candidate["channel"],
+            "views": candidate["stats"]["views"],
+            "published_at": candidate["published_at"],
             "trend_score": trend_score,
-            "views_per_day": round(video["views_per_day"], 2),
-            "engagement_rate": round(video["engagement_rate"], 4),
-            "recency_days": days,
+            "views_per_day": round(candidate["views_per_day"], 2),
+            "engagement_rate": round(candidate["engagement_rate"], 4),
+            "recency_days": candidate["days"],
             "competition_level": competition_level
         })
     
