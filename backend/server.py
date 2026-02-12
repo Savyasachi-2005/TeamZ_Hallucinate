@@ -3,10 +3,12 @@ from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 import os
 import logging
+import re
 from pathlib import Path
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 from datetime import datetime, timezone
+from collections import Counter
 import httpx
 import json
 
@@ -29,6 +31,26 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# Stopwords for theme extraction
+STOPWORDS = {
+    'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with',
+    'by', 'from', 'up', 'about', 'into', 'through', 'during', 'before', 'after',
+    'above', 'below', 'between', 'under', 'again', 'further', 'then', 'once',
+    'here', 'there', 'when', 'where', 'why', 'how', 'all', 'each', 'few', 'more',
+    'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same',
+    'so', 'than', 'too', 'very', 'can', 'will', 'just', 'should', 'now', 'i', 'me',
+    'my', 'you', 'your', 'he', 'she', 'it', 'we', 'they', 'what', 'which', 'who',
+    'this', 'that', 'these', 'those', 'am', 'is', 'are', 'was', 'were', 'be', 'been',
+    'being', 'have', 'has', 'had', 'do', 'does', 'did', 'doing', 'would', 'could',
+    'ought', 'im', 'youre', 'hes', 'shes', 'its', 'were', 'theyre', 'ive', 'youve',
+    'weve', 'theyve', 'id', 'youd', 'hed', 'shed', 'wed', 'theyd', 'ill', 'youll',
+    'hell', 'shell', 'well', 'theyll', 'isnt', 'arent', 'wasnt', 'werent', 'hasnt',
+    'havent', 'hadnt', 'doesnt', 'dont', 'didnt', 'wont', 'wouldnt', 'shouldnt',
+    'cant', 'couldnt', 'mustnt', 'lets', 'thats', 'whos', 'whats', 'heres', 'theres',
+    'whens', 'wheres', 'whys', 'hows', 'new', 'get', 'got', 'make', 'made', 'full',
+    'video', 'watch', 'see', 'like', 'subscribe', 'channel', 'part', 'episode', 'ep'
+}
+
 # Niche keyword mapping
 NICHE_KEYWORDS = {
     "Coding": ["programming tutorial", "coding tips", "software development"],
@@ -38,7 +60,9 @@ NICHE_KEYWORDS = {
     "Education": ["study tips", "exam preparation", "learning strategies"]
 }
 
-# Pydantic models
+# ==================== PYDANTIC MODELS ====================
+
+# Existing Trend Models
 class TrendRequest(BaseModel):
     niche: str
 
@@ -74,7 +98,48 @@ class AnalyseResponse(BaseModel):
     analysis: AnalysisDetails
     creator_angle: CreatorAngle
 
-# Helper function to check API key
+# New Channel Analysis Models
+class ChannelAnalyseRequest(BaseModel):
+    channel_url: str
+
+class ChannelInfo(BaseModel):
+    name: str
+    subscribers: int
+    total_videos: int
+    channel_id: str
+    thumbnail: Optional[str] = None
+
+class ChannelAnalytics(BaseModel):
+    average_engagement_rate: float
+    upload_frequency_per_month: float
+    top_themes: List[str]
+
+class RecentVideo(BaseModel):
+    title: str
+    views: int
+    engagement_rate: float
+    published_at: str
+    video_id: str
+
+class ChannelSummary(BaseModel):
+    primary_niche: str
+    content_style: str
+    growth_pattern: str
+    strength: str
+    weakness: str
+
+class AIAnalysis(BaseModel):
+    channel_summary: ChannelSummary
+    strategic_recommendations: List[str]
+
+class ChannelAnalyseResponse(BaseModel):
+    channel_info: ChannelInfo
+    analytics: ChannelAnalytics
+    recent_videos: List[RecentVideo]
+    ai_analysis: AIAnalysis
+
+# ==================== HELPER FUNCTIONS ====================
+
 def check_api_key():
     if not GOOGLE_API_KEY:
         raise HTTPException(
@@ -82,7 +147,55 @@ def check_api_key():
             detail={"error": "GOOGLE_API_KEY environment variable is not set"}
         )
 
-# YouTube API functions
+def extract_channel_identifier(url: str) -> tuple:
+    """Extract channel identifier and type from URL"""
+    url = url.strip()
+    
+    # Handle @username format
+    match = re.search(r'youtube\.com/@([^/?]+)', url)
+    if match:
+        return match.group(1), 'handle'
+    
+    # Handle /channel/ID format
+    match = re.search(r'youtube\.com/channel/([^/?]+)', url)
+    if match:
+        return match.group(1), 'id'
+    
+    # Handle /c/customname format
+    match = re.search(r'youtube\.com/c/([^/?]+)', url)
+    if match:
+        return match.group(1), 'custom'
+    
+    # Handle /user/username format
+    match = re.search(r'youtube\.com/user/([^/?]+)', url)
+    if match:
+        return match.group(1), 'user'
+    
+    # Handle bare @username
+    if url.startswith('@'):
+        return url[1:], 'handle'
+    
+    raise HTTPException(
+        status_code=400,
+        detail={"error": "Invalid YouTube channel URL. Supported formats: @username, /channel/ID, /c/name, /user/name"}
+    )
+
+def extract_themes_from_titles(titles: List[str]) -> List[str]:
+    """Extract top themes from video titles"""
+    words = []
+    for title in titles:
+        # Tokenize and clean
+        tokens = re.findall(r'\b[a-zA-Z]{3,}\b', title.lower())
+        words.extend([w for w in tokens if w not in STOPWORDS])
+    
+    # Count occurrences
+    word_counts = Counter(words)
+    
+    # Return top 5 themes
+    return [word for word, _ in word_counts.most_common(5)]
+
+# ==================== YOUTUBE API FUNCTIONS ====================
+
 async def search_youtube_videos(keywords: List[str], max_results: int = 15) -> List[dict]:
     """Search YouTube for videos matching keywords"""
     check_api_key()
@@ -114,7 +227,6 @@ async def search_youtube_videos(keywords: List[str], max_results: int = 15) -> L
                         "channel": item["snippet"]["channelTitle"],
                         "published_at": item["snippet"]["publishedAt"]
                     }
-                    # Avoid duplicates
                     if not any(v["video_id"] == video_info["video_id"] for v in all_videos):
                         all_videos.append(video_info)
                         
@@ -131,7 +243,6 @@ async def get_video_statistics(video_ids: List[str]) -> dict:
     stats = {}
     
     async with httpx.AsyncClient() as client:
-        # YouTube API allows up to 50 video IDs per request
         for i in range(0, len(video_ids), 50):
             batch_ids = video_ids[i:i+50]
             
@@ -195,34 +306,232 @@ async def get_video_details(video_id: str) -> dict:
             
     return None
 
+async def resolve_channel_id(identifier: str, id_type: str) -> str:
+    """Resolve various channel identifier types to channel ID"""
+    check_api_key()
+    
+    async with httpx.AsyncClient() as client:
+        try:
+            if id_type == 'id':
+                return identifier
+            
+            url = "https://www.googleapis.com/youtube/v3/search"
+            
+            if id_type == 'handle':
+                # Search for @handle
+                params = {
+                    "part": "snippet",
+                    "q": f"@{identifier}",
+                    "type": "channel",
+                    "maxResults": 1,
+                    "key": GOOGLE_API_KEY
+                }
+            else:
+                # Search for custom URL or username
+                params = {
+                    "part": "snippet",
+                    "q": identifier,
+                    "type": "channel",
+                    "maxResults": 1,
+                    "key": GOOGLE_API_KEY
+                }
+            
+            response = await client.get(url, params=params)
+            response.raise_for_status()
+            data = response.json()
+            
+            if data.get("items"):
+                return data["items"][0]["snippet"]["channelId"]
+            
+            # Try channels endpoint with forHandle
+            if id_type == 'handle':
+                url = "https://www.googleapis.com/youtube/v3/channels"
+                params = {
+                    "part": "id",
+                    "forHandle": identifier,
+                    "key": GOOGLE_API_KEY
+                }
+                response = await client.get(url, params=params)
+                response.raise_for_status()
+                data = response.json()
+                
+                if data.get("items"):
+                    return data["items"][0]["id"]
+            
+            raise HTTPException(
+                status_code=404,
+                detail={"error": f"Channel not found: {identifier}"}
+            )
+            
+        except httpx.HTTPError as e:
+            logger.error(f"Channel resolution error: {e}")
+            raise HTTPException(
+                status_code=500,
+                detail={"error": f"Failed to resolve channel: {str(e)}"}
+            )
+
+async def get_channel_metadata(channel_id: str) -> dict:
+    """Fetch channel metadata including uploads playlist"""
+    check_api_key()
+    
+    async with httpx.AsyncClient() as client:
+        try:
+            url = "https://www.googleapis.com/youtube/v3/channels"
+            params = {
+                "part": "snippet,statistics,contentDetails",
+                "id": channel_id,
+                "key": GOOGLE_API_KEY
+            }
+            
+            response = await client.get(url, params=params)
+            response.raise_for_status()
+            data = response.json()
+            
+            if not data.get("items"):
+                raise HTTPException(
+                    status_code=404,
+                    detail={"error": "Channel not found"}
+                )
+            
+            item = data["items"][0]
+            return {
+                "channel_id": channel_id,
+                "title": item["snippet"]["title"],
+                "thumbnail": item["snippet"]["thumbnails"].get("medium", {}).get("url"),
+                "subscriber_count": int(item["statistics"].get("subscriberCount", 0)),
+                "video_count": int(item["statistics"].get("videoCount", 0)),
+                "uploads_playlist_id": item["contentDetails"]["relatedPlaylists"]["uploads"]
+            }
+            
+        except httpx.HTTPError as e:
+            logger.error(f"Channel metadata error: {e}")
+            raise HTTPException(
+                status_code=500,
+                detail={"error": f"Failed to fetch channel data: {str(e)}"}
+            )
+
+async def get_playlist_videos(playlist_id: str, max_results: int = 20) -> List[dict]:
+    """Fetch videos from a playlist (uploads playlist)"""
+    check_api_key()
+    
+    videos = []
+    
+    async with httpx.AsyncClient() as client:
+        try:
+            url = "https://www.googleapis.com/youtube/v3/playlistItems"
+            params = {
+                "part": "snippet,contentDetails",
+                "playlistId": playlist_id,
+                "maxResults": max_results,
+                "key": GOOGLE_API_KEY
+            }
+            
+            response = await client.get(url, params=params)
+            response.raise_for_status()
+            data = response.json()
+            
+            for item in data.get("items", []):
+                videos.append({
+                    "video_id": item["contentDetails"]["videoId"],
+                    "title": item["snippet"]["title"],
+                    "published_at": item["snippet"]["publishedAt"]
+                })
+            
+            # Fetch statistics for all videos
+            if videos:
+                video_ids = [v["video_id"] for v in videos]
+                stats = await get_video_statistics(video_ids)
+                
+                for video in videos:
+                    vid_stats = stats.get(video["video_id"], {})
+                    video["views"] = vid_stats.get("views", 0)
+                    video["likes"] = vid_stats.get("likes", 0)
+                    video["comments"] = vid_stats.get("comments", 0)
+            
+            return videos
+            
+        except httpx.HTTPError as e:
+            logger.error(f"Playlist videos error: {e}")
+            raise HTTPException(
+                status_code=500,
+                detail={"error": f"Failed to fetch videos: {str(e)}"}
+            )
+
+# ==================== ANALYTICS FUNCTIONS ====================
+
 def calculate_trend_score(video: dict, stats: dict) -> float:
     """Calculate trend velocity score for a video"""
     views = stats.get("views", 0)
     likes = stats.get("likes", 0)
     comments = stats.get("comments", 0)
     
-    # Parse published date
     try:
         published_dt = datetime.fromisoformat(video["published_at"].replace("Z", "+00:00"))
         now = datetime.now(timezone.utc)
         hours_since_published = max((now - published_dt).total_seconds() / 3600, 1)
     except Exception:
-        hours_since_published = 24  # Default to 24 hours
+        hours_since_published = 24
     
-    # Calculate view velocity
     view_velocity = views / hours_since_published
-    
-    # Normalize velocity for scoring (cap at reasonable values)
     normalized_velocity = min(view_velocity / 1000, 100)
-    
-    # Calculate engagement ratios
     like_ratio = (likes / max(views, 1)) * 100
     comment_ratio = (comments / max(views, 1)) * 100
-    
-    # Compute trend score
     trend_score = (normalized_velocity * 0.6) + (like_ratio * 0.2) + (comment_ratio * 0.2)
     
     return round(trend_score, 2)
+
+def compute_channel_analytics(videos: List[dict]) -> dict:
+    """Compute channel analytics from recent videos"""
+    if not videos:
+        return {
+            "average_engagement_rate": 0,
+            "upload_frequency_per_month": 0,
+            "top_themes": []
+        }
+    
+    engagement_rates = []
+    publish_dates = []
+    titles = []
+    
+    for video in videos:
+        views = video.get("views", 0)
+        likes = video.get("likes", 0)
+        comments = video.get("comments", 0)
+        
+        # Engagement rate per video
+        engagement = (likes + comments) / max(views, 1)
+        engagement_rates.append(engagement)
+        
+        # Collect publish dates and titles
+        titles.append(video.get("title", ""))
+        try:
+            pub_date = datetime.fromisoformat(video["published_at"].replace("Z", "+00:00"))
+            publish_dates.append(pub_date)
+        except:
+            pass
+    
+    # Average engagement rate
+    avg_engagement = sum(engagement_rates) / len(engagement_rates) if engagement_rates else 0
+    
+    # Upload frequency (videos per month)
+    upload_frequency = 0
+    if len(publish_dates) >= 2:
+        publish_dates.sort()
+        date_range = (publish_dates[-1] - publish_dates[0]).days
+        if date_range > 0:
+            months = date_range / 30
+            upload_frequency = len(publish_dates) / max(months, 1)
+    
+    # Top themes
+    top_themes = extract_themes_from_titles(titles)
+    
+    return {
+        "average_engagement_rate": round(avg_engagement, 4),
+        "upload_frequency_per_month": round(upload_frequency, 1),
+        "top_themes": top_themes
+    }
+
+# ==================== GEMINI AI FUNCTIONS ====================
 
 async def analyze_with_gemini(video_details: dict, niche: str) -> dict:
     """Use Gemini to analyze why a video is trending"""
@@ -239,15 +548,10 @@ Return ONLY this JSON (no markdown):
 
     async with httpx.AsyncClient(timeout=60.0) as client:
         try:
-            # Use gemini-2.5-flash for analysis
             url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={GOOGLE_API_KEY}"
             
             payload = {
-                "contents": [{
-                    "parts": [{
-                        "text": prompt
-                    }]
-                }],
+                "contents": [{"parts": [{"text": prompt}]}],
                 "generationConfig": {
                     "temperature": 0.7,
                     "maxOutputTokens": 2048,
@@ -259,11 +563,7 @@ Return ONLY this JSON (no markdown):
             response.raise_for_status()
             data = response.json()
             
-            # Extract text from Gemini response
             text = data["candidates"][0]["content"]["parts"][0]["text"]
-            logger.info(f"Gemini raw response: {text[:500]}...")
-            
-            # Clean up the response - remove markdown code blocks if present
             text = text.strip()
             if text.startswith("```json"):
                 text = text[7:]
@@ -273,12 +573,9 @@ Return ONLY this JSON (no markdown):
                 text = text[:-3]
             text = text.strip()
             
-            # Parse JSON
             try:
                 result = json.loads(text)
             except json.JSONDecodeError:
-                # Try to find JSON object in the response
-                import re
                 json_match = re.search(r'\{[\s\S]*\}', text)
                 if json_match:
                     result = json.loads(json_match.group())
@@ -294,7 +591,77 @@ Return ONLY this JSON (no markdown):
             logger.error(f"Failed to parse Gemini response: {e}")
             raise HTTPException(status_code=500, detail={"error": "Failed to parse Gemini response as JSON"})
 
-# API Endpoints
+async def analyze_channel_with_gemini(channel_data: dict, analytics: dict, recent_titles: List[str]) -> dict:
+    """Use Gemini to analyze a YouTube channel"""
+    check_api_key()
+    
+    titles_text = "\n".join([f"- {t}" for t in recent_titles[:10]])
+    themes_text = ", ".join(analytics.get("top_themes", []))
+    
+    prompt = f"""Analyze this YouTube channel:
+
+Channel: {channel_data['title']}
+Subscribers: {channel_data['subscriber_count']:,}
+Total Videos: {channel_data['video_count']}
+Average Engagement Rate: {analytics['average_engagement_rate']:.2%}
+Upload Frequency: {analytics['upload_frequency_per_month']:.1f} videos/month
+Top Themes: {themes_text}
+
+Recent Video Titles:
+{titles_text}
+
+Return ONLY this JSON (no markdown):
+{{"channel_summary":{{"primary_niche":"main content category","content_style":"description of style","growth_pattern":"assessment of growth trajectory","strength":"key strength","weakness":"area to improve"}},"strategic_recommendations":["recommendation 1","recommendation 2","recommendation 3"]}}"""
+
+    async with httpx.AsyncClient(timeout=60.0) as client:
+        try:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={GOOGLE_API_KEY}"
+            
+            payload = {
+                "contents": [{"parts": [{"text": prompt}]}],
+                "generationConfig": {
+                    "temperature": 0.7,
+                    "maxOutputTokens": 2048,
+                    "responseMimeType": "application/json"
+                }
+            }
+            
+            response = await client.post(url, json=payload)
+            response.raise_for_status()
+            data = response.json()
+            
+            text = data["candidates"][0]["content"]["parts"][0]["text"]
+            logger.info(f"Channel Gemini response: {text[:300]}...")
+            
+            text = text.strip()
+            if text.startswith("```json"):
+                text = text[7:]
+            elif text.startswith("```"):
+                text = text[3:]
+            if text.endswith("```"):
+                text = text[:-3]
+            text = text.strip()
+            
+            try:
+                result = json.loads(text)
+            except json.JSONDecodeError:
+                json_match = re.search(r'\{[\s\S]*\}', text)
+                if json_match:
+                    result = json.loads(json_match.group())
+                else:
+                    raise
+            
+            return result
+            
+        except httpx.HTTPError as e:
+            logger.error(f"Gemini API error: {e}")
+            raise HTTPException(status_code=500, detail={"error": f"Gemini API error: {str(e)}"})
+        except json.JSONDecodeError as e:
+            logger.error(f"Failed to parse Gemini response: {e}")
+            raise HTTPException(status_code=500, detail={"error": "Failed to parse Gemini response as JSON"})
+
+# ==================== API ENDPOINTS ====================
+
 @api_router.get("/")
 async def root():
     return {"message": "Niche Trend Intelligence Copilot API"}
@@ -307,7 +674,6 @@ async def health():
 async def get_trends(request: TrendRequest):
     """Fetch trending YouTube videos for a niche"""
     
-    # Validate niche
     if request.niche not in NICHE_KEYWORDS:
         raise HTTPException(
             status_code=400,
@@ -316,10 +682,7 @@ async def get_trends(request: TrendRequest):
     
     check_api_key()
     
-    # Get keywords for the niche
     keywords = NICHE_KEYWORDS[request.niche]
-    
-    # Search for videos
     videos = await search_youtube_videos(keywords, max_results=15)
     
     if not videos:
@@ -328,16 +691,13 @@ async def get_trends(request: TrendRequest):
             detail={"error": "No videos found for this niche"}
         )
     
-    # Get statistics for all videos
     video_ids = [v["video_id"] for v in videos]
     stats = await get_video_statistics(video_ids)
     
-    # Calculate trend scores and build response
     trend_videos = []
     for video in videos:
         video_id = video["video_id"]
         video_stats = stats.get(video_id, {"views": 0, "likes": 0, "comments": 0})
-        
         trend_score = calculate_trend_score(video, video_stats)
         
         trend_videos.append(TrendVideo(
@@ -350,7 +710,6 @@ async def get_trends(request: TrendRequest):
             youtube_url=f"https://youtube.com/watch?v={video_id}"
         ))
     
-    # Sort by trend score descending and take top 5
     trend_videos.sort(key=lambda x: x.trend_score, reverse=True)
     top_5 = trend_videos[:5]
     
@@ -362,7 +721,6 @@ async def analyse_video(request: AnalyseRequest):
     
     check_api_key()
     
-    # Get video details
     video_details = await get_video_details(request.video_id)
     
     if not video_details:
@@ -371,12 +729,80 @@ async def analyse_video(request: AnalyseRequest):
             detail={"error": "Video not found"}
         )
     
-    # Analyze with Gemini
     analysis = await analyze_with_gemini(video_details, request.niche)
     
     return AnalyseResponse(
         analysis=AnalysisDetails(**analysis["analysis"]),
         creator_angle=CreatorAngle(**analysis["creator_angle"])
+    )
+
+@api_router.post("/channel-analyse", response_model=ChannelAnalyseResponse)
+async def analyse_channel(request: ChannelAnalyseRequest):
+    """Analyze a YouTube channel"""
+    
+    check_api_key()
+    
+    # Step 1: Extract channel identifier
+    identifier, id_type = extract_channel_identifier(request.channel_url)
+    logger.info(f"Extracted identifier: {identifier}, type: {id_type}")
+    
+    # Step 2: Resolve to channel ID
+    channel_id = await resolve_channel_id(identifier, id_type)
+    logger.info(f"Resolved channel ID: {channel_id}")
+    
+    # Step 3: Fetch channel metadata
+    channel_data = await get_channel_metadata(channel_id)
+    
+    # Step 4: Fetch recent videos
+    videos = await get_playlist_videos(channel_data["uploads_playlist_id"], max_results=20)
+    
+    if not videos:
+        raise HTTPException(
+            status_code=404,
+            detail={"error": "No videos found for this channel"}
+        )
+    
+    # Step 5: Compute analytics
+    analytics = compute_channel_analytics(videos)
+    
+    # Step 6: AI Analysis
+    recent_titles = [v["title"] for v in videos[:10]]
+    ai_analysis = await analyze_channel_with_gemini(channel_data, analytics, recent_titles)
+    
+    # Build recent videos response (top 5)
+    recent_videos_response = []
+    for video in videos[:5]:
+        views = video.get("views", 0)
+        likes = video.get("likes", 0)
+        comments = video.get("comments", 0)
+        engagement = (likes + comments) / max(views, 1)
+        
+        recent_videos_response.append(RecentVideo(
+            title=video["title"],
+            views=views,
+            engagement_rate=round(engagement, 4),
+            published_at=video["published_at"],
+            video_id=video["video_id"]
+        ))
+    
+    return ChannelAnalyseResponse(
+        channel_info=ChannelInfo(
+            name=channel_data["title"],
+            subscribers=channel_data["subscriber_count"],
+            total_videos=channel_data["video_count"],
+            channel_id=channel_id,
+            thumbnail=channel_data.get("thumbnail")
+        ),
+        analytics=ChannelAnalytics(
+            average_engagement_rate=analytics["average_engagement_rate"],
+            upload_frequency_per_month=analytics["upload_frequency_per_month"],
+            top_themes=analytics["top_themes"]
+        ),
+        recent_videos=recent_videos_response,
+        ai_analysis=AIAnalysis(
+            channel_summary=ChannelSummary(**ai_analysis["channel_summary"]),
+            strategic_recommendations=ai_analysis["strategic_recommendations"]
+        )
     )
 
 # Include the router in the main app
