@@ -66,7 +66,7 @@ const Landing = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] relative overflow-hidden">
+    <div className="min-h-screen bg-slate-50 relative overflow-hidden">
       {/* Subtle Professional Background Gradient */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-[#3B82F6]/5 rounded-full  " />
@@ -118,8 +118,8 @@ const Landing = () => {
             </div>
 
             {/* Value Proposition */}
-            <p className="text-xl md:text-2xl text-[#334155] font-semibold max-w-3xl mx-auto mb-12 leading-relaxed">
-              Your AI-powered copilot for <span className="text-[#10B981] font-bold">sustainable growth</span> in the creator economy.
+            <p className="text-xl md:text-2xl text-slate-700 font-semibold max-w-3xl mx-auto mb-12 leading-relaxed">
+              Your AI-powered copilot for <span className="text-emerald-600 font-bold">sustainable growth</span> in the creator economy.
               Detect trends, analyze competitors, and get strategic insights—all in one place.
             </p>
 
@@ -147,10 +147,10 @@ const Landing = () => {
             </div>
 
             {/* Quick Stats */}
-            <div className="flex flex-wrap justify-center gap-8 text-[#475569]">
+            <div className="flex flex-wrap justify-center gap-8 text-slate-600">
               {benefits.map((benefit, idx) => (
                 <div key={idx} className="flex items-center gap-2  fade-in slide-in-from-bottom-4" style={{ animationDelay: `${idx * 100}ms` }}>
-                  <benefit.icon className="w-5 h-5 text-[#3B82F6]" />
+                  <benefit.icon className="w-5 h-5 text-blue-600" />
                   <span className="text-sm font-bold">{benefit.text}</span>
                 </div>
               ))}
@@ -186,13 +186,13 @@ const Landing = () => {
                 >
                   <div className={`inline-flex p-4 rounded-2xl bg-gradient-to-br ${feature.gradient}  mb-6
                     group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
-                    <feature.icon className="w-8 h-8 text-[#0F172A]" />
+                    <feature.icon className="w-8 h-8 text-slate-900" />
                   </div>
-                  <h3 className="text-2xl font-black text-[#0F172A] mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-emerald-400 transition-all">
+                  <h3 className="text-2xl font-black text-slate-900 mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-emerald-600 transition-all">
                     {feature.title}
                   </h3>
-                  <p className="text-[#334155] text-base leading-relaxed mb-4">{feature.description}</p>
-                  <div className="flex items-center gap-2 text-[#3B82F6] font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+                  <p className="text-slate-600 text-base leading-relaxed mb-4">{feature.description}</p>
+                  <div className="flex items-center gap-2 text-blue-600 font-bold opacity-0 group-hover:opacity-100 transition-opacity">
                     <span>Explore</span>
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </div>
