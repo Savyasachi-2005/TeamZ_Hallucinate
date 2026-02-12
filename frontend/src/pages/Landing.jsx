@@ -107,10 +107,10 @@ const Landing = () => {
 
             {/* Dynamic Subtitle */}
             <div className="mb-8 h-20 flex items-center justify-center">
-              <h2 className="text-3xl md:text-5xl font-black text-[#1E293B]">
+              <h2 className="text-3xl md:text-5xl font-black text-slate-900">
                 Predict YouTube{' '}
                 <span className="relative inline-block">
-                  <span className="text-transparent bg-clip-text bg-white  fade-in slide-in-from-bottom-4 duration-500" key={currentWord}>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-emerald-600 animate-in fade-in slide-in-from-bottom-4 duration-500" key={currentWord}>
                     {words[currentWord]}
                   </span>
                 </span>

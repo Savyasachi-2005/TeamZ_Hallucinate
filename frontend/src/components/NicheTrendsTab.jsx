@@ -185,11 +185,11 @@ const NicheTrendsTab = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <BarChart3 className="w-6 h-6 text-blue-400" />
-              <h2 className="text-2xl font-bold text-[#0F172A]">
-                Trending in <span className="text-transparent bg-clip-text bg-white
+              <h2 className="text-2xl font-bold text-slate-900">
+                Trending in <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-emerald-600">{currentSearchLabel}</span>
               </h2>
             </div>
-            <span className="text-sm text-[#334155] bg-white px-3 py-1 rounded-full">
+            <span className="text-sm text-slate-600 bg-slate-100 px-3 py-1 rounded-full">
               {filteredCount} videos found
             </span>
           </div>
