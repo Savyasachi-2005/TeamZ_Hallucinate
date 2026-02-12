@@ -8,7 +8,7 @@ const CopilotChat = () => {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: 'Hi! I\'m your AI Growth Copilot. Ask me about channel performance, engagement strategies, or trending opportunities.',
+      content: 'Hi! I am your AI Growth Copilot. Ask me about channel performance, engagement strategies, or trending opportunities.',
       source: 'system'
     }
   ]);
@@ -57,7 +57,7 @@ const CopilotChat = () => {
         ...prev,
         {
           role: 'assistant',
-          content: 'I\'m having trouble connecting. Please try again in a moment.',
+          content: 'I am having trouble connecting. Please try again in a moment.',
           source: 'error'
         }
       ]);
