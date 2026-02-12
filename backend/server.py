@@ -362,6 +362,7 @@ async def get_video_details(video_id: str) -> dict:
             
     return None
 
+@cached_api_call
 async def resolve_channel_id(identifier: str, id_type: str) -> str:
     """Resolve various channel identifier types to channel ID"""
     check_api_key()
