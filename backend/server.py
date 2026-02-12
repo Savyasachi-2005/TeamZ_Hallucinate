@@ -1725,15 +1725,31 @@ async def analyse_channel(request: ChannelAnalyseRequest):
     # Auto-detect niche from creator's themes
     creator_themes = analytics["top_themes"]
     
-    # Search for trending videos in detected niche
+    # Use creator's top 2 themes as niche keywords for better relevance
     detected_niche_keywords = creator_themes[:2] if len(creator_themes) >= 2 else creator_themes
-    trending_videos = await search_youtube_videos(detected_niche_keywords, max_results=30)
     
+    # If themes are too generic, try to infer from channel name/description
+    if not detected_niche_keywords or all(len(k) < 4 for k in detected_niche_keywords):
+        # Fallback: use a broader search
+        detected_niche_keywords = [channel_data["title"].split()[0]] if channel_data["title"] else ["trending"]
+    
+    # Search for trending videos in detected niche with better query
+    trending_videos = await search_youtube_videos(detected_niche_keywords, max_results=50)
+    
+    # Enhanced missed trend detection
     missed_trends = detect_missed_trends(
         creator_themes,
         detected_niche_keywords,
         trending_videos
     )
+    
+    # If no meaningful trends found, provide helpful message
+    if not missed_trends:
+        missed_trends = [{
+            "keyword": "Explore your niche",
+            "trend_score": 0,
+            "reason": f"Based on your content ({', '.join(creator_themes[:3])}), explore related trending topics in your niche"
+        }]
     
     # === STEP 4: Competitor Comparison (Optional) ===
     competitor_comparison_data = None
