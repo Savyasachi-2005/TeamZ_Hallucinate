@@ -539,6 +539,9 @@ def main():
     tester.test_trends_invalid_niche()
     tester.test_trends_missing_niche()
     
+    print("\n2️⃣a Trending Detection Engine Features")
+    tester.test_trending_detection_engine_features()
+    
     print("\n2️⃣b Custom Keyword Tests")
     tester.test_trends_custom_keyword_valid("AI tools")
     tester.test_trends_custom_keyword_valid("crypto trading")
