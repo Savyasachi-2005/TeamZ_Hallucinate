@@ -1,62 +1,86 @@
-/* Additional App-specific styles */
+/* App-specific styles */
 
-/* Line clamp utility */
-.line-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-/* Aspect ratio fallback */
+/* Aspect Ratio */
 .aspect-video {
     aspect-ratio: 16 / 9;
 }
 
-/* Card hover state enhancement */
-.glass-card {
+/* Hot Badge Animation */
+@keyframes pulse-hot {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
+}
+
+.animate-pulse-hot {
+    animation: pulse-hot 2s ease-in-out infinite;
+}
+
+/* Card Gradient Border on Hover */
+.card-gradient-border {
     position: relative;
 }
 
-.glass-card::before {
+.card-gradient-border::before {
     content: '';
     position: absolute;
     inset: 0;
     border-radius: inherit;
     padding: 1px;
-    background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 100%);
-    -webkit-mask: 
-        linear-gradient(#fff 0 0) content-box, 
-        linear-gradient(#fff 0 0);
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(139, 92, 246, 0.3));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
     pointer-events: none;
 }
 
-/* Dialog overlay */
-[data-radix-dialog-overlay] {
-    background-color: rgba(0, 0, 0, 0.8) !important;
-    backdrop-filter: blur(4px);
+.card-gradient-border:hover::before {
+    opacity: 1;
 }
 
-/* Select dropdown styling */
-[data-radix-select-content] {
-    background-color: #121212 !important;
+/* Score Badge Glow */
+.score-glow {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
 }
 
-/* Toast styling overrides */
-[data-sonner-toast] {
-    background-color: #1a1a1a !important;
-    border-color: rgba(255, 255, 255, 0.1) !important;
+/* Input Focus Glow */
+input:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-/* Loading skeleton */
+/* Button Ripple Effect */
+.btn-ripple {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-ripple::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.2) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.btn-ripple:hover::after {
+    opacity: 1;
+}
+
+/* Loading Skeleton */
 .skeleton {
     background: linear-gradient(
         90deg,
-        rgba(255, 255, 255, 0.05) 25%,
-        rgba(255, 255, 255, 0.1) 50%,
-        rgba(255, 255, 255, 0.05) 75%
+        rgba(255, 255, 255, 0.03) 25%,
+        rgba(255, 255, 255, 0.08) 50%,
+        rgba(255, 255, 255, 0.03) 75%
     );
     background-size: 200% 100%;
     animation: skeleton-loading 1.5s infinite;
@@ -71,15 +95,21 @@
     }
 }
 
-/* Focus visible states */
-button:focus-visible,
-a:focus-visible,
-[role="button"]:focus-visible {
-    outline: 2px solid rgba(139, 92, 246, 0.5);
-    outline-offset: 2px;
+/* Smooth Transitions for Theme Chips */
+.theme-chip {
+    @apply transition-all duration-200;
 }
 
-/* Active state for buttons */
-button:active:not(:disabled) {
-    transform: scale(0.98);
+.theme-chip:hover {
+    @apply scale-105;
+}
+
+/* Stats Card Hover */
+.stats-card {
+    @apply transition-all duration-300;
+}
+
+.stats-card:hover {
+    @apply border-opacity-60;
+    transform: translateY(-2px);
 }
