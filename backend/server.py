@@ -217,12 +217,12 @@ def extract_themes_from_titles(titles: List[str]) -> List[str]:
 
 # ==================== YOUTUBE API FUNCTIONS ====================
 
-async def search_youtube_videos(keywords: List[str], max_results: int = 15) -> List[dict]:
+async def search_youtube_videos(keywords: List[str], max_results: int = 50) -> List[dict]:
     """Search YouTube for videos matching keywords"""
     check_api_key()
     
     all_videos = []
-    videos_per_keyword = max(5, max_results // len(keywords))
+    videos_per_keyword = max(15, max_results // len(keywords))
     
     async with httpx.AsyncClient() as client:
         for keyword in keywords:
@@ -232,7 +232,7 @@ async def search_youtube_videos(keywords: List[str], max_results: int = 15) -> L
                     "part": "snippet",
                     "q": keyword,
                     "type": "video",
-                    "order": "viewCount",
+                    "order": "relevance",  # Changed from viewCount for better trend detection
                     "maxResults": videos_per_keyword,
                     "key": GOOGLE_API_KEY
                 }
