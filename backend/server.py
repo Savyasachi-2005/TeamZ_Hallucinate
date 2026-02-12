@@ -1506,9 +1506,19 @@ async def health():
 
 @api_router.post("/trends", response_model=TrendResponse)
 async def get_trends(request: TrendRequest):
-    """Fetch trending YouTube videos using robust Trending Detection Engine"""
+    """Fetch trending YouTube videos using robust Trending Detection Engine - WITH CACHING"""
     
     check_api_key()
+    
+    # Generate cache key
+    cache_key_data = f"{request.niche}:{request.custom_keyword}"
+    cache_key = f"trends:{hashlib.md5(cache_key_data.encode()).hexdigest()}"
+    
+    # Check cache first
+    cached_result = get_from_cache(cache_key)
+    if cached_result is not None:
+        logger.info(f"Returning cached trends")
+        return cached_result
     
     # Determine search keywords
     search_label = ""
@@ -1582,12 +1592,24 @@ async def get_trends(request: TrendRequest):
         for v in top_videos
     ]
     
-    return TrendResponse(
+    result = TrendResponse(
         niche=search_label,
         filtered_videos_count=len(scored_videos),
         top_trends=trend_videos,
         trending_topics=trending_topics if trending_topics else None
     )
+    
+    # Cache result
+    set_cache(cache_key, result, CACHE_TTL["trends"])
+    
+    # Add to context memory
+    add_to_context_memory("trends", {
+        "niche": search_label,
+        "total_videos": len(scored_videos),
+        "top_video_title": top_videos[0]["title"] if top_videos else None
+    })
+    
+    return result
 
 @api_router.post("/analyse", response_model=AnalyseResponse)
 async def analyse_video(request: AnalyseRequest):
