@@ -100,6 +100,21 @@ webpackConfig.devServer = (devServerConfig) => {
     };
   }
 
+  // Suppress ResizeObserver errors in the error overlay
+  devServerConfig.client = {
+    ...devServerConfig.client,
+    overlay: {
+      errors: true,
+      warnings: false,
+      runtimeErrors: (error) => {
+        if (error?.message?.includes('ResizeObserver')) {
+          return false;
+        }
+        return true;
+      },
+    },
+  };
+
   return devServerConfig;
 };
 
