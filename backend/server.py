@@ -187,11 +187,45 @@ class AIAnalysis(BaseModel):
     channel_summary: ChannelSummary
     strategic_recommendations: List[str]
 
+# New Growth Health Dashboard Models
+class HealthDashboard(BaseModel):
+    consistency_score: int
+    engagement_stability: int
+    topic_focus_score: int
+    growth_momentum: str
+
+# New Competitor Comparison Models
+class CompetitorComparison(BaseModel):
+    competitor_name: str
+    engagement_gap: str
+    posting_gap: str
+    theme_overlap_percentage: int
+    missed_topics: List[str]
+
+# New Missed Trend Models
+class MissedTrend(BaseModel):
+    keyword: str
+    trend_score: float
+    reason: str
+
+# Enhanced AI Strategic Summary
+class StrategicSummary(BaseModel):
+    main_risk: str
+    growth_opportunity: str
+    recommended_action_plan: List[str]
+
+class EnhancedAIAnalysis(BaseModel):
+    channel_summary: ChannelSummary
+    strategic_summary: StrategicSummary
+
 class ChannelAnalyseResponse(BaseModel):
     channel_info: ChannelInfo
     analytics: ChannelAnalytics
     recent_videos: List[RecentVideo]
-    ai_analysis: AIAnalysis
+    ai_analysis: EnhancedAIAnalysis
+    health_dashboard: HealthDashboard
+    missed_trends: List[MissedTrend]
+    competitor_comparison: Optional[CompetitorComparison] = None
 
 # ==================== HELPER FUNCTIONS ====================
 
