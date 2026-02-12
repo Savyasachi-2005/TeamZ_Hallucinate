@@ -1,13 +1,9 @@
 # Niche Pulse - PRD
 
 ## Original Problem Statement
-Build a Niche Trend Intelligence Copilot for YouTube creators that:
-1. Allows user to select a niche (Coding, Finance, Fitness, Gaming, Education)
-2. Fetches trending YouTube videos within that niche
-3. Ranks them using a trend velocity score
-4. Displays Top 5 trending videos
-5. On click → Gemini explains why the video is trending
-6. Gemini suggests one actionable creator content angle
+Build a Niche Trend Intelligence Copilot for YouTube creators with two modes:
+1. **Niche Trends**: Select niche, fetch top 5 trending videos, click to analyze with Gemini
+2. **Channel Analysis**: Paste YouTube channel URL, get full channel analysis with AI strategic insights
 
 ## User Choices
 - Dark theme design
@@ -17,39 +13,63 @@ Build a Niche Trend Intelligence Copilot for YouTube creators that:
 ## Architecture
 
 ### Backend (FastAPI)
-- **POST /api/trends**: Fetch and rank top 5 trending videos for a niche
-- **POST /api/analyse**: AI-powered video analysis using Gemini
-- Uses YouTube Data API v3 for video search and statistics
-- Uses Gemini 2.5 Flash for trend analysis
+**Existing Endpoints:**
+- `POST /api/trends` - Fetch and rank top 5 trending videos for a niche
+- `POST /api/analyse` - AI-powered video analysis using Gemini
+
+**New Endpoint (Feb 2026):**
+- `POST /api/channel-analyse` - Full channel analysis including:
+  - Channel metadata (name, subscribers, video count)
+  - Analytics (engagement rate, upload frequency, top themes)
+  - Recent videos with engagement metrics
+  - AI strategic insights (niche, style, growth pattern, strengths, weaknesses, recommendations)
 
 ### Frontend (React)
-- Shadcn UI components (Select, Dialog)
+- Tabs for switching between Niche Trends and Channel Analysis
+- Shadcn UI components (Select, Dialog, Tabs, Input)
 - Dark glassmorphism design
 - Bento grid layout for video cards
-- Analysis modal with AI insights
+- Analytics cards for channel metrics
+- AI insights panel with strategic recommendations
 
 ## User Personas
 - YouTube content creators seeking trend intelligence
 - New creators looking for content ideas
 - Marketing teams analyzing viral content
+- Creators researching competitor channels
 
 ## Core Requirements (Static)
-- [x] Niche selection dropdown
+- [x] Niche selection dropdown (5 niches)
 - [x] Fetch Trends functionality
 - [x] Top 5 video display with trend scores
 - [x] Video analysis with Gemini AI
 - [x] Creator angle suggestions
+- [x] Channel URL input (supports @username, /channel/ID, /c/name, /user/name)
+- [x] Channel overview display
+- [x] Engagement metrics visualization
+- [x] Top themes extraction
+- [x] Recent videos list
+- [x] AI strategic insights
 - [x] Loading states
 - [x] Error handling
 
-## What's Been Implemented (Jan 2026)
+## What's Been Implemented
+
+### Phase 1 (Jan 2026)
 - Complete backend with YouTube API and Gemini integration
 - Dark-themed frontend with glassmorphism design
 - Trend velocity scoring algorithm
 - AI-powered video analysis
 - Responsive bento grid layout
-- Analysis modal with hook style, title pattern, emotional driver, why it works
-- Creator angle with suggested title, content direction, hook example
+
+### Phase 2 (Feb 2026)
+- **NEW: Channel Analysis Mode**
+  - Channel URL parsing (multiple formats supported)
+  - Channel metadata fetching via YouTube API
+  - Analytics computation (engagement rate, upload frequency)
+  - Topic/theme extraction from video titles
+  - AI strategic analysis via Gemini
+  - Full UI for channel results display
 
 ## Tech Stack
 - Backend: FastAPI, httpx, Pydantic
@@ -61,18 +81,22 @@ Build a Niche Trend Intelligence Copilot for YouTube creators that:
 - Core trend fetching
 - Gemini analysis integration
 - UI implementation
+- Channel Analysis feature
 
 ### P1 (Future)
 - Save favorite videos/analyses
 - Export analysis reports
 - Compare trends across niches
+- Channel comparison mode
 
 ### P2 (Future)
 - Historical trend tracking
 - Custom niche keyword inputs
 - Batch video analysis
+- Multi-channel comparison
 
 ## Next Tasks
-- Add ability to customize search keywords per niche
-- Implement trend history tracking
-- Add export functionality for analysis reports
+1. Add ability to save channel analysis results
+2. Implement channel comparison feature
+3. Add export functionality for reports
+4. Create historical trend tracking
