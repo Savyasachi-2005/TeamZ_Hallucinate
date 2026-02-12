@@ -328,6 +328,7 @@ async def get_video_statistics(video_ids: List[str]) -> dict:
     
     return stats
 
+@cached_api_call
 async def get_video_details(video_id: str) -> dict:
     """Get detailed info for a single video"""
     check_api_key()
