@@ -2,232 +2,263 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   TrendingUp, Sparkles, BarChart3, GitCompare, Target, 
-  Zap, Shield, Flame, ArrowRight, CheckCircle2, Users,
-  Activity, Focus, Trophy, Lightbulb
+  Zap, Shield, Flame, ArrowRight, CheckCircle2,
+  Activity, Trophy, Lightbulb, Play
 } from 'lucide-react';
+import Navigation from '@/components/Navigation';
 
 const Landing = () => {
   const navigate = useNavigate();
-  const [currentWord, setCurrentWord] = useState(0);
-  const words = ['Trends', 'Growth', 'Success', 'Strategy'];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentWord((prev) => (prev + 1) % words.length);
-    }, 2500);
-    return () => clearInterval(interval);
-  }, []);
+  const [activeFeature, setActiveFeature] = useState(0);
 
   const features = [
     {
       icon: TrendingUp,
       title: 'Niche Trends',
-      description: 'Discover what\'s trending in your niche with AI-powered momentum detection and strict recency filters',
+      description: 'AI-powered momentum detection finds what\'s trending in your niche with strict recency filters',
+      color: 'from-indigo-500 to-blue-500',
       route: '/niche-trends'
     },
     {
       icon: Shield,
       title: 'Growth Health Dashboard',
-      description: 'Track consistency, engagement stability, topic focus, and growth momentum in real-time',
+      description: 'Track consistency, engagement stability, and growth momentum in real-time',
+      color: 'from-blue-500 to-cyan-500',
       route: '/channel-analysis'
     },
     {
       icon: GitCompare,
       title: 'Competitor Intelligence',
-      description: 'Compare your channel against competitors and identify gaps in your strategy',
+      description: 'Compare against competitors and identify strategic gaps',
+      color: 'from-cyan-500 to-teal-500',
       route: '/channel-analysis'
     },
     {
       icon: Flame,
       title: 'Missed Trend Detector',
-      description: 'Auto-discover high-momentum topics you haven\'t covered yet',
+      description: 'Auto-discover high-momentum topics you haven\'t covered',
+      color: 'from-orange-500 to-red-500',
       route: '/channel-analysis'
     },
     {
       icon: Sparkles,
       title: 'AI Strategic Copilot',
-      description: 'Get personalized growth recommendations powered by advanced AI analysis',
+      description: 'Get personalized growth recommendations from advanced AI',
+      color: 'from-purple-500 to-pink-500',
       route: '/channel-analysis'
     }
   ];
 
-  const benefits = [
-    { icon: TrendingUp, text: 'Predict engagement trends' },
-    { icon: Target, text: 'Identify content gaps' },
-    { icon: Lightbulb, text: 'Strategic action plans' },
-    { icon: BarChart3, text: 'Data-driven decisions' },
-    { icon: Activity, text: 'Detect growth instability' },
-    { icon: Trophy, text: 'Sustainable growth' }
+  const stats = [
+    { value: '10K+', label: 'Videos Analyzed' },
+    { value: '500+', label: 'Creators Helped' },
+    { value: '95%', label: 'Accuracy Rate' },
+    { value: '24/7', label: 'AI Monitoring' }
   ];
 
-  const steps = [
-    { step: '01', icon: TrendingUp, title: 'Analyze Your Niche', desc: 'Get instant insights on trending topics' },
-    { step: '02', icon: BarChart3, title: 'Track Your Health', desc: 'Monitor growth metrics and patterns' },
-    { step: '03', icon: Sparkles, title: 'Take Strategic Action', desc: 'Implement AI-powered recommendations' }
+  const benefits = [
+    'Predict engagement trends',
+    'Identify content gaps',
+    'Data-driven decisions',
+    'Sustainable growth'
   ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveFeature((prev) => (prev + 1) % features.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="relative">
-        {/* Hero Section */}
-        <div className="min-h-screen flex flex-col items-center justify-center px-6 py-20 bg-slate-50">
-          <div className="max-w-6xl mx-auto text-center">
-            {/* Logo */}
-            <div className="inline-flex items-center justify-center mb-12">
-              <img 
-                src="https://customer-assets.emergentagent.com/job_ytcreator-buddy/artifacts/21wabeoa_images__1_-removebg-preview.png" 
-                alt="NichePulse Logo" 
-                className="w-24 h-24 object-contain"
-              />
+    <div className="min-h-screen bg-slate-50">
+      <Navigation />
+
+      {/* Hero Section */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-indigo-50/30">
+        {/* Decorative Elements */}
+        <div className="absolute top-20 right-10 w-72 h-72 bg-indigo-500/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 left-10 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl"></div>
+
+        <div className="relative max-w-7xl mx-auto px-6 py-20 lg:py-28">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left Content */}
+            <div className="animate-slide-in-up">
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-50 rounded-full border border-indigo-100 mb-6">
+                <Sparkles className="w-4 h-4 text-indigo-600" />
+                <span className="text-sm font-semibold text-indigo-900">AI-Powered Creator Intelligence</span>
+              </div>
+
+              {/* Main Headline */}
+              <h1 className="text-5xl lg:text-7xl font-black tracking-tight mb-6 leading-tight">
+                Predict YouTube
+                <span className="gradient-text"> Success</span>
+              </h1>
+
+              {/* Subheadline */}
+              <p className="text-xl text-slate-600 mb-8 leading-relaxed max-w-xl">
+                Turn data into growth. AI-powered insights for creators who want sustainable success, not just viral moments.
+              </p>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                <button
+                  onClick={() => navigate('/niche-trends')}
+                  className="btn-primary flex items-center justify-center gap-2"
+                >
+                  <Zap className="w-5 h-5" />
+                  <span>Start Analyzing</span>
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={() => navigate('/channel-analysis')}
+                  className="btn-secondary flex items-center justify-center gap-2"
+                >
+                  <Play className="w-5 h-5" />
+                  <span>See How It Works</span>
+                </button>
+              </div>
+
+              {/* Benefits List */}
+              <div className="flex flex-wrap gap-4">
+                {benefits.map((benefit, idx) => (
+                  <div key={idx} className="flex items-center gap-2 text-sm font-medium text-slate-700">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                    <span>{benefit}</span>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            {/* Title */}
-            <h1 className="text-6xl md:text-8xl font-black tracking-tight mb-8 leading-none">
-              <span className="inline-block text-slate-900">
-                Niche
-              </span>
-              <span className="inline-block text-blue-600">
-                Pulse
-              </span>
-            </h1>
+            {/* Right Content - Dashboard Preview */}
+            <div className="relative animate-fade-in">
+              <div className="relative bg-white rounded-2xl shadow-2xl border border-slate-200 p-6 animate-float">
+                {/* Mini Dashboard */}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+                    <div>
+                      <h3 className="font-bold text-slate-900">Growth Analytics</h3>
+                      <p className="text-sm text-slate-500">Real-time insights</p>
+                    </div>
+                    <div className="px-3 py-1 bg-emerald-50 text-emerald-700 text-xs font-bold rounded-full">
+                      Live
+                    </div>
+                  </div>
 
-            {/* Dynamic Subtitle */}
-            <div className="mb-8 h-20 flex items-center justify-center">
-              <h2 className="text-3xl md:text-5xl font-black text-slate-900">
-                Predict YouTube{' '}
-                <span className="text-blue-600">
-                  {words[currentWord]}
-                </span>
-              </h2>
-            </div>
+                  {/* Metric Cards */}
+                  <div className="grid grid-cols-2 gap-3">
+                    {stats.map((stat, idx) => (
+                      <div key={idx} className="bg-slate-50 rounded-xl p-4 border border-slate-100">
+                        <div className="text-2xl font-black gradient-text mb-1">{stat.value}</div>
+                        <div className="text-xs text-slate-600 font-medium">{stat.label}</div>
+                      </div>
+                    ))}
+                  </div>
 
-            {/* Value Proposition */}
-            <p className="text-xl md:text-2xl text-slate-700 font-semibold max-w-3xl mx-auto mb-12 leading-relaxed">
-              Your AI-powered copilot for <span className="text-blue-600 font-bold">sustainable growth</span> in the creator economy.
-              Detect trends, analyze competitors, and get strategic insights—all in one place.
-            </p>
-
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
-              <button
-                onClick={() => navigate('/niche-trends')}
-                className="px-10 py-5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-lg transition-colors shadow-md flex items-center gap-3"
-              >
-                <Zap className="w-6 h-6" />
-                Launch NichePulse
-                <ArrowRight className="w-6 h-6" />
-              </button>
-              
-              <button
-                onClick={() => document.getElementById('features').scrollIntoView({ behavior: 'smooth' })}
-                className="px-10 py-5 bg-white hover:bg-slate-50 border-2 border-slate-300 text-slate-900 font-bold rounded-xl text-lg transition-colors shadow-sm"
-              >
-                Explore Features
-              </button>
-            </div>
-
-            {/* Benefits */}
-            <div className="flex flex-wrap justify-center gap-8 text-slate-700">
-              {benefits.map((benefit, idx) => (
-                <div key={idx} className="flex items-center gap-2 text-sm font-semibold">
-                  <benefit.icon className="w-5 h-5 text-blue-600" />
-                  <span>{benefit.text}</span>
+                  {/* Trend Chart Visualization */}
+                  <div className="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-xl p-4 border border-indigo-100">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-sm font-semibold text-slate-900">Trend Score</span>
+                      <span className="text-xs font-bold text-indigo-600">+24%</span>
+                    </div>
+                    <div className="flex items-end gap-1 h-20">
+                      {[40, 55, 45, 70, 65, 85, 75, 90].map((height, idx) => (
+                        <div
+                          key={idx}
+                          className="flex-1 bg-gradient-to-t from-indigo-500 to-blue-400 rounded-t"
+                          style={{ height: `${height}%` }}
+                        ></div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              ))}
+              </div>
+
+              {/* Floating Badge */}
+              <div className="absolute -top-4 -right-4 bg-white rounded-xl shadow-lg border border-slate-200 px-4 py-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                  <span className="text-sm font-bold text-slate-900">AI Active</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+      </section>
 
-        {/* Features Section */}
-        <div id="features" className="py-20 px-6 bg-white">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-6xl font-black text-slate-900 mb-6">
-                Everything You Need to <span className="text-blue-600">Dominate YouTube</span>
-              </h2>
-              <p className="text-xl text-slate-700 max-w-2xl mx-auto">
-                Built for creators who want data-driven insights, not just analytics dashboards
-              </p>
-            </div>
+      {/* Features Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-6">
+          {/* Section Header */}
+          <div className="text-center mb-16">
+            <h2 className="text-4xl lg:text-5xl font-black text-slate-900 mb-4">
+              Everything You Need to <span className="gradient-text">Dominate</span>
+            </h2>
+            <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+              Professional creator intelligence tools designed for sustainable growth
+            </p>
+          </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {features.map((feature, idx) => (
+          {/* Feature Cards Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {features.map((feature, idx) => {
+              const Icon = feature.icon;
+              return (
                 <button
                   key={idx}
                   onClick={() => navigate(feature.route)}
-                  className="bg-white border-2 border-slate-200 hover:border-blue-600 rounded-xl p-8 shadow-sm hover:shadow-md transition-all text-left"
+                  onMouseEnter={() => setActiveFeature(idx)}
+                  className={`card-hover bg-white rounded-2xl p-8 border-2 text-left transition-all duration-300 ${
+                    activeFeature === idx
+                      ? 'border-indigo-500 shadow-lg'
+                      : 'border-slate-200 hover:border-indigo-300'
+                  }`}
                 >
-                  <div className="mb-6">
-                    <div className="inline-flex p-3 rounded-xl bg-blue-600 shadow-md">
-                      <feature.icon className="w-8 h-8 text-white" />
-                    </div>
+                  <div className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${feature.color} mb-4`}>
+                    <Icon className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="text-2xl font-black text-slate-900 mb-3">
-                    {feature.title}
-                  </h3>
-                  <p className="text-slate-700 text-base leading-relaxed mb-4">{feature.description}</p>
-                  <div className="flex items-center gap-2 text-blue-600 font-bold">
-                    <span>Try it now</span>
+                  <h3 className="text-xl font-bold text-slate-900 mb-3">{feature.title}</h3>
+                  <p className="text-slate-600 mb-4 leading-relaxed">{feature.description}</p>
+                  <div className="flex items-center gap-2 text-indigo-600 font-semibold">
+                    <span>Learn more</span>
                     <ArrowRight className="w-4 h-4" />
                   </div>
                 </button>
-              ))}
-            </div>
+              );
+            })}
           </div>
         </div>
+      </section>
 
-        {/* How It Works Section */}
-        <div className="py-20 px-6 bg-slate-50">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-6xl font-black text-slate-900 mb-6">
-                How It Works
-              </h2>
-              <p className="text-xl text-slate-700">
-                From analysis to action in three simple steps
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {steps.map((item, idx) => (
-                <div 
-                  key={idx}
-                  className="relative bg-white border-2 border-slate-200 rounded-xl p-8 shadow-sm"
-                >
-                  <div className="text-8xl font-black text-slate-200 absolute top-4 right-4">{item.step}</div>
-                  <div className="relative">
-                    <div className="inline-flex p-3 rounded-xl bg-blue-600 mb-4 shadow-md">
-                      <item.icon className="w-6 h-6 text-white" />
-                    </div>
-                    <h3 className="text-xl font-black text-slate-900 mb-3">{item.title}</h3>
-                    <p className="text-slate-700">{item.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+      {/* CTA Section */}
+      <section className="py-20 bg-gradient-to-br from-indigo-600 to-blue-500">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <h2 className="text-4xl lg:text-5xl font-black text-white mb-6">
+            Ready to Transform Your Strategy?
+          </h2>
+          <p className="text-xl text-indigo-100 mb-10">
+            Join creators making data-driven decisions for sustainable growth
+          </p>
+          <button
+            onClick={() => navigate('/niche-trends')}
+            className="inline-flex items-center gap-3 px-8 py-4 bg-white text-indigo-600 font-bold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105"
+          >
+            <Zap className="w-5 h-5" />
+            <span>Get Started Now</span>
+            <ArrowRight className="w-5 h-5" />
+          </button>
         </div>
+      </section>
 
-        {/* CTA Section */}
-        <div className="py-20 px-6 bg-white">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-6xl font-black text-slate-900 mb-6">
-              Ready to Transform Your <span className="text-blue-600">YouTube Strategy?</span>
-            </h2>
-            <p className="text-xl text-slate-700 mb-10">
-              Join creators who make data-driven decisions for sustainable growth
-            </p>
-            <button
-              onClick={() => navigate('/niche-trends')}
-              className="px-12 py-6 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xl transition-colors shadow-md flex items-center gap-3 mx-auto"
-            >
-              <Zap className="w-6 h-6" />
-              Get Started Now
-              <ArrowRight className="w-6 h-6" />
-            </button>
-          </div>
+      {/* Footer */}
+      <footer className="bg-white border-t border-slate-200 py-8">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <p className="text-slate-600 text-sm font-medium">
+            Powered by <span className="text-indigo-600 font-bold">YouTube Data API</span> & <span className="text-indigo-600 font-bold">Gemini AI</span>
+          </p>
         </div>
-      </div>
+      </footer>
     </div>
   );
 };
