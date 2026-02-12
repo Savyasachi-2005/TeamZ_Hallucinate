@@ -513,18 +513,28 @@ function App() {
                   </div>
 
                   {/* Top Themes */}
-                  <div className="glass-card p-6">
+                  <div className="glass-card p-6 md:col-span-3 lg:col-span-1">
                     <div className="flex items-center gap-3 mb-4">
                       <div className="p-2 rounded-lg bg-pink-500/20">
                         <Sparkles className="w-5 h-5 text-pink-400" />
                       </div>
                       <span className="text-xs font-bold uppercase tracking-widest text-gray-500">Top Themes</span>
                     </div>
-                    <div className="flex flex-wrap gap-2" data-testid="top-themes">
+                    <div className="space-y-2" data-testid="top-themes">
                       {channelData.analytics.top_themes.map((theme, i) => (
-                        <span key={i} className="px-3 py-1 rounded-full bg-white/10 text-sm font-mono">
-                          {theme}
-                        </span>
+                        <div key={i} className="flex items-center justify-between gap-2 p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors group">
+                          <span className="px-3 py-1 rounded-full bg-white/10 text-sm font-mono">
+                            {theme}
+                          </span>
+                          <button
+                            data-testid={`explore-theme-${i}`}
+                            onClick={() => exploreTrendFromTheme(theme)}
+                            className="flex items-center gap-1 px-3 py-1 rounded-full bg-purple-500/20 hover:bg-purple-500/40 text-purple-300 hover:text-white text-xs font-semibold transition-all opacity-70 group-hover:opacity-100"
+                          >
+                            Explore Trend
+                            <ArrowRight className="w-3 h-3" />
+                          </button>
+                        </div>
                       ))}
                     </div>
                   </div>
