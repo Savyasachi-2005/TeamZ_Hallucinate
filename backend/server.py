@@ -155,6 +155,7 @@ class AnalyseResponse(BaseModel):
 # New Channel Analysis Models
 class ChannelAnalyseRequest(BaseModel):
     channel_url: str
+    competitor_url: Optional[str] = None
 
 class ChannelInfo(BaseModel):
     name: str
