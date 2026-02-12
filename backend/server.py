@@ -373,6 +373,16 @@ class ChannelAnalyseResponse(BaseModel):
     missed_trends: List[MissedTrend]
     competitor_comparison: Optional[CompetitorComparison] = None
 
+# ==================== COPILOT CHAT MODELS ====================
+
+class CopilotChatRequest(BaseModel):
+    message: str
+
+class CopilotChatResponse(BaseModel):
+    response: str
+    source: str  # "rule_based" or "ai_generated"
+    context_used: bool
+
 # ==================== HELPER FUNCTIONS ====================
 
 def check_api_key():
