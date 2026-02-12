@@ -276,19 +276,30 @@ You MUST respond with ONLY valid JSON in this exact format, no markdown, no extr
             
             # Extract text from Gemini response
             text = data["candidates"][0]["content"]["parts"][0]["text"]
+            logger.info(f"Gemini raw response: {text[:500]}...")
             
             # Clean up the response - remove markdown code blocks if present
             text = text.strip()
             if text.startswith("```json"):
                 text = text[7:]
-            if text.startswith("```"):
+            elif text.startswith("```"):
                 text = text[3:]
             if text.endswith("```"):
                 text = text[:-3]
             text = text.strip()
             
             # Parse JSON
-            result = json.loads(text)
+            try:
+                result = json.loads(text)
+            except json.JSONDecodeError:
+                # Try to find JSON object in the response
+                import re
+                json_match = re.search(r'\{[\s\S]*\}', text)
+                if json_match:
+                    result = json.loads(json_match.group())
+                else:
+                    raise
+            
             return result
             
         except httpx.HTTPError as e:
