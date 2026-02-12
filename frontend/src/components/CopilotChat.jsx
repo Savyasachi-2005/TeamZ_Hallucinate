@@ -101,15 +101,15 @@ const CopilotChat = () => {
                 <Brain className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h3 className="text-lg font-black text-[#0F172A]">AI Growth Copilot</h3>
-                <p className="text-xs text-[#64748B] font-bold">Context-aware insights</p>
+                <h3 className="text-lg font-black text-slate-900">AI Growth Copilot</h3>
+                <p className="text-xs text-slate-500 font-bold">Context-aware insights</p>
               </div>
             </div>
             <button
               onClick={() => setIsOpen(false)}
               className="p-2 hover:bg-[#F1F5F9] rounded-lg transition-colors"
             >
-              <X className="w-5 h-5 text-[#64748B]" />
+              <X className="w-5 h-5 text-slate-500" />
             </button>
           </div>
 
