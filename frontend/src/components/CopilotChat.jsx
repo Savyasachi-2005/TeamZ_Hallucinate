@@ -153,14 +153,14 @@ const CopilotChat = () => {
 
             {isLoading && (
               <div className="flex justify-start">
-                <div className="max-w-[85%] rounded-xl px-4 py-3 bg-[#F8FAFC] border border-[#E2E8F0]">
+                <div className="max-w-[85%] rounded-xl px-4 py-3 bg-slate-50 border border-slate-200">
                   <div className="flex items-center gap-2">
                     <div className="flex gap-1">
-                      <div className="w-2 h-2 bg-[#3B82F6] rounded-full" />
-                      <div className="w-2 h-2 bg-[#3B82F6] rounded-full" />
-                      <div className="w-2 h-2 bg-[#3B82F6] rounded-full" />
+                      <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" />
+                      <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+                      <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }} />
                     </div>
-                    <span className="text-xs text-[#64748B] font-bold">Thinking...</span>
+                    <span className="text-xs text-slate-500 font-bold">Thinking...</span>
                   </div>
                 </div>
               </div>
@@ -170,7 +170,7 @@ const CopilotChat = () => {
           </div>
 
           {/* Input */}
-          <div className="p-4 border-t border-[#E2E8F0] bg-white">
+          <div className="p-4 border-t border-slate-200 bg-white">
             <div className="flex gap-2">
               <input
                 ref={inputRef}
