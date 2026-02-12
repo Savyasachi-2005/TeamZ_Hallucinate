@@ -97,6 +97,7 @@ class TrendVideo(BaseModel):
 
 class TrendResponse(BaseModel):
     niche: str
+    filtered_videos_count: int
     top_trends: List[TrendVideo]
     trending_topics: Optional[List[str]] = None
 
