@@ -51,12 +51,13 @@ const CopilotChat = () => {
         }
       ]);
     } catch (error) {
-      toast.error('Failed to get response');
+      console.error('Chat error:', error);
+      toast.error('Failed to get response. Please try again.');
       setMessages(prev => [
         ...prev,
         {
           role: 'assistant',
-          content: 'Sorry, I encountered an error. Please try again.',
+          content: 'I\'m having trouble connecting right now. Please try again in a moment.',
           source: 'error'
         }
       ]);
@@ -84,7 +85,7 @@ const CopilotChat = () => {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 z-50 p-4 rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-xl transition-colors"
+          className="fixed bottom-6 right-6 z-50 p-4 rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg transition-colors"
           aria-label="Open AI Copilot"
         >
           <Brain className="w-7 h-7" />
@@ -93,46 +94,46 @@ const CopilotChat = () => {
 
       {/* Chat Panel */}
       {isOpen && (
-        <div className="fixed bottom-6 right-6 z-50 w-[420px] h-[600px] bg-white rounded-xl shadow-2xl border border-slate-200 flex flex-col">
+        <div className="fixed bottom-6 right-6 z-50 w-[420px] h-[600px] bg-white rounded-xl shadow-xl border-2 border-slate-200 flex flex-col">
           {/* Header */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-slate-50">
+          <div className="flex items-center justify-between px-6 py-4 border-b-2 border-slate-200 bg-slate-50">
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-lg bg-blue-600">
-                <Brain className="w-5 h-5 text-white" />
+                <Sparkles className="w-5 h-5 text-white" />
               </div>
               <div>
                 <h3 className="text-lg font-black text-slate-900">AI Growth Copilot</h3>
-                <p className="text-xs text-slate-500 font-bold">Context-aware insights</p>
+                <p className="text-xs text-slate-600 font-bold">Context-aware insights</p>
               </div>
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="p-2 hover:bg-[#F1F5F9] rounded-lg transition-colors"
+              className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
             >
-              <X className="w-5 h-5 text-slate-500" />
+              <X className="w-5 h-5 text-slate-600" />
             </button>
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">
-            {messages.map((message, index) => (
+          <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4 bg-slate-50">
+            {messages.map((message, idx) => (
               <div
-                key={index}
+                key={idx}
                 className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
                   className={`max-w-[85%] rounded-xl px-4 py-3 ${
                     message.role === 'user'
                       ? 'bg-blue-600 text-white'
-                      : 'bg-slate-50 border border-slate-200 text-slate-700'
+                      : 'bg-white border-2 border-slate-200 text-slate-900'
                   }`}
                 >
                   <p className="text-sm leading-relaxed whitespace-pre-wrap font-semibold">
                     {message.role === 'assistant' ? formatMessage(message.content) : message.content}
                   </p>
                   {message.source && message.source !== 'system' && (
-                    <div className="mt-2 pt-2 border-t border-slate-200">
-                      <span className="text-xs text-slate-500 flex items-center gap-1 font-bold">
+                    <div className="mt-2 pt-2 border-t-2 border-slate-200">
+                      <span className="text-xs text-slate-600 flex items-center gap-1 font-bold">
                         {message.source === 'rule_based' ? (
                           <>
                             <Brain className="w-3 h-3" />
@@ -141,7 +142,7 @@ const CopilotChat = () => {
                         ) : (
                           <>
                             <Sparkles className="w-3 h-3" />
-                            AI-generated
+                            AI-powered
                           </>
                         )}
                       </span>
@@ -153,14 +154,14 @@ const CopilotChat = () => {
 
             {isLoading && (
               <div className="flex justify-start">
-                <div className="max-w-[85%] rounded-xl px-4 py-3 bg-slate-50 border border-slate-200">
+                <div className="max-w-[85%] rounded-xl px-4 py-3 bg-white border-2 border-slate-200">
                   <div className="flex items-center gap-2">
                     <div className="flex gap-1">
-                      <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" />
-                      <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
-                      <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }} />
+                      <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                      <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                      <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
                     </div>
-                    <span className="text-xs text-slate-500 font-bold">Thinking...</span>
+                    <span className="text-xs text-slate-600 font-bold">Thinking...</span>
                   </div>
                 </div>
               </div>
@@ -170,7 +171,7 @@ const CopilotChat = () => {
           </div>
 
           {/* Input */}
-          <div className="p-4 border-t border-slate-200 bg-white">
+          <div className="p-4 border-t-2 border-slate-200 bg-white">
             <div className="flex gap-2">
               <input
                 ref={inputRef}
@@ -179,9 +180,9 @@ const CopilotChat = () => {
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Ask about your growth..."
-                className="flex-1 px-4 py-3 rounded-lg border border-slate-200 bg-white 
+                className="flex-1 px-4 py-3 rounded-lg border-2 border-slate-200 bg-white 
                   focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent
-                  text-sm text-slate-900 font-semibold placeholder:text-slate-400"
+                  text-sm text-slate-900 font-semibold placeholder:text-slate-500"
                 disabled={isLoading}
               />
               <button
