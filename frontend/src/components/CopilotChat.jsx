@@ -74,7 +74,7 @@ const CopilotChat = () => {
 
   const formatMessage = (content) => {
     return content.split('**').map((part, i) => 
-      i % 2 === 0 ? part : <strong key={i} className="font-black text-[#0F172A]">{part}</strong>
+      i % 2 === 0 ? part : <strong key={i} className="font-black text-slate-900">{part}</strong>
     );
   };
 
@@ -84,7 +84,7 @@ const CopilotChat = () => {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 z-50 p-4 rounded-full bg-[#3B82F6] hover:bg-[#2563EB] text-white shadow-xl transition-colors"
+          className="fixed bottom-6 right-6 z-50 p-4 rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-xl transition-colors"
           aria-label="Open AI Copilot"
         >
           <Brain className="w-7 h-7" />
@@ -93,11 +93,11 @@ const CopilotChat = () => {
 
       {/* Chat Panel */}
       {isOpen && (
-        <div className="fixed bottom-6 right-6 z-50 w-[420px] h-[600px] bg-white rounded-xl shadow-2xl border border-[#E2E8F0] flex flex-col">
+        <div className="fixed bottom-6 right-6 z-50 w-[420px] h-[600px] bg-white rounded-xl shadow-2xl border border-slate-200 flex flex-col">
           {/* Header */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-[#E2E8F0] bg-[#F8FAFC]">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-slate-50">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-[#3B82F6]">
+              <div className="p-2 rounded-lg bg-blue-600">
                 <Brain className="w-5 h-5 text-white" />
               </div>
               <div>
