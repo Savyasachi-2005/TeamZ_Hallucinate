@@ -1332,23 +1332,62 @@ Return ONLY this JSON (no markdown, no extra text):
             data = response.json()
             
             text = data["candidates"][0]["content"]["parts"][0]["text"]
-            logger.info(f"Strategic Gemini response: {text[:300]}...")
+            logger.info(f"Strategic Gemini response: {text[:500]}...")
             
+            # Clean up the response
             text = text.strip()
+            
+            # Remove markdown code blocks
             if text.startswith("```json"):
                 text = text[7:]
             elif text.startswith("```"):
                 text = text[3:]
             if text.endswith("```"):
                 text = text[:-3]
+            
             text = text.strip()
+            
+            # Remove any trailing commas before closing braces/brackets (common JSON error)
+            text = re.sub(r',\s*}', '}', text)
+            text = re.sub(r',\s*]', ']', text)
             
             try:
                 result = json.loads(text)
-            except json.JSONDecodeError:
+            except json.JSONDecodeError as e:
+                logger.error(f"Initial JSON parse failed: {e}")
+                logger.error(f"Problematic text: {text}")
+                
+                # Try to extract JSON using regex as fallback
                 json_match = re.search(r'\{[\s\S]*\}', text)
                 if json_match:
-                    result = json.loads(json_match.group())
+                    extracted_text = json_match.group()
+                    # Clean up extracted text
+                    extracted_text = re.sub(r',\s*}', '}', extracted_text)
+                    extracted_text = re.sub(r',\s*]', ']', extracted_text)
+                    
+                    try:
+                        result = json.loads(extracted_text)
+                    except json.JSONDecodeError:
+                        # Last resort: provide fallback structure
+                        logger.error("All JSON parsing attempts failed, using fallback")
+                        result = {
+                            "channel_summary": {
+                                "primary_niche": "Unable to determine",
+                                "content_style": "Analysis in progress",
+                                "growth_pattern": "Data processing",
+                                "strength": "High quality content",
+                                "weakness": "Detailed analysis unavailable"
+                            },
+                            "strategic_summary": {
+                                "main_risk": "API processing limitation encountered",
+                                "growth_opportunity": "Continue analyzing metrics for insights",
+                                "recommended_action_plan": [
+                                    "Review health dashboard metrics",
+                                    "Compare with competitor data if available",
+                                    "Focus on missed trend opportunities"
+                                ]
+                            }
+                        }
                 else:
                     raise
             
