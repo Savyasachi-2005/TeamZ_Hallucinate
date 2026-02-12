@@ -687,23 +687,44 @@ async def health():
 
 @api_router.post("/trends", response_model=TrendResponse)
 async def get_trends(request: TrendRequest):
-    """Fetch trending YouTube videos for a niche"""
-    
-    if request.niche not in NICHE_KEYWORDS:
-        raise HTTPException(
-            status_code=400,
-            detail={"error": f"Invalid niche. Choose from: {list(NICHE_KEYWORDS.keys())}"}
-        )
+    """Fetch trending YouTube videos for a niche or custom keyword"""
     
     check_api_key()
     
-    keywords = NICHE_KEYWORDS[request.niche]
+    # Determine search keywords
+    search_label = ""
+    keywords = []
+    
+    # Priority: custom_keyword > niche
+    if request.custom_keyword:
+        sanitized = sanitize_keyword(request.custom_keyword)
+        if len(sanitized) < 3:
+            raise HTTPException(
+                status_code=400,
+                detail={"error": "Custom keyword must be at least 3 characters"}
+            )
+        keywords = [sanitized]
+        search_label = sanitized
+    elif request.niche:
+        if request.niche not in NICHE_KEYWORDS:
+            raise HTTPException(
+                status_code=400,
+                detail={"error": f"Invalid niche. Choose from: {list(NICHE_KEYWORDS.keys())}"}
+            )
+        keywords = NICHE_KEYWORDS[request.niche]
+        search_label = request.niche
+    else:
+        raise HTTPException(
+            status_code=400,
+            detail={"error": "Please provide either a niche or custom keyword"}
+        )
+    
     videos = await search_youtube_videos(keywords, max_results=15)
     
     if not videos:
         raise HTTPException(
             status_code=404,
-            detail={"error": "No videos found for this niche"}
+            detail={"error": "No videos found for this search"}
         )
     
     video_ids = [v["video_id"] for v in videos]
@@ -728,7 +749,7 @@ async def get_trends(request: TrendRequest):
     trend_videos.sort(key=lambda x: x.trend_score, reverse=True)
     top_5 = trend_videos[:5]
     
-    return TrendResponse(niche=request.niche, top_trends=top_5)
+    return TrendResponse(niche=search_label, top_trends=top_5)
 
 @api_router.post("/analyse", response_model=AnalyseResponse)
 async def analyse_video(request: AnalyseRequest):
