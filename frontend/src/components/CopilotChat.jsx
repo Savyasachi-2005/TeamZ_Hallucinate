@@ -179,15 +179,15 @@ const CopilotChat = () => {
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Ask about your growth..."
-                className="flex-1 px-4 py-3 rounded-lg border border-[#E2E8F0] bg-white 
-                  focus:outline-none focus:ring-2 focus:ring-[#3B82F6] focus:border-transparent
-                  text-sm text-[#0F172A] font-semibold placeholder:text-[#94A3B8]"
+                className="flex-1 px-4 py-3 rounded-lg border border-slate-200 bg-white 
+                  focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent
+                  text-sm text-slate-900 font-semibold placeholder:text-slate-400"
                 disabled={isLoading}
               />
               <button
                 onClick={handleSend}
                 disabled={!input.trim() || isLoading}
-                className="p-3 rounded-lg bg-[#3B82F6] hover:bg-[#2563EB] text-white
+                className="p-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white
                   disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-md"
               >
                 <Send className="w-5 h-5" />
