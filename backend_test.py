@@ -772,8 +772,20 @@ def main():
     tester.test_analyse_video(niche="Coding")
     tester.test_analyse_invalid_video()
     
-    print("\n4️⃣ Channel Analysis Endpoint Tests")
-    tester.test_channel_analyse_valid_url("https://youtube.com/@MrBeast")
+    print("\n4️⃣ Enhanced AI Copilot for Sustainable Growth Features")
+    print("   Testing Channel Analysis WITHOUT Competitor (Basic Flow)")
+    tester.test_channel_analyse_basic_flow("@mkbhd")
+    
+    print("   Testing Channel Analysis WITH Competitor Comparison")
+    tester.test_channel_analyse_with_competitor("@mkbhd", "@UnboxTherapy")
+    
+    print("   Testing Caching Functionality")
+    tester.test_channel_analyse_caching("@FireshipChannel")
+    
+    print("   Testing Error Handling")
+    tester.test_channel_analyse_error_handling()
+    
+    print("\n4️⃣b Legacy Channel Analysis Tests")
     tester.test_channel_analyse_invalid_url()
     tester.test_channel_analyse_missing_url()
     
