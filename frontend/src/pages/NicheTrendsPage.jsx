@@ -3,6 +3,7 @@ import { TrendingUp, Sparkles } from 'lucide-react';
 import { Toaster } from 'sonner';
 import Navigation from '@/components/Navigation';
 import NicheTrendsTab from '@/components/NicheTrendsTab';
+import CopilotChat from '@/components/CopilotChat';
 
 const NicheTrendsPage = () => {
   return (
@@ -56,6 +57,9 @@ const NicheTrendsPage = () => {
         {/* Niche Trends Component */}
         <NicheTrendsTab />
       </div>
+
+      {/* AI Copilot Chat */}
+      <CopilotChat />
 
       {/* Footer */}
       <footer className="relative z-10 text-center py-8 border-t border-blue-500/20 mt-20">

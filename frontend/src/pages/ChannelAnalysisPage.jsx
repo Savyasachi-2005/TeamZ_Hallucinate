@@ -2,6 +2,7 @@ import { Shield, Sparkles } from 'lucide-react';
 import { Toaster } from 'sonner';
 import Navigation from '@/components/Navigation';
 import ChannelAnalysisTab from '@/components/ChannelAnalysisTab';
+import CopilotChat from '@/components/CopilotChat';
 
 const ChannelAnalysisPage = () => {
   return (
@@ -55,6 +56,9 @@ const ChannelAnalysisPage = () => {
         {/* Channel Analysis Component */}
         <ChannelAnalysisTab />
       </div>
+
+      {/* AI Copilot Chat */}
+      <CopilotChat />
 
       {/* Footer */}
       <footer className="relative z-10 text-center py-8 border-t border-emerald-500/20 mt-20">
