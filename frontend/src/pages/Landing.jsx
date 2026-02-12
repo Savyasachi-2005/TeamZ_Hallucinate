@@ -97,10 +97,10 @@ const Landing = () => {
 
             {/* Animated Title */}
             <h1 className="text-6xl md:text-8xl font-black tracking-tight mb-8 leading-none">
-              <span className="inline-block text-[#0F172A]">
+              <span className="inline-block text-slate-900">
                 Niche
               </span>
-              <span className="inline-block text-transparent bg-clip-text bg-white
+              <span className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-emerald-600">
                 Pulse
               </span>
             </h1>
