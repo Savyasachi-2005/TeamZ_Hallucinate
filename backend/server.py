@@ -1249,6 +1249,118 @@ Return ONLY this JSON (no markdown):
             logger.error(f"Failed to parse Gemini response: {e}")
             raise HTTPException(status_code=500, detail={"error": "Failed to parse Gemini response as JSON"})
 
+async def analyze_channel_with_strategic_insights(
+    channel_data: dict,
+    analytics: dict,
+    recent_titles: List[str],
+    health_dashboard: dict,
+    missed_trends: List[dict],
+    competitor_gap: Optional[dict] = None
+) -> dict:
+    """Enhanced Gemini analysis with strategic insights for growth"""
+    check_api_key()
+    
+    titles_text = "\n".join([f"- {t}" for t in recent_titles[:10]])
+    themes_text = ", ".join(analytics.get("top_themes", []))
+    
+    # Build health metrics summary
+    health_summary = f"""
+Growth Health Metrics:
+- Consistency Score: {health_dashboard['consistency_score']}/100
+- Engagement Stability: {health_dashboard['engagement_stability']}/100
+- Topic Focus: {health_dashboard['topic_focus_score']}/100
+- Growth Momentum: {health_dashboard['growth_momentum']}"""
+    
+    # Build missed trends summary
+    missed_summary = ""
+    if missed_trends:
+        missed_summary = "\n\nMissed Trending Topics:\n"
+        for trend in missed_trends[:3]:
+            missed_summary += f"- {trend['keyword']} (trend score: {trend['trend_score']})\n"
+    
+    # Build competitor comparison summary
+    competitor_summary = ""
+    if competitor_gap:
+        competitor_summary = f"""
+
+Competitor Analysis:
+- Engagement Gap: {competitor_gap['engagement_gap']}
+- {competitor_gap['posting_gap']}
+- Theme Overlap: {competitor_gap['theme_overlap_percentage']}%
+- Topics you're missing: {', '.join(competitor_gap['missed_topics'][:3])}"""
+    
+    prompt = f"""You are an AI Copilot for Sustainable Growth in the Creator Economy. Analyze this YouTube channel and provide strategic insights.
+
+Channel: {channel_data['title']}
+Subscribers: {channel_data['subscriber_count']:,}
+Total Videos: {channel_data['video_count']}
+Average Engagement Rate: {analytics['average_engagement_rate']:.2%}
+Upload Frequency: {analytics['upload_frequency_per_month']:.1f} videos/month
+Top Themes: {themes_text}
+
+{health_summary}{missed_summary}{competitor_summary}
+
+Recent Video Titles:
+{titles_text}
+
+Based on the metrics provided above (DO NOT hallucinate), provide:
+
+1. A brief channel summary (primary niche, content style, growth pattern, strength, weakness)
+2. A strategic summary with:
+   - The main risk threatening sustainable growth
+   - The biggest growth opportunity
+   - A 3-step action plan
+
+Return ONLY this JSON (no markdown, no extra text):
+{{"channel_summary":{{"primary_niche":"main content category","content_style":"description of style","growth_pattern":"assessment","strength":"key strength","weakness":"area to improve"}},"strategic_summary":{{"main_risk":"specific risk based on metrics","growth_opportunity":"specific opportunity based on data","recommended_action_plan":["step 1","step 2","step 3"]}}}}"""
+
+    async with httpx.AsyncClient(timeout=60.0) as client:
+        try:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={GOOGLE_API_KEY}"
+            
+            payload = {
+                "contents": [{"parts": [{"text": prompt}]}],
+                "generationConfig": {
+                    "temperature": 0.7,
+                    "maxOutputTokens": 3072,
+                    "responseMimeType": "application/json"
+                }
+            }
+            
+            response = await client.post(url, json=payload)
+            response.raise_for_status()
+            data = response.json()
+            
+            text = data["candidates"][0]["content"]["parts"][0]["text"]
+            logger.info(f"Strategic Gemini response: {text[:300]}...")
+            
+            text = text.strip()
+            if text.startswith("```json"):
+                text = text[7:]
+            elif text.startswith("```"):
+                text = text[3:]
+            if text.endswith("```"):
+                text = text[:-3]
+            text = text.strip()
+            
+            try:
+                result = json.loads(text)
+            except json.JSONDecodeError:
+                json_match = re.search(r'\{[\s\S]*\}', text)
+                if json_match:
+                    result = json.loads(json_match.group())
+                else:
+                    raise
+            
+            return result
+            
+        except httpx.HTTPError as e:
+            logger.error(f"Gemini API error: {e}")
+            raise HTTPException(status_code=500, detail={"error": f"Gemini API error: {str(e)}"})
+        except json.JSONDecodeError as e:
+            logger.error(f"Failed to parse Gemini response: {e}")
+            raise HTTPException(status_code=500, detail={"error": "Failed to parse Gemini response as JSON"})
+
 # ==================== API ENDPOINTS ====================
 
 @api_router.get("/")
