@@ -76,9 +76,9 @@ const Landing = () => {
             <div className="inline-flex items-center justify-center gap-4 mb-12">
               <div className="p-4 rounded-2xl bg-white border-2 border-slate-200 shadow-md">
                 <img 
-                  src="https://images.unsplash.com/photo-1639825752750-5061ded5503b?w=120&h=120&fit=crop" 
+                  src="https://customer-assets.emergentagent.com/job_ytcreator-buddy/artifacts/21wabeoa_images__1_-removebg-preview.png" 
                   alt="NichePulse Logo" 
-                  className="w-20 h-20 rounded-xl object-cover"
+                  className="w-20 h-20 rounded-xl object-contain"
                 />
               </div>
             </div>

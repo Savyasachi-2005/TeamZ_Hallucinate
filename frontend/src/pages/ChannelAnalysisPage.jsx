@@ -26,8 +26,12 @@ const ChannelAnalysisPage = () => {
         {/* Page Header */}
         <header className="text-center mb-12">
           <div className="inline-flex items-center justify-center gap-3 mb-6">
-            <div className="p-4 rounded-xl bg-blue-600 shadow-md">
-              <User className="w-12 h-12 text-white" />
+            <div className="p-4 rounded-xl bg-white border-2 border-slate-200 shadow-md">
+              <img 
+                src="https://customer-assets.emergentagent.com/job_ytcreator-buddy/artifacts/21wabeoa_images__1_-removebg-preview.png" 
+                alt="NichePulse Logo" 
+                className="w-12 h-12 object-contain"
+              />
             </div>
           </div>
           <h1 className="text-5xl md:text-7xl font-black tracking-tight mb-4 leading-none text-slate-900">
