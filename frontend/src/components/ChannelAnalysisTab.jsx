@@ -171,8 +171,8 @@ const ChannelAnalysisTab = () => {
               data-testid="analyse-channel-button"
               onClick={handleAnalyzeChannel}
               disabled={isLoading || !channelUrl.trim()}
-              className="w-full bg-white hover:from-emerald-500 hover:to-blue-500 
-                disabled:from-#334155 disabled:to-#334155 disabled:cursor-not-allowed
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white 
+                disabled:bg-slate-400 disabled:cursor-not-allowed
                 text-slate-900 font-bold rounded-xl px-8 py-4 transition-all duration-300 
                 shadow-lg  hover: disabled:shadow-none
                 flex items-center justify-center gap-2"
@@ -259,7 +259,7 @@ const ChannelAnalysisTab = () => {
                   <div className="text-4xl font-black mb-1">
                     {channelData.health_dashboard.consistency_score}
                   </div>
-                  <div className="text-xs opacity-80">Upload Regularity</div>
+                  <div className="text-xs font-semibold text-slate-600">Upload Regularity</div>
                 </div>
 
                 {/* Engagement Stability */}
@@ -271,7 +271,7 @@ const ChannelAnalysisTab = () => {
                   <div className="text-4xl font-black mb-1">
                     {channelData.health_dashboard.engagement_stability}
                   </div>
-                  <div className="text-xs opacity-80">Engagement Variance</div>
+                  <div className="text-xs font-semibold text-slate-600">Engagement Variance</div>
                 </div>
 
                 {/* Topic Focus */}
@@ -283,7 +283,7 @@ const ChannelAnalysisTab = () => {
                   <div className="text-4xl font-black mb-1">
                     {channelData.health_dashboard.topic_focus_score}
                   </div>
-                  <div className="text-xs opacity-80">Topic Consistency</div>
+                  <div className="text-xs font-semibold text-slate-600">Topic Consistency</div>
                 </div>
 
                 {/* Growth Momentum */}
@@ -299,7 +299,7 @@ const ChannelAnalysisTab = () => {
                   <div className="text-2xl font-black mb-1">
                     {channelData.health_dashboard.growth_momentum}
                   </div>
-                  <div className="text-xs opacity-80">Growth Trajectory</div>
+                  <div className="text-xs font-semibold text-slate-600">Growth Trajectory</div>
                 </div>
               </div>
             </div>
@@ -485,7 +485,7 @@ const ChannelAnalysisTab = () => {
                   <button
                     key={index}
                     onClick={() => handleExploreTrend(theme)}
-                    className="theme-chip px-5 py-2 bg-white hover:from-blue-600/30 hover:to-blue-600/30 
+                    className="theme-chip px-5 py-2 bg-slate-100 hover:bg-blue-50 
                       border border-blue-500/30 hover:border-blue-500/50 rounded-full text-slate-900 font-bold 
                       transition-all duration-200 flex items-center gap-2 capitalize"
                   >
