@@ -21,31 +21,125 @@ load_dotenv(ROOT_DIR / '.env')
 # Get Google API Key
 GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
 
-# Initialize cache - Store up to 100 items, each with 1-hour TTL (3600 seconds)
-# This helps prevent hitting YouTube API quota limits
-api_cache = TTLCache(maxsize=100, ttl=3600)
+# ==================== ENHANCED CACHING SYSTEM ====================
+# Global cache structure with separate TTLs per data type
+from time import time
 
-def cache_key(*args, **kwargs) -> str:
-    """Generate a cache key from function arguments"""
-    key_data = str(args) + str(sorted(kwargs.items()))
-    return hashlib.md5(key_data.encode()).hexdigest()
+global_cache = {}
+context_memory = []  # FIFO queue, max 5 items
 
+# Cache TTL rules (in seconds)
+CACHE_TTL = {
+    "trends": 600,        # 10 minutes
+    "channel": 1200,      # 20 minutes
+    "analysis": 1800,     # 30 minutes
+    "youtube_api": 900    # 15 minutes for raw API calls
+}
+
+def get_from_cache(key: str) -> Optional[Any]:
+    """Retrieve data from cache if not expired"""
+    if key not in global_cache:
+        return None
+    
+    cache_entry = global_cache[key]
+    if time() > cache_entry["expiry"]:
+        # Expired - remove from cache
+        del global_cache[key]
+        logger.info(f"Cache EXPIRED: {key}")
+        return None
+    
+    logger.info(f"Cache HIT: {key}")
+    return cache_entry["data"]
+
+def set_cache(key: str, data: Any, ttl_seconds: int):
+    """Store data in cache with TTL"""
+    global_cache[key] = {
+        "data": data,
+        "expiry": time() + ttl_seconds
+    }
+    logger.info(f"Cache SET: {key} (TTL={ttl_seconds}s)")
+
+def add_to_context_memory(context_type: str, data: Dict[str, Any]):
+    """Add item to context memory queue (FIFO, max 5)"""
+    global context_memory
+    
+    memory_item = {
+        "type": context_type,
+        "timestamp": time(),
+        "data": data
+    }
+    
+    # Maintain max size of 5
+    if len(context_memory) >= 5:
+        removed = context_memory.pop(0)  # Remove oldest
+        logger.info(f"Context memory full - removed oldest: {removed['type']}")
+    
+    context_memory.append(memory_item)
+    logger.info(f"Context memory added: {context_type} (total: {len(context_memory)})")
+
+def build_context_summary() -> Dict[str, Any]:
+    """Build structured context summary from recent memory"""
+    if not context_memory:
+        return {"message": "No context available", "items": []}
+    
+    summary = {
+        "total_items": len(context_memory),
+        "oldest_timestamp": context_memory[0]["timestamp"] if context_memory else None,
+        "newest_timestamp": context_memory[-1]["timestamp"] if context_memory else None,
+        "items": []
+    }
+    
+    for item in context_memory:
+        summary_item = {
+            "type": item["type"],
+            "timestamp": item["timestamp"],
+            "preview": {}
+        }
+        
+        # Extract key information based on type
+        if item["type"] == "channel_analysis":
+            summary_item["preview"] = {
+                "channel_name": item["data"].get("channel_info", {}).get("name"),
+                "subscribers": item["data"].get("channel_info", {}).get("subscribers"),
+                "health_score_avg": (
+                    item["data"].get("health_dashboard", {}).get("consistency_score", 0) +
+                    item["data"].get("health_dashboard", {}).get("engagement_stability", 0)
+                ) // 2 if item["data"].get("health_dashboard") else 0
+            }
+        elif item["type"] == "trends":
+            summary_item["preview"] = {
+                "niche": item["data"].get("niche"),
+                "total_trends": len(item["data"].get("top_trends", []))
+            }
+        elif item["type"] == "comparison":
+            summary_item["preview"] = {
+                "competitor": item["data"].get("competitor_name"),
+                "engagement_gap": item["data"].get("engagement_gap")
+            }
+        
+        summary["items"].append(summary_item)
+    
+    return summary
+
+# Legacy decorator for backwards compatibility with existing cached functions
 def cached_api_call(func):
-    """Decorator to cache API responses"""
+    """Decorator for YouTube API caching with optimized TTL"""
     @wraps(func)
     async def wrapper(*args, **kwargs):
         # Generate cache key
-        key = f"{func.__name__}:{cache_key(*args, **kwargs)}"
+        key_data = str(args) + str(sorted(kwargs.items()))
+        cache_key_hash = hashlib.md5(key_data.encode()).hexdigest()
+        key = f"youtube_api:{func.__name__}:{cache_key_hash}"
         
         # Check cache
-        if key in api_cache:
-            logger.info(f"Cache HIT for {func.__name__}")
-            return api_cache[key]
+        cached_data = get_from_cache(key)
+        if cached_data is not None:
+            return cached_data
         
         # Call function and cache result
-        logger.info(f"Cache MISS for {func.__name__} - calling API")
+        logger.info(f"Cache MISS for {func.__name__} - calling YouTube API")
         result = await func(*args, **kwargs)
-        api_cache[key] = result
+        set_cache(key, result, CACHE_TTL["youtube_api"])
         return result
     
     return wrapper
