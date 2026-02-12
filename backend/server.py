@@ -1613,9 +1613,18 @@ async def get_trends(request: TrendRequest):
 
 @api_router.post("/analyse", response_model=AnalyseResponse)
 async def analyse_video(request: AnalyseRequest):
-    """Analyze why a video is trending using Gemini"""
+    """Analyze why a video is trending using Gemini - WITH CACHING"""
     
     check_api_key()
+    
+    # Generate cache key
+    cache_key = f"analysis:{request.video_id}"
+    
+    # Check cache first
+    cached_result = get_from_cache(cache_key)
+    if cached_result is not None:
+        logger.info(f"Returning cached analysis for video {request.video_id}")
+        return cached_result
     
     video_details = await get_video_details(request.video_id)
     
