@@ -129,12 +129,88 @@ class NicheTrendAPITester:
     def test_trends_missing_niche(self):
         """Test trends endpoint with missing niche"""
         return self.run_test(
-            "Trends - Missing Niche",
+            "Trends - Missing Niche and Custom Keyword",
             "POST",
             "trends",
-            422,  # FastAPI validation error
+            400,  # Should return 400 with proper error message
             data={}
         )
+
+    def test_trends_custom_keyword_valid(self, custom_keyword="AI tools"):
+        """Test trends endpoint with valid custom keyword"""
+        success, response = self.run_test(
+            f"Trends - Valid Custom Keyword ({custom_keyword})",
+            "POST",
+            "trends",
+            200,
+            data={"custom_keyword": custom_keyword},
+            timeout=60
+        )
+        
+        if success and response:
+            # Validate response structure
+            if "niche" in response and "top_trends" in response:
+                # Check that niche field contains the custom keyword
+                if response["niche"] == custom_keyword:
+                    self.log_test("Custom Keyword Response Label", True)
+                else:
+                    self.log_test("Custom Keyword Response Label", False, f"Expected niche '{custom_keyword}', got '{response['niche']}'")
+                    return False, response
+                
+                trends = response["top_trends"]
+                if isinstance(trends, list) and len(trends) <= 5:
+                    # Check if each trend has required fields
+                    required_fields = ["video_id", "title", "channel", "views", "published_at", "trend_score", "youtube_url"]
+                    for i, trend in enumerate(trends):
+                        missing_fields = [field for field in required_fields if field not in trend]
+                        if missing_fields:
+                            self.log_test(f"Custom Keyword Response Structure - Video {i+1}", False, f"Missing fields: {missing_fields}")
+                            return False, response
+                    
+                    self.log_test("Custom Keyword Response Structure", True)
+                    print(f"   Found {len(trends)} trending videos for custom keyword")
+                    return True, response
+                else:
+                    self.log_test("Custom Keyword Response Structure", False, f"Expected list of max 5 trends, got {len(trends) if isinstance(trends, list) else type(trends)}")
+            else:
+                self.log_test("Custom Keyword Response Structure", False, "Missing 'niche' or 'top_trends' in response")
+        
+        return success, response
+
+    def test_trends_custom_keyword_short(self):
+        """Test trends endpoint with too short custom keyword"""
+        return self.run_test(
+            "Trends - Short Custom Keyword (< 3 chars)",
+            "POST",
+            "trends",
+            400,
+            data={"custom_keyword": "AI"}
+        )
+
+    def test_trends_custom_keyword_priority(self):
+        """Test that custom_keyword takes priority over niche"""
+        success, response = self.run_test(
+            "Trends - Custom Keyword Priority Over Niche",
+            "POST",
+            "trends",
+            200,
+            data={"custom_keyword": "machine learning", "niche": "Coding"},
+            timeout=60
+        )
+        
+        if success and response:
+            # Check that the response niche matches custom_keyword, not the niche parameter
+            if response.get("niche") == "machine learning":
+                self.log_test("Custom Keyword Priority Logic", True)
+                return True, response
+            else:
+                self.log_test("Custom Keyword Priority Logic", False, f"Expected 'machine learning', got '{response.get('niche')}'")
+        
+        return success, response
+
+    def test_trends_both_niche_and_custom_keyword(self):
+        """Test trends endpoint with both niche and custom keyword (custom should win)"""
+        return self.test_trends_custom_keyword_priority()
 
     def test_analyse_video(self, video_id=None, niche="Coding"):
         """Test analyse endpoint with video ID"""
