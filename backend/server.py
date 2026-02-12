@@ -570,13 +570,13 @@ def calculate_median(values: List[float]) -> float:
         return (sorted_vals[n//2 - 1] + sorted_vals[n//2]) / 2
     return sorted_vals[n//2]
 
-def apply_hard_filters(videos: List[dict], stats: dict, max_days: int = 30) -> List[dict]:
+def apply_hard_filters(videos: List[dict], stats: dict, max_days: int = 30, min_engagement: float = 0.005) -> List[dict]:
     """
     Apply hard filters to remove non-trending videos.
     
     Filters:
     1. Exclude views < 100
-    2. Exclude engagement_rate < 0.01 (1%)
+    2. Exclude engagement_rate < min_engagement (default 0.5%)
     3. Exclude days_since_upload > max_days
     """
     filtered = []
@@ -593,9 +593,9 @@ def apply_hard_filters(videos: List[dict], stats: dict, max_days: int = 30) -> L
         if views < 100:
             continue
         
-        # Filter 2: Minimum engagement rate (1%)
+        # Filter 2: Minimum engagement rate
         engagement_rate = calculate_engagement_rate(views, likes, comments)
-        if engagement_rate < 0.01:
+        if engagement_rate < min_engagement:
             continue
         
         # Filter 3: Maximum age
