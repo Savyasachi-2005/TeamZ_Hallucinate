@@ -60,6 +60,20 @@ NICHE_KEYWORDS = {
     "Education": ["study tips", "exam preparation", "learning strategies"]
 }
 
+def sanitize_keyword(keyword: str) -> str:
+    """Sanitize custom keyword input"""
+    if not keyword:
+        return ""
+    # Strip whitespace
+    keyword = keyword.strip()
+    # Remove HTML tags
+    keyword = re.sub(r'<[^>]+>', '', keyword)
+    # Limit length
+    keyword = keyword[:100]
+    # Remove potentially dangerous characters
+    keyword = re.sub(r'[<>"\';\\]', '', keyword)
+    return keyword
+
 # ==================== PYDANTIC MODELS ====================
 
 # Existing Trend Models
