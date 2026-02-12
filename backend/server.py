@@ -427,6 +427,7 @@ async def resolve_channel_id(identifier: str, id_type: str) -> str:
                 detail={"error": f"Failed to resolve channel: {str(e)}"}
             )
 
+@cached_api_call
 async def get_channel_metadata(channel_id: str) -> dict:
     """Fetch channel metadata including uploads playlist"""
     check_api_key()
