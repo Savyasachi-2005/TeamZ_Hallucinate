@@ -253,9 +253,10 @@ You MUST respond with ONLY valid JSON in this exact format, no markdown, no extr
   }}
 }}"""
 
-    async with httpx.AsyncClient(timeout=30.0) as client:
+    async with httpx.AsyncClient(timeout=60.0) as client:
         try:
-            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={GOOGLE_API_KEY}"
+            # Use gemini-1.5-flash for better availability
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GOOGLE_API_KEY}"
             
             payload = {
                 "contents": [{
