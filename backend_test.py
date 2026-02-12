@@ -191,6 +191,92 @@ class NicheTrendAPITester:
             data={"video_id": "invalid_video_id", "niche": "Coding"}
         )
 
+    def test_channel_analyse_valid_url(self, channel_url="https://youtube.com/@MrBeast"):
+        """Test channel analyse endpoint with valid URL"""
+        success, response = self.run_test(
+            "Channel Analyse - Valid URL",
+            "POST",
+            "channel-analyse",
+            200,
+            data={"channel_url": channel_url},
+            timeout=120  # Channel analysis can be slow
+        )
+        
+        if success and response:
+            # Validate response structure
+            required_sections = ["channel_info", "analytics", "recent_videos", "ai_analysis"]
+            missing_sections = [section for section in required_sections if section not in response]
+            
+            if missing_sections:
+                self.log_test("Channel Analyse Response Structure", False, f"Missing sections: {missing_sections}")
+                return False, response
+            
+            # Validate channel_info structure
+            channel_info = response["channel_info"]
+            required_channel_fields = ["name", "subscribers", "total_videos", "channel_id"]
+            missing_channel_fields = [field for field in required_channel_fields if field not in channel_info]
+            
+            if missing_channel_fields:
+                self.log_test("Channel Info Structure", False, f"Missing fields: {missing_channel_fields}")
+                return False, response
+            
+            # Validate analytics structure
+            analytics = response["analytics"]
+            required_analytics_fields = ["average_engagement_rate", "upload_frequency_per_month", "top_themes"]
+            missing_analytics_fields = [field for field in required_analytics_fields if field not in analytics]
+            
+            if missing_analytics_fields:
+                self.log_test("Analytics Structure", False, f"Missing fields: {missing_analytics_fields}")
+                return False, response
+            
+            # Validate recent_videos structure
+            recent_videos = response["recent_videos"]
+            if not isinstance(recent_videos, list):
+                self.log_test("Recent Videos Structure", False, "recent_videos should be a list")
+                return False, response
+            
+            if recent_videos:
+                required_video_fields = ["title", "views", "engagement_rate", "published_at", "video_id"]
+                for i, video in enumerate(recent_videos[:3]):  # Check first 3 videos
+                    missing_video_fields = [field for field in required_video_fields if field not in video]
+                    if missing_video_fields:
+                        self.log_test(f"Recent Video {i+1} Structure", False, f"Missing fields: {missing_video_fields}")
+                        return False, response
+            
+            # Validate ai_analysis structure
+            ai_analysis = response["ai_analysis"]
+            if "channel_summary" not in ai_analysis or "strategic_recommendations" not in ai_analysis:
+                self.log_test("AI Analysis Structure", False, "Missing channel_summary or strategic_recommendations")
+                return False, response
+            
+            self.log_test("Channel Analyse Response Structure", True)
+            print(f"   Channel: {channel_info['name']}")
+            print(f"   Subscribers: {channel_info['subscribers']:,}")
+            print(f"   Videos: {len(recent_videos)} recent videos found")
+            return True, response
+        
+        return success, response
+
+    def test_channel_analyse_invalid_url(self):
+        """Test channel analyse endpoint with invalid URL"""
+        return self.run_test(
+            "Channel Analyse - Invalid URL",
+            "POST",
+            "channel-analyse",
+            400,
+            data={"channel_url": "https://invalid-url.com"}
+        )
+
+    def test_channel_analyse_missing_url(self):
+        """Test channel analyse endpoint with missing URL"""
+        return self.run_test(
+            "Channel Analyse - Missing URL",
+            "POST",
+            "channel-analyse",
+            422,  # FastAPI validation error
+            data={}
+        )
+
     def print_summary(self):
         """Print test summary"""
         print(f"\n{'='*60}")
