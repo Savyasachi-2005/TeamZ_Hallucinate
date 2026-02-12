@@ -589,32 +589,66 @@ def compute_competitor_gap(
 
 def detect_missed_trends(creator_themes: List[str], niche_keywords: List[str], trending_videos: List[dict]) -> List[dict]:
     """
-    Detect trending topics the creator hasn't covered.
+    Detect trending topics the creator hasn't covered - IMPROVED LOGIC
     """
-    if not trending_videos:
+    if not trending_videos or not creator_themes:
         return []
     
-    # Extract themes from trending videos
+    # Extract meaningful themes from trending video titles (not single generic words)
     trending_titles = [v.get('title', '') for v in trending_videos]
-    trending_themes = extract_themes_from_titles(trending_titles)
     
-    # Find themes in trending but not in creator's content
+    # Extract multi-word phrases and meaningful topics
+    trending_topics = {}
+    
+    for title in trending_titles:
+        # Clean and tokenize title
+        title_lower = title.lower()
+        words = re.findall(r'\b[a-zA-Z]{4,}\b', title_lower)  # Min 4 chars
+        
+        # Look for 2-3 word phrases (more meaningful than single words)
+        for i in range(len(words) - 1):
+            phrase = f"{words[i]} {words[i+1]}"
+            # Skip if contains creator's existing themes
+            if not any(theme.lower() in phrase for theme in creator_themes):
+                if phrase not in STOPWORDS and len(phrase) > 8:  # Min phrase length
+                    trending_topics[phrase] = trending_topics.get(phrase, 0) + 1
+    
+    # Also consider single meaningful words (if they appear frequently)
+    word_counts = Counter()
+    for title in trending_titles:
+        words = re.findall(r'\b[a-zA-Z]{5,}\b', title.lower())  # Min 5 chars for single words
+        word_counts.update([w for w in words if w not in STOPWORDS])
+    
+    # Filter out creator's existing themes
     creator_theme_set = set([t.lower() for t in creator_themes])
+    
     missed = []
     
-    for theme in trending_themes[:10]:  # Check top 10 trending themes
-        if theme.lower() not in creator_theme_set:
-            # Calculate approximate trend score (count appearances in trending videos)
-            appearances = sum(1 for title in trending_titles if theme in title.lower())
-            trend_score = min(100, (appearances / len(trending_videos)) * 300)  # Normalize to 0-100
-            
+    # Add phrase-based trends
+    for phrase, count in sorted(trending_topics.items(), key=lambda x: x[1], reverse=True):
+        if count >= 2:  # Must appear in at least 2 videos
+            trend_score = min(95, (count / len(trending_videos)) * 400)
             missed.append({
-                "keyword": theme,
+                "keyword": phrase.title(),
                 "trend_score": round(trend_score, 1),
-                "reason": f"High momentum in trending videos, not covered in your recent uploads"
+                "reason": f"Trending topic appearing in {count} videos, not covered in your channel"
             })
     
-    return missed[:5]  # Return top 5 missed trends
+    # Add high-frequency single word trends (only if very popular)
+    for word, count in word_counts.most_common(15):
+        if word not in creator_theme_set and count >= 3:
+            # Skip if already covered by phrases
+            if not any(word in m["keyword"].lower() for m in missed):
+                trend_score = min(90, (count / len(trending_videos)) * 350)
+                missed.append({
+                    "keyword": word.title(),
+                    "trend_score": round(trend_score, 1),
+                    "reason": f"High-frequency keyword in {count} trending videos"
+                })
+    
+    # Sort by trend score and return top 5
+    missed.sort(key=lambda x: x["trend_score"], reverse=True)
+    return missed[:5]
 
 # ==================== YOUTUBE API FUNCTIONS ====================
 
