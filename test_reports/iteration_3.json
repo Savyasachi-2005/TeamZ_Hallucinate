@@ -1,0 +1,29 @@
+{
+  "summary": "Completed comprehensive testing of Extended Niche Pulse features: custom niche input with priority logic and Explore Trend buttons. All backend APIs and frontend integrations working correctly.",
+  "backend_issues": {},
+  "frontend_issues": {},
+  "passed_tests": [
+    "POST /api/trends with custom_keyword parameter - accepts any keyword string (min 3 chars)",
+    "POST /api/trends with niche parameter - backward compatibility maintained",
+    "Custom keyword priority logic - custom_keyword takes precedence over niche parameter",
+    "Custom keyword validation - rejects keywords under 3 characters",
+    "Custom niche input field (data-testid: custom-niche-input) - accepts text input",
+    "Custom input priority - when custom input is filled, dropdown selection is ignored",
+    "Fetch Trends button works with both custom keyword and dropdown selection",
+    "Channel Analysis - themes display with 'Explore Trend' buttons (data-testid: explore-theme-0, etc)",
+    "Explore Trend button click - switches to Niche Trends tab and fetches trends for that theme",
+    "Smooth scroll to results after fetching trends",
+    "Tab switching functionality between Niche Trends and Channel Analysis",
+    "Toast validation messages for short keywords",
+    "Button state management - disabled when no input provided"
+  ],
+  "test_report_links": ["/app/backend_test.py"],
+  "action_item_for_main_agent": "",
+  "updated_files": ["/app/backend_test.py"],
+  "success_percentage": {
+    "backend": "100%",
+    "frontend": "95%"
+  },
+  "should_call_test_agent_after_fix": "false",
+  "should_main_agent_test_itself": "true"
+}
