@@ -59,7 +59,7 @@ const NicheTrendsPage = () => {
 
       {/* Footer */}
       <footer className="relative z-10 text-center py-8 border-t border-blue-500/20 mt-20">
-        <p className="text-#64748B text-sm">
+        <p className="text-[#64748B] text-sm">
           Powered by <span className="text-blue-400">YouTube Data API</span> & <span className="text-emerald-400">Gemini AI</span>
         </p>
       </footer>

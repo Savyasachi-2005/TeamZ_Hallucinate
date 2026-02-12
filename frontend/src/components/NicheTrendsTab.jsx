@@ -88,11 +88,11 @@ const NicheTrendsTab = () => {
     <div className="space-y-8">
       {/* Search Section */}
       <div className="max-w-2xl mx-auto">
-        <div className="bg-#111827 border border-#1E293B rounded-2xl p-8 shadow-xl">
+        <div className="bg-white border border-[#E2E8F0] rounded-2xl p-8 shadow-xl">
           <div className="space-y-6">
             {/* Custom Input */}
             <div>
-              <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-#94A3B8 mb-3">
+              <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#475569] mb-3">
                 <Sparkles className="w-4 h-4 text-blue-400" />
                 Custom Niche Search
               </label>
@@ -105,22 +105,22 @@ const NicheTrendsTab = () => {
                   if (e.target.value.trim()) setSelectedNiche('');
                 }}
                 placeholder="e.g., AI tools for students, React tutorials..."
-                className="w-full bg-#1E293B border-#334155 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-xl px-5 py-4 text-lg h-auto placeholder:text-#64748B text-[#0F172A]"
+                className="w-full bg-white border-#334155 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-xl px-5 py-4 text-lg h-auto placeholder:text-[#64748B] text-[#0F172A]"
                 onKeyDown={(e) => e.key === 'Enter' && handleFetchTrends()}
               />
-              <p className="text-xs text-#64748B mt-2">Custom input takes priority over dropdown</p>
+              <p className="text-xs text-[#64748B] mt-2">Custom input takes priority over dropdown</p>
             </div>
 
             {/* Divider */}
             <div className="flex items-center gap-4">
-              <div className="flex-1 h-px bg-#1E293B" />
-              <span className="text-xs text-#64748B uppercase font-medium">or select preset</span>
-              <div className="flex-1 h-px bg-#1E293B" />
+              <div className="flex-1 h-px bg-white" />
+              <span className="text-xs text-[#64748B] uppercase font-medium">or select preset</span>
+              <div className="flex-1 h-px bg-white" />
             </div>
 
             {/* Dropdown */}
             <div>
-              <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-#94A3B8 mb-3">
+              <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#475569] mb-3">
                 <TrendingUp className="w-4 h-4 text-emerald-400" />
                 Preset Niches
               </label>
@@ -133,16 +133,16 @@ const NicheTrendsTab = () => {
               >
                 <SelectTrigger
                   data-testid="niche-selector"
-                  className="w-full bg-#1E293B border-#334155 focus:border-blue-500 rounded-xl px-5 py-4 text-lg h-auto text-[#0F172A]"
+                  className="w-full bg-white border-#334155 focus:border-blue-500 rounded-xl px-5 py-4 text-lg h-auto text-[#0F172A]"
                 >
                   <SelectValue placeholder="Choose a niche..." />
                 </SelectTrigger>
-                <SelectContent className="bg-#111827 border-#1E293B">
+                <SelectContent className="bg-white border-[#E2E8F0]">
                   {NICHES.map((niche) => (
                     <SelectItem
                       key={niche}
                       value={niche}
-                      className="text-[#0F172A] hover:bg-#1E293B focus:bg-#1E293B cursor-pointer"
+                      className="text-[#0F172A] hover:bg-white focus:bg-white cursor-pointer"
                     >
                       {niche}
                     </SelectItem>
@@ -189,7 +189,7 @@ const NicheTrendsTab = () => {
                 Trending in <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">{currentSearchLabel}</span>
               </h2>
             </div>
-            <span className="text-sm text-#94A3B8 bg-#1E293B px-3 py-1 rounded-full">
+            <span className="text-sm text-[#475569] bg-white px-3 py-1 rounded-full">
               {filteredCount} videos found
             </span>
           </div>
