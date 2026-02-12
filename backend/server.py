@@ -804,7 +804,7 @@ async def get_channel_metadata(channel_id: str) -> dict:
         try:
             url = "https://www.googleapis.com/youtube/v3/channels"
             params = {
-                "part": "snippet,contentDetails",  # OPTIMIZED: Removed statistics (not needed for metadata)
+                "part": "snippet,statistics,contentDetails",  # REVERT: Need statistics for subscriber count
                 "id": channel_id,
                 "key": GOOGLE_API_KEY
             }
