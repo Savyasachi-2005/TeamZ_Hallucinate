@@ -75,7 +75,7 @@ const CopilotChat = () => {
 
   const formatMessage = (content) => {
     return content.split('**').map((part, i) => 
-      i % 2 === 0 ? part : <strong key={i} className=\"font-bold text-slate-900\">{part}</strong>
+      i % 2 === 0 ? part : <strong key={i} className="font-bold text-slate-900">{part}</strong>
     );
   };
 
