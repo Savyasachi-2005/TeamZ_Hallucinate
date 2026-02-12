@@ -57,7 +57,12 @@ const ChannelAnalysisTab = () => {
     setExploredTrends([]);
 
     try {
-      const data = await analyzeChannel(channelUrl);
+      const payload = { channel_url: channelUrl };
+      if (competitorUrl.trim()) {
+        payload.competitor_url = competitorUrl.trim();
+      }
+      
+      const data = await analyzeChannel(payload.channel_url, payload.competitor_url);
       setChannelData(data);
       toast.success(`Analyzed ${data.channel_info.name}`);
     } catch (error) {
