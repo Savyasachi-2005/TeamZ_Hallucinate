@@ -1479,22 +1479,18 @@ async def analyse_video(request: AnalyseRequest):
 
 @api_router.post("/channel-analyse", response_model=ChannelAnalyseResponse)
 async def analyse_channel(request: ChannelAnalyseRequest):
-    """Analyze a YouTube channel"""
+    """Enhanced AI Copilot for Sustainable Growth - Analyze YouTube channel"""
     
     check_api_key()
     
-    # Step 1: Extract channel identifier
+    # === STEP 1: Analyze Main Channel ===
     identifier, id_type = extract_channel_identifier(request.channel_url)
     logger.info(f"Extracted identifier: {identifier}, type: {id_type}")
     
-    # Step 2: Resolve to channel ID
     channel_id = await resolve_channel_id(identifier, id_type)
     logger.info(f"Resolved channel ID: {channel_id}")
     
-    # Step 3: Fetch channel metadata
     channel_data = await get_channel_metadata(channel_id)
-    
-    # Step 4: Fetch recent videos
     videos = await get_playlist_videos(channel_data["uploads_playlist_id"], max_results=20)
     
     if not videos:
@@ -1503,14 +1499,89 @@ async def analyse_channel(request: ChannelAnalyseRequest):
             detail={"error": "No videos found for this channel"}
         )
     
-    # Step 5: Compute analytics
     analytics = compute_channel_analytics(videos)
-    
-    # Step 6: AI Analysis
     recent_titles = [v["title"] for v in videos[:10]]
-    ai_analysis = await analyze_channel_with_gemini(channel_data, analytics, recent_titles)
     
-    # Build recent videos response (top 5)
+    # === STEP 2: Compute Health Dashboard ===
+    upload_dates = [v["published_at"] for v in videos]
+    engagement_rates = [(v.get("likes", 0) + v.get("comments", 0)) / max(v.get("views", 1), 1) for v in videos]
+    
+    consistency_score = calculate_consistency_score(upload_dates)
+    engagement_stability = calculate_engagement_stability(engagement_rates)
+    topic_focus_score = calculate_topic_focus_score(analytics["top_themes"], recent_titles)
+    growth_momentum = determine_growth_momentum(engagement_rates, upload_dates)
+    
+    health_dashboard = {
+        "consistency_score": consistency_score,
+        "engagement_stability": engagement_stability,
+        "topic_focus_score": topic_focus_score,
+        "growth_momentum": growth_momentum
+    }
+    
+    # === STEP 3: Detect Missed Trends ===
+    # Auto-detect niche from creator's themes
+    creator_themes = analytics["top_themes"]
+    
+    # Search for trending videos in detected niche
+    detected_niche_keywords = creator_themes[:2] if len(creator_themes) >= 2 else creator_themes
+    trending_videos = await search_youtube_videos(detected_niche_keywords, max_results=30)
+    
+    missed_trends = detect_missed_trends(
+        creator_themes,
+        detected_niche_keywords,
+        trending_videos
+    )
+    
+    # === STEP 4: Competitor Comparison (Optional) ===
+    competitor_comparison_data = None
+    
+    if request.competitor_url:
+        try:
+            # Analyze competitor channel
+            comp_identifier, comp_id_type = extract_channel_identifier(request.competitor_url)
+            comp_channel_id = await resolve_channel_id(comp_identifier, comp_id_type)
+            comp_channel_data = await get_channel_metadata(comp_channel_id)
+            comp_videos = await get_playlist_videos(comp_channel_data["uploads_playlist_id"], max_results=20)
+            
+            if comp_videos:
+                comp_analytics = compute_channel_analytics(comp_videos)
+                comp_themes = comp_analytics["top_themes"]
+                
+                # Compute gap analysis
+                gap_analysis = compute_competitor_gap(
+                    analytics,
+                    creator_themes,
+                    comp_analytics,
+                    comp_themes
+                )
+                
+                competitor_comparison_data = CompetitorComparison(
+                    competitor_name=comp_channel_data["title"],
+                    engagement_gap=gap_analysis["engagement_gap"],
+                    posting_gap=gap_analysis["posting_gap"],
+                    theme_overlap_percentage=gap_analysis["theme_overlap_percentage"],
+                    missed_topics=gap_analysis["missed_topics"]
+                )
+        except Exception as e:
+            logger.error(f"Competitor analysis failed: {e}")
+            # Continue without competitor data
+    
+    # === STEP 5: Enhanced AI Strategic Analysis ===
+    ai_analysis = await analyze_channel_with_strategic_insights(
+        channel_data,
+        analytics,
+        recent_titles,
+        health_dashboard,
+        [{"keyword": m["keyword"], "trend_score": m["trend_score"], "reason": m["reason"]} for m in missed_trends],
+        {
+            "engagement_gap": competitor_comparison_data.engagement_gap,
+            "posting_gap": competitor_comparison_data.posting_gap,
+            "theme_overlap_percentage": competitor_comparison_data.theme_overlap_percentage,
+            "missed_topics": competitor_comparison_data.missed_topics
+        } if competitor_comparison_data else None
+    )
+    
+    # === STEP 6: Build Response ===
     recent_videos_response = []
     for video in videos[:5]:
         views = video.get("views", 0)
@@ -1540,10 +1611,20 @@ async def analyse_channel(request: ChannelAnalyseRequest):
             top_themes=analytics["top_themes"]
         ),
         recent_videos=recent_videos_response,
-        ai_analysis=AIAnalysis(
+        ai_analysis=EnhancedAIAnalysis(
             channel_summary=ChannelSummary(**ai_analysis["channel_summary"]),
-            strategic_recommendations=ai_analysis["strategic_recommendations"]
-        )
+            strategic_summary=StrategicSummary(**ai_analysis["strategic_summary"])
+        ),
+        health_dashboard=HealthDashboard(**health_dashboard),
+        missed_trends=[
+            MissedTrend(
+                keyword=trend["keyword"],
+                trend_score=trend["trend_score"],
+                reason=trend["reason"]
+            )
+            for trend in missed_trends
+        ],
+        competitor_comparison=competitor_comparison_data
     )
 
 # Include the router in the main app
