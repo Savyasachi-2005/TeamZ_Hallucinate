@@ -36,27 +36,39 @@ function App() {
       {/* Main Content */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 py-8">
         {/* Header */}
-        <header className="text-center mb-12 pt-8">
-          <div className="inline-flex items-center justify-center gap-3 mb-6">
-            <div className="p-4 rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-blue-500/30 shadow-lg shadow-blue-500/20">
-              <TrendingUp className="w-10 h-10 text-blue-400" />
+        <header className="text-center mb-16 pt-8">
+          {/* Logo Section */}
+          <div className="inline-flex items-center justify-center gap-4 mb-8 group">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-3xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-300" />
+              <div className="relative p-3 rounded-3xl bg-gradient-to-br from-blue-600/90 to-purple-600/90 border border-blue-400/30 shadow-2xl shadow-blue-500/30 transform group-hover:scale-105 transition-transform duration-300">
+                <img 
+                  src="https://images.unsplash.com/photo-1639825752750-5061ded5503b?w=100&h=100&fit=crop" 
+                  alt="NichePulse Logo" 
+                  className="w-16 h-16 rounded-2xl object-cover"
+                />
+              </div>
             </div>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-4">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-400">
+          {/* Title */}
+          <h1 className="text-6xl md:text-8xl font-black tracking-tight mb-6 leading-none">
+            <span className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-100 to-cyan-100 drop-shadow-2xl">
               Niche
             </span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-400">
+            <span className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-500 animate-gradient-x">
               Pulse
             </span>
           </h1>
 
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed flex items-center justify-center gap-2">
-            <Sparkles className="w-5 h-5 text-yellow-400" />
-            AI-powered trend intelligence for YouTube creators
-            <Sparkles className="w-5 h-5 text-yellow-400" />
-          </p>
+          {/* Subtitle */}
+          <div className="inline-flex items-center justify-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 backdrop-blur-sm">
+            <Sparkles className="w-5 h-5 text-yellow-400 animate-pulse" />
+            <p className="text-base md:text-lg text-gray-300 font-medium">
+              AI-powered trend intelligence for YouTube creators
+            </p>
+            <Sparkles className="w-5 h-5 text-yellow-400 animate-pulse" />
+          </div>
         </header>
 
         {/* Tab Navigation */}
