@@ -5,7 +5,7 @@ const Navigation = () => {
   const navigate = useNavigate();
 
   return (
-    <nav className="sticky top-0 z-50 bg-white border-b border-[#E2E8F0] shadow-sm">
+    <nav className="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -13,7 +13,7 @@ const Navigation = () => {
             onClick={() => navigate('/')}
             className="flex items-center gap-3 group"
           >
-            <div className="p-2 rounded-xl bg-[#3B82F6] shadow-md">
+            <div className="p-2 rounded-xl bg-blue-600 shadow-md">
               <img 
                 src="https://images.unsplash.com/photo-1639825752750-5061ded5503b?w=80&h=80&fit=crop" 
                 alt="NichePulse" 
@@ -21,10 +21,10 @@ const Navigation = () => {
               />
             </div>
             <div>
-              <h1 className="text-2xl font-black text-[#0F172A]">
-                Niche<span className="text-[#3B82F6]">Pulse</span>
+              <h1 className="text-2xl font-black text-slate-900">
+                Niche<span className="text-blue-600">Pulse</span>
               </h1>
-              <p className="text-xs text-[#64748B] font-bold">AI Copilot</p>
+              <p className="text-xs text-slate-500 font-bold">AI Copilot</p>
             </div>
           </button>
 
@@ -32,21 +32,21 @@ const Navigation = () => {
           <div className="flex items-center gap-2">
             <button
               onClick={() => navigate('/')}
-              className="px-4 py-2 rounded-lg text-[#475569] font-bold hover:text-[#0F172A] hover:bg-[#F1F5F9] transition-colors flex items-center gap-2"
+              className="px-4 py-2 rounded-lg text-slate-600 font-bold hover:text-slate-900 hover:bg-slate-100 transition-colors flex items-center gap-2"
             >
               <Home className="w-4 h-4" />
               <span className="hidden md:inline">Home</span>
             </button>
             <button
               onClick={() => navigate('/niche-trends')}
-              className="px-4 py-2 rounded-lg text-[#475569] font-bold hover:text-[#0F172A] hover:bg-[#F1F5F9] transition-colors flex items-center gap-2"
+              className="px-4 py-2 rounded-lg text-slate-600 font-bold hover:text-slate-900 hover:bg-slate-100 transition-colors flex items-center gap-2"
             >
               <TrendingUp className="w-4 h-4" />
               <span className="hidden md:inline">Niche Trends</span>
             </button>
             <button
               onClick={() => navigate('/channel-analysis')}
-              className="px-4 py-2 rounded-lg text-[#475569] font-bold hover:text-[#0F172A] hover:bg-[#F1F5F9] transition-colors flex items-center gap-2"
+              className="px-4 py-2 rounded-lg text-slate-600 font-bold hover:text-slate-900 hover:bg-slate-100 transition-colors flex items-center gap-2"
             >
               <User className="w-4 h-4" />
               <span className="hidden md:inline">Channel Analysis</span>
