@@ -15,7 +15,7 @@ const NicheTrendsPage = () => {
       </div>
 
       {/* Noise Texture */}
-      <div className="fixed inset-0 opacity-[0.02] pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2UpIi8+PC9zdmc+')]" />
+      <div className="fixed inset-0  pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2UpIi8+PC9zdmc+')]" />
 
       <Navigation />
 
@@ -37,7 +37,7 @@ const NicheTrendsPage = () => {
         <header className="text-center mb-12">
           <div className="inline-flex items-center justify-center gap-3 mb-6">
             <div className="p-4 rounded-2xl bg-gradient-to-br from-blue-600/20 to-emerald-600/20 border border-blue-500/30 shadow-xl shadow-blue-500/20">
-              <TrendingUp className="w-12 h-12 text-blue-400" />
+              <TrendingUp className="w-12 h-12 text-[#3B82F6]" />
             </div>
           </div>
           <h1 className="text-5xl md:text-7xl font-black tracking-tight mb-4 leading-none">
@@ -45,9 +45,9 @@ const NicheTrendsPage = () => {
               Niche Trends
             </span>
           </h1>
-          <div className="inline-flex items-center justify-center gap-3 px-6 py-3 rounded-full bg-blue-500/10 border border-blue-500/20 backdrop-blur-sm">
-            <Sparkles className="w-5 h-5 text-blue-400 animate-pulse" />
-            <p className="text-base md:text-lg text-gray-300 font-semibold">
+          <div className="inline-flex items-center justify-center gap-3 px-6 py-3 rounded-full bg-blue-500/10 border border-blue-500/20 -sm">
+            <Sparkles className="w-5 h-5 text-[#3B82F6] animate-pulse" />
+            <p className="text-base md:text-lg text-[#1E293B] font-semibold">
               Discover what's trending in your niche with AI-powered analysis
             </p>
           </div>
@@ -60,7 +60,7 @@ const NicheTrendsPage = () => {
       {/* Footer */}
       <footer className="relative z-10 text-center py-8 border-t border-blue-500/20 mt-20">
         <p className="text-[#475569] text-sm">
-          Powered by <span className="text-blue-400">YouTube Data API</span> & <span className="text-emerald-400">Gemini AI</span>
+          Powered by <span className="text-[#3B82F6]">YouTube Data API</span> & <span className="text-[#10B981]">Gemini AI</span>
         </p>
       </footer>
     </div>

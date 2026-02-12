@@ -5,7 +5,7 @@ const Navigation = () => {
   const navigate = useNavigate();
 
   return (
-    <nav className="sticky top-0 z-50 backdrop-blur-xl bg-white/90 border-b border-[#E2E8F0] shadow-sm">
+    <nav className="sticky top-0 z-50 -xl bg-white/90 border-b border-[#E2E8F0] shadow-sm">
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}

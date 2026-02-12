@@ -16,10 +16,10 @@ const TrendCard = ({ video, index, onClick }) => {
   };
 
   const getScoreColor = (score) => {
-    if (score >= 80) return 'from-emerald-500 to-green-600 text-white';
-    if (score >= 60) return 'from-blue-500 to-cyan-600 text-white';
-    if (score >= 40) return 'from-yellow-500 to-orange-600 text-white';
-    return 'from-gray-500 to-gray-600 text-white';
+    if (score >= 80) return 'from-emerald-500 to-green-600 text-[#0F172A]';
+    if (score >= 60) return 'from-blue-500 to-cyan-600 text-[#0F172A]';
+    if (score >= 40) return 'from-yellow-500 to-orange-600 text-[#0F172A]';
+    return 'from-gray-500 to-gray-600 text-[#0F172A]';
   };
 
   const getCompetitionColor = (level) => {
@@ -49,18 +49,18 @@ const TrendCard = ({ video, index, onClick }) => {
         
         {/* Play Button Overlay */}
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
-          <div className="p-4 rounded-full bg-white/20 backdrop-blur-md border border-white/20 transform scale-90 group-hover:scale-100 transition-transform">
-            <Play className="w-8 h-8 text-white fill-white" />
+          <div className="p-4 rounded-full bg-white/20 -md border border-white/20 transform scale-90 group-hover:scale-100 transition-transform">
+            <Play className="w-8 h-8 text-[#0F172A] fill-white" />
           </div>
         </div>
         
         {/* Top Badges */}
         <div className="absolute top-3 left-3 flex items-center gap-2">
-          <span className="px-3 py-1 rounded-full bg-gray-900/80 backdrop-blur-sm border border-gray-700 text-xs font-bold text-white">
+          <span className="px-3 py-1 rounded-full bg-gray-900/80 -sm border border-gray-700 text-xs font-bold text-[#0F172A]">
             #{index + 1}
           </span>
           {isHot && (
-            <span className="flex items-center gap-1 px-3 py-1 rounded-full bg-orange-500/90 backdrop-blur-sm text-xs font-bold text-white animate-pulse">
+            <span className="flex items-center gap-1 px-3 py-1 rounded-full bg-orange-500/90 -sm text-xs font-bold text-[#0F172A] animate-pulse">
               <Flame className="w-3 h-3" />
               HOT
             </span>
@@ -82,11 +82,11 @@ const TrendCard = ({ video, index, onClick }) => {
       
       {/* Content Section */}
       <div className="p-5">
-        <h3 className="font-bold text-white text-lg mb-2 line-clamp-2 group-hover:text-blue-400 transition-colors">
+        <h3 className="font-bold text-[#0F172A] text-lg mb-2 line-clamp-2 group-hover:text-blue-400 transition-colors">
           {video.title}
         </h3>
         
-        <p className="text-gray-400 text-sm mb-4 flex items-center gap-2">
+        <p className="text-[#475569] text-sm mb-4 flex items-center gap-2">
           <Users className="w-4 h-4" />
           {video.channel}
         </p>
@@ -94,21 +94,21 @@ const TrendCard = ({ video, index, onClick }) => {
         {/* Metrics Grid */}
         <div className="grid grid-cols-2 gap-2 mb-4">
           <div className="bg-gray-800/50 rounded-xl px-3 py-2 border border-gray-700">
-            <p className="text-[10px] uppercase tracking-wider text-gray-500 mb-1">Views</p>
-            <p className="font-mono text-sm text-white font-semibold">{formatViews(video.views)}</p>
+            <p className="text-[10px] uppercase tracking-wider text-[#64748B] mb-1">Views</p>
+            <p className="font-mono text-sm text-[#0F172A] font-semibold">{formatViews(video.views)}</p>
           </div>
           <div className="bg-gray-800/50 rounded-xl px-3 py-2 border border-gray-700">
-            <p className="text-[10px] uppercase tracking-wider text-gray-500 mb-1">Velocity</p>
+            <p className="text-[10px] uppercase tracking-wider text-[#64748B] mb-1">Velocity</p>
             <p className="font-mono text-sm text-cyan-400 font-semibold">{formatVelocity(video.views_per_day)}</p>
           </div>
           <div className="bg-gray-800/50 rounded-xl px-3 py-2 border border-gray-700">
-            <p className="text-[10px] uppercase tracking-wider text-gray-500 mb-1">Engagement</p>
+            <p className="text-[10px] uppercase tracking-wider text-[#64748B] mb-1">Engagement</p>
             <p className="font-mono text-sm text-purple-400 font-semibold">{(video.engagement_rate * 100).toFixed(2)}%</p>
           </div>
           <div className="bg-gray-800/50 rounded-xl px-3 py-2 border border-gray-700">
-            <p className="text-[10px] uppercase tracking-wider text-gray-500 mb-1">Age</p>
-            <p className="font-mono text-sm text-white font-semibold flex items-center gap-1">
-              <Clock className="w-3 h-3 text-gray-500" />
+            <p className="text-[10px] uppercase tracking-wider text-[#64748B] mb-1">Age</p>
+            <p className="font-mono text-sm text-[#0F172A] font-semibold flex items-center gap-1">
+              <Clock className="w-3 h-3 text-[#64748B]" />
               {video.recency_days}d ago
             </p>
           </div>
@@ -116,7 +116,7 @@ const TrendCard = ({ video, index, onClick }) => {
         
         {/* Footer */}
         <div className="flex items-center justify-between pt-3 border-t border-gray-800">
-          <span className="text-xs text-gray-500 flex items-center gap-2">
+          <span className="text-xs text-[#64748B] flex items-center gap-2">
             <TrendingUp className="w-4 h-4" />
             Click to analyze
           </span>
@@ -125,7 +125,7 @@ const TrendCard = ({ video, index, onClick }) => {
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
-            className="p-2 rounded-lg hover:bg-gray-800 text-gray-400 hover:text-blue-400 transition-colors"
+            className="p-2 rounded-lg hover:bg-gray-800 text-[#475569] hover:text-blue-400 transition-colors"
           >
             <ExternalLink className="w-4 h-4" />
           </a>

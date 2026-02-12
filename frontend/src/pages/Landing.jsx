@@ -75,7 +75,7 @@ const Landing = () => {
       </div>
 
       {/* Noise Texture */}
-      <div className="fixed inset-0 opacity-[0.015] pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2UpIi8+PC9zdmc+')]" />
+      <div className="fixed inset-0  pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2UpIi8+PC9zdmc+')]" />
 
       <div className="relative z-10">
         {/* Hero Section */}
@@ -140,7 +140,7 @@ const Landing = () => {
               <button
                 onClick={() => document.getElementById('features').scrollIntoView({ behavior: 'smooth' })}
                 className="px-10 py-5 bg-white/50 hover:bg-white border-2 border-#334155 hover:border-blue-500/50
-                  text-[#0F172A] font-bold rounded-2xl text-lg transition-all duration-300 backdrop-blur-sm"
+                  text-[#0F172A] font-bold rounded-2xl text-lg transition-all duration-300 -sm"
               >
                 Explore Features
               </button>
@@ -178,7 +178,7 @@ const Landing = () => {
                 <button
                   key={idx}
                   onClick={() => navigate(feature.route)}
-                  className="group bg-white/50 backdrop-blur-sm border border-[#E2E8F0] hover:border-blue-500/50 rounded-2xl p-8 shadow-md 
+                  className="group bg-white/50 -sm border border-[#E2E8F0] hover:border-blue-500/50 rounded-2xl p-8 shadow-md 
                     transition-all duration-500 hover:shadow-2xl hover:shadow-blue-500/20 hover:-translate-y-2
                     animate-in fade-in slide-in-from-bottom-4 text-left cursor-pointer
                     hover:bg-white"
@@ -188,11 +188,11 @@ const Landing = () => {
                     group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
                     <feature.icon className="w-8 h-8 text-[#0F172A]" />
                   </div>
-                  <h3 className="text-2xl font-bold text-[#0F172A] mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-emerald-400 transition-all">
+                  <h3 className="text-2xl font-black text-[#0F172A] mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-emerald-400 transition-all">
                     {feature.title}
                   </h3>
                   <p className="text-[#334155] text-base leading-relaxed mb-4">{feature.description}</p>
-                  <div className="flex items-center gap-2 text-blue-400 font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="flex items-center gap-2 text-[#3B82F6] font-bold opacity-0 group-hover:opacity-100 transition-opacity">
                     <span>Explore</span>
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </div>
@@ -222,15 +222,15 @@ const Landing = () => {
               ].map((item, idx) => (
                 <div 
                   key={idx}
-                  className="relative bg-white/50 backdrop-blur-sm border border-[#E2E8F0] hover:border-blue-500/50 rounded-2xl p-8 shadow-md animate-in fade-in slide-in-from-bottom-4 group transition-all duration-300 hover:-translate-y-2"
+                  className="relative bg-white/50 -sm border border-[#E2E8F0] hover:border-blue-500/50 rounded-2xl p-8 shadow-md animate-in fade-in slide-in-from-bottom-4 group transition-all duration-300 hover:-translate-y-2"
                   style={{ animationDelay: `${idx * 200}ms` }}
                 >
                   <div className="text-8xl font-black text-#1E293B/50 absolute top-4 right-4 group-hover:text-blue-500/20 transition-colors">{item.step}</div>
                   <div className="relative">
                     <div className={`inline-flex p-3 rounded-xl bg-gradient-to-r ${item.gradient} bg-opacity-5 mb-4 shadow-lg group-hover:scale-110 transition-transform`}>
-                      <item.icon className="w-6 h-6 text-blue-400" />
+                      <item.icon className="w-6 h-6 text-[#3B82F6]" />
                     </div>
-                    <h3 className="text-xl font-bold text-[#0F172A] mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-emerald-400 transition-all">{item.title}</h3>
+                    <h3 className="text-xl font-black text-[#0F172A] mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-emerald-400 transition-all">{item.title}</h3>
                     <p className="text-[#334155]">{item.desc}</p>
                   </div>
                 </div>
@@ -242,7 +242,7 @@ const Landing = () => {
         {/* Social Proof / Stats */}
         <div className="py-20 px-6">
           <div className="max-w-6xl mx-auto">
-            <div className="bg-gradient-to-r from-blue-900/30 via-emerald-900/30 to-blue-900/30 border-2 border-blue-500/30 rounded-3xl p-12 text-center backdrop-blur-sm shadow-2xl shadow-blue-500/20">
+            <div className="bg-gradient-to-r from-blue-900/30 via-emerald-900/30 to-blue-900/30 border-2 border-blue-500/30 rounded-3xl p-12 text-center -sm shadow-2xl shadow-blue-500/20">
               <h3 className="text-3xl md:text-5xl font-black text-[#0F172A] mb-8">
                 Powered by Advanced AI & Real-Time Data
               </h3>
@@ -296,7 +296,7 @@ const Landing = () => {
         <footer className="border-t border-blue-500/20 py-8 px-6">
           <div className="max-w-6xl mx-auto text-center text-[#475569] text-sm">
             <p className="mb-2">
-              Powered by <span className="text-blue-400">YouTube Data API</span> & <span className="text-emerald-400">Gemini AI</span>
+              Powered by <span className="text-[#3B82F6]">YouTube Data API</span> & <span className="text-[#10B981]">Gemini AI</span>
             </p>
             <p>© 2025 NichePulse. AI Copilot for Sustainable Growth in the Creator Economy.</p>
           </div>
