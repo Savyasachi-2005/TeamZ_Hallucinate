@@ -21,6 +21,35 @@ load_dotenv(ROOT_DIR / '.env')
 # Get Google API Key
 GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
 
+# Initialize cache - Store up to 100 items, each with 1-hour TTL (3600 seconds)
+# This helps prevent hitting YouTube API quota limits
+api_cache = TTLCache(maxsize=100, ttl=3600)
+
+def cache_key(*args, **kwargs) -> str:
+    """Generate a cache key from function arguments"""
+    key_data = str(args) + str(sorted(kwargs.items()))
+    return hashlib.md5(key_data.encode()).hexdigest()
+
+def cached_api_call(func):
+    """Decorator to cache API responses"""
+    @wraps(func)
+    async def wrapper(*args, **kwargs):
+        # Generate cache key
+        key = f"{func.__name__}:{cache_key(*args, **kwargs)}"
+        
+        # Check cache
+        if key in api_cache:
+            logger.info(f"Cache HIT for {func.__name__}")
+            return api_cache[key]
+        
+        # Call function and cache result
+        logger.info(f"Cache MISS for {func.__name__} - calling API")
+        result = await func(*args, **kwargs)
+        api_cache[key] = result
+        return result
+    
+    return wrapper
+
 # Create the main app
 app = FastAPI()
 
