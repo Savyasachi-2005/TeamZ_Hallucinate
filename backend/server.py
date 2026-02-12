@@ -625,13 +625,18 @@ def calculate_trend_scores_batch(videos: List[dict], stats: dict) -> List[dict]:
     Old viral videos are filtered out - only recent, fast-growing content qualifies.
     """
     
-    # Step 1: Apply hard filters (30 days max)
-    filtered_videos = apply_hard_filters(videos, stats, max_days=30)
+    # Step 1: Apply hard filters (30 days max, 0.5% engagement)
+    filtered_videos = apply_hard_filters(videos, stats, max_days=30, min_engagement=0.005)
     
     # If fewer than 5 videos, relax to 60 days
     if len(filtered_videos) < 5:
         logger.info("Relaxing recency filter to 60 days due to insufficient results")
-        filtered_videos = apply_hard_filters(videos, stats, max_days=60)
+        filtered_videos = apply_hard_filters(videos, stats, max_days=60, min_engagement=0.005)
+    
+    # If still fewer than 5, relax engagement to 0.1%
+    if len(filtered_videos) < 5:
+        logger.info("Relaxing engagement filter to 0.1% due to insufficient results")
+        filtered_videos = apply_hard_filters(videos, stats, max_days=90, min_engagement=0.001)
     
     if not filtered_videos:
         return []
