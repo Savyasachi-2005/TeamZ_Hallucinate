@@ -123,16 +123,16 @@ const CopilotChat = () => {
                 <div
                   className={`max-w-[85%] rounded-xl px-4 py-3 ${
                     message.role === 'user'
-                      ? 'bg-[#3B82F6] text-white'
-                      : 'bg-[#F8FAFC] border border-[#E2E8F0] text-[#334155]'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-slate-50 border border-slate-200 text-slate-700'
                   }`}
                 >
                   <p className="text-sm leading-relaxed whitespace-pre-wrap font-semibold">
                     {message.role === 'assistant' ? formatMessage(message.content) : message.content}
                   </p>
                   {message.source && message.source !== 'system' && (
-                    <div className="mt-2 pt-2 border-t border-[#E2E8F0]">
-                      <span className="text-xs text-[#64748B] flex items-center gap-1 font-bold">
+                    <div className="mt-2 pt-2 border-t border-slate-200">
+                      <span className="text-xs text-slate-500 flex items-center gap-1 font-bold">
                         {message.source === 'rule_based' ? (
                           <>
                             <Brain className="w-3 h-3" />
