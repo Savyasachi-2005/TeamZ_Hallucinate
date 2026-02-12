@@ -198,7 +198,7 @@ const ChannelAnalysisTab = () => {
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500" data-testid="channel-results">
           
           {/* Channel Overview */}
-          <div className="bg-#111827 border border-#1E293B rounded-2xl p-6 shadow-xl">
+          <div className="bg-#111827 border border-#1E293B rounded-2xl p-6 shadow-md shadow-xl">
             <div className="flex flex-col md:flex-row gap-6 items-start">
               {channelData.channel_info.thumbnail && (
                 <img
@@ -243,7 +243,7 @@ const ChannelAnalysisTab = () => {
 
           {/* Growth Health Dashboard */}
           {channelData.health_dashboard && (
-            <div className="bg-gradient-to-br from-#111827 to-#1E293B border-2 border-emerald-500/30 rounded-2xl p-6 shadow-xl">
+            <div className="bg-gradient-to-br from-#111827 to-#1E293B border-2 border-emerald-500/30 rounded-2xl p-6 shadow-md shadow-xl">
               <h3 className="text-2xl font-bold text-[#0F172A] mb-6 flex items-center gap-2">
                 <Shield className="w-6 h-6 text-emerald-400" />
                 Growth Health Dashboard
@@ -355,7 +355,7 @@ const ChannelAnalysisTab = () => {
 
           {/* Missed Trends Panel */}
           {channelData.missed_trends && channelData.missed_trends.length > 0 && (
-            <div className="bg-#111827 border-2 border-yellow-500/30 rounded-2xl p-6 shadow-xl">
+            <div className="bg-#111827 border-2 border-yellow-500/30 rounded-2xl p-6 shadow-md shadow-xl">
               <h3 className="text-2xl font-bold text-[#0F172A] mb-4 flex items-center gap-2">
                 <Flame className="w-6 h-6 text-yellow-400" />
                 Missed Trend Opportunities
@@ -364,7 +364,7 @@ const ChannelAnalysisTab = () => {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {channelData.missed_trends.map((trend, idx) => (
-                  <div key={idx} className="bg-#1E293B rounded-xl p-4 border border-yellow-500/20 hover:border-yellow-500/40 transition-colors">
+                  <div key={idx} className="bg-#1E293B rounded-xl p-4 shadow-sm border border-yellow-500/20 hover:border-yellow-500/40 transition-colors">
                     <div className="flex items-start justify-between mb-2">
                       <h4 className="font-bold text-[#0F172A] capitalize">{trend.keyword}</h4>
                       <span className="px-3 py-1 bg-yellow-500/20 text-yellow-400 rounded-full text-xs font-bold">
@@ -386,7 +386,7 @@ const ChannelAnalysisTab = () => {
 
           {/* Competitor Comparison */}
           {channelData.competitor_comparison && (
-            <div className="bg-#111827 border-2 border-blue-500/30 rounded-2xl p-6 shadow-xl">
+            <div className="bg-#111827 border-2 border-blue-500/30 rounded-2xl p-6 shadow-md shadow-xl">
               <h3 className="text-2xl font-bold text-[#0F172A] mb-6 flex items-center gap-2">
                 <GitCompare className="w-6 h-6 text-blue-400" />
                 Competitor Comparison: {channelData.competitor_comparison.competitor_name}
@@ -394,7 +394,7 @@ const ChannelAnalysisTab = () => {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Engagement Gap */}
-                <div className="bg-#1E293B rounded-xl p-5 border border-#334155">
+                <div className="bg-#1E293B rounded-xl p-5 shadow-sm border border-#334155">
                   <h4 className="font-bold text-#94A3B8 mb-2 uppercase text-xs tracking-wider">Engagement Gap</h4>
                   <div className="text-3xl font-black text-[#0F172A] mb-2">
                     {channelData.competitor_comparison.engagement_gap}
@@ -403,7 +403,7 @@ const ChannelAnalysisTab = () => {
                 </div>
 
                 {/* Posting Frequency */}
-                <div className="bg-#1E293B rounded-xl p-5 border border-#334155">
+                <div className="bg-#1E293B rounded-xl p-5 shadow-sm border border-#334155">
                   <h4 className="font-bold text-#94A3B8 mb-2 uppercase text-xs tracking-wider">Posting Frequency</h4>
                   <div className="text-lg font-bold text-[#0F172A] mb-2">
                     {channelData.competitor_comparison.posting_gap}
@@ -411,7 +411,7 @@ const ChannelAnalysisTab = () => {
                 </div>
 
                 {/* Theme Overlap */}
-                <div className="bg-#1E293B rounded-xl p-5 border border-#334155">
+                <div className="bg-#1E293B rounded-xl p-5 shadow-sm border border-#334155">
                   <h4 className="font-bold text-#94A3B8 mb-2 uppercase text-xs tracking-wider">Content Overlap</h4>
                   <div className="text-3xl font-black text-[#0F172A] mb-2">
                     {channelData.competitor_comparison.theme_overlap_percentage}%
@@ -420,7 +420,7 @@ const ChannelAnalysisTab = () => {
                 </div>
 
                 {/* Missed Topics */}
-                <div className="bg-#1E293B rounded-xl p-5 border border-#334155">
+                <div className="bg-#1E293B rounded-xl p-5 shadow-sm border border-#334155">
                   <h4 className="font-bold text-#94A3B8 mb-3 uppercase text-xs tracking-wider">You're Missing</h4>
                   <div className="flex flex-wrap gap-2">
                     {channelData.competitor_comparison.missed_topics.map((topic, idx) => (
@@ -436,7 +436,7 @@ const ChannelAnalysisTab = () => {
 
           {/* Channel Summary */}
           {channelData.ai_analysis?.channel_summary && (
-            <div className="bg-#111827 border border-#1E293B rounded-2xl p-6 shadow-xl">
+            <div className="bg-#111827 border border-#1E293B rounded-2xl p-6 shadow-md shadow-xl">
               <h3 className="text-xl font-bold text-[#0F172A] mb-6 flex items-center gap-2">
                 <BarChart3 className="w-6 h-6 text-emerald-400" />
                 Channel Summary
@@ -475,7 +475,7 @@ const ChannelAnalysisTab = () => {
 
           {/* Top Themes */}
           {channelData.analytics.top_themes && channelData.analytics.top_themes.length > 0 && (
-            <div className="bg-#111827 border border-#1E293B rounded-2xl p-6 shadow-xl">
+            <div className="bg-#111827 border border-#1E293B rounded-2xl p-6 shadow-md shadow-xl">
               <h3 className="text-xl font-bold text-[#0F172A] mb-4 flex items-center gap-2">
                 <Lightbulb className="w-6 h-6 text-yellow-400" />
                 Top Content Themes
@@ -499,7 +499,7 @@ const ChannelAnalysisTab = () => {
 
           {/* Recent Videos */}
           {channelData.recent_videos && channelData.recent_videos.length > 0 && (
-            <div className="bg-#111827 border border-#1E293B rounded-2xl p-6 shadow-xl">
+            <div className="bg-#111827 border border-#1E293B rounded-2xl p-6 shadow-md shadow-xl">
               <h3 className="text-xl font-bold text-[#0F172A] mb-6 flex items-center gap-2">
                 <Video className="w-6 h-6 text-emerald-400" />
                 Recent Videos (Last 5)

@@ -178,7 +178,7 @@ const Landing = () => {
                 <button
                   key={idx}
                   onClick={() => navigate(feature.route)}
-                  className="group bg-#111827/50 backdrop-blur-sm border border-#1E293B hover:border-blue-500/50 rounded-2xl p-8 
+                  className="group bg-#111827/50 backdrop-blur-sm border border-#1E293B hover:border-blue-500/50 rounded-2xl p-8 shadow-md 
                     transition-all duration-500 hover:shadow-2xl hover:shadow-blue-500/20 hover:-translate-y-2
                     animate-in fade-in slide-in-from-bottom-4 text-left cursor-pointer
                     hover:bg-#111827/80"
@@ -222,7 +222,7 @@ const Landing = () => {
               ].map((item, idx) => (
                 <div 
                   key={idx}
-                  className="relative bg-#111827/50 backdrop-blur-sm border border-#1E293B hover:border-blue-500/50 rounded-2xl p-8 animate-in fade-in slide-in-from-bottom-4 group transition-all duration-300 hover:-translate-y-2"
+                  className="relative bg-#111827/50 backdrop-blur-sm border border-#1E293B hover:border-blue-500/50 rounded-2xl p-8 shadow-md animate-in fade-in slide-in-from-bottom-4 group transition-all duration-300 hover:-translate-y-2"
                   style={{ animationDelay: `${idx * 200}ms` }}
                 >
                   <div className="text-8xl font-black text-#1E293B/50 absolute top-4 right-4 group-hover:text-blue-500/20 transition-colors">{item.step}</div>
