@@ -1,0 +1,107 @@
+{
+  "identity": {
+    "name": "Niche Trend Intelligence Copilot",
+    "archetype": "The Performance Pro (Dark Mode Variant)",
+    "vibe": "Elite, Precision, Secret Weapon, High-Tech",
+    "emotional_tone": "Insightful, Professional, Kinetic"
+  },
+  "typography": {
+    "primary_font": "Manrope",
+    "secondary_font": "Inter",
+    "mono_font": "JetBrains Mono",
+    "scale": {
+      "h1": "text-5xl md:text-7xl font-bold tracking-tight leading-none",
+      "h2": "text-3xl md:text-5xl font-semibold tracking-tight",
+      "h3": "text-2xl font-medium tracking-normal",
+      "body": "text-base leading-relaxed text-muted-foreground",
+      "label": "text-xs font-bold uppercase tracking-widest text-muted-foreground/80",
+      "data": "font-mono text-sm tracking-tight"
+    },
+    "instructions": "Use Manrope for all Headings. Use Inter for body text. Use JetBrains Mono specifically for Trend Scores, View Counts, and Analytics data points."
+  },
+  "colors": {
+    "palette": {
+      "background": "#0A0A0A",
+      "surface": "#121212",
+      "surface_highlight": "#1E1E1E",
+      "border": "rgba(255, 255, 255, 0.08)",
+      "primary": "#6D28D9",
+      "primary_glow": "#8B5CF6",
+      "accent_teal": "#00E5FF",
+      "accent_pink": "#FF0080",
+      "text_primary": "#FFFFFF",
+      "text_secondary": "#A1A1AA"
+    },
+    "gradients": {
+      "hero_glow": "radial-gradient(circle at center, rgba(109, 40, 217, 0.15) 0%, rgba(10, 10, 10, 0) 70%)",
+      "card_surface": "linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)",
+      "active_border": "linear-gradient(90deg, #00E5FF 0%, #8B5CF6 100%)"
+    },
+    "rules": "Background must be #0A0A0A (Obsidian), never pure black. Use the 'hero_glow' behind the main search input. Use 'accent_teal' for high-velocity trend scores."
+  },
+  "layout": {
+    "spacing_system": "Generous. Use p-8 or p-12 for section padding. Gap-6 or Gap-8 for grids.",
+    "grid_strategy": "Bento Grid for Results. Top result spans 2 columns (if desktop).",
+    "container": "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8",
+    "z_index": {
+      "background": "-1",
+      "content": "10",
+      "overlay": "50",
+      "modal": "100"
+    }
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-white text-black hover:bg-gray-200 rounded-full px-8 py-3 font-bold transition-all shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)]",
+      "secondary": "bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-full px-6 py-2 backdrop-blur-sm transition-all",
+      "ghost": "text-muted-foreground hover:text-white transition-colors"
+    },
+    "cards": {
+      "style": "Glassmorphism. bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden hover:border-white/20 transition-all duration-300 group",
+      "hover_effect": "Scale 1.01, shadow-2xl shadow-purple-500/10"
+    },
+    "inputs": {
+      "search_bar": "bg-white/5 border border-white/10 focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/50 rounded-xl px-6 py-4 text-lg w-full transition-all placeholder:text-white/20"
+    },
+    "modals": {
+      "overlay": "bg-black/80 backdrop-blur-sm fixed inset-0 z-50",
+      "content": "bg-[#0F0F0F] border border-white/10 rounded-2xl p-8 max-w-3xl w-full fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 shadow-2xl"
+    }
+  },
+  "visual_enhancers": {
+    "glassmorphism": "Use backdrop-blur-xl for panels floating over complex backgrounds.",
+    "noise": "Add a subtle noise texture overlay at 3% opacity to the entire body to kill digital flatness.",
+    "glows": "Use colored blurs behind key elements (like the Trend Score) to make them 'radiate'.",
+    "borders": "1px solid borders with 10% opacity white. Do not use thick borders."
+  },
+  "motion": {
+    "hover": "transition-all duration-300 ease-out",
+    "entrance": "animate-in fade-in slide-in-from-bottom-4 duration-700",
+    "micro_interactions": "Active elements should scale down slightly (0.98) on click."
+  },
+  "assets": {
+    "images": {
+      "hero_bg": "https://images.unsplash.com/photo-1762279388956-1c098163a2a8?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "creator_context": "https://images.unsplash.com/photo-1636293875439-b3125c0f1fc1?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "placeholder_thumb": "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop"
+    },
+    "icons": "Use 'lucide-react' for all UI icons. Use 'TrendingUp', 'Zap', 'Play', 'X', 'Info', 'BarChart3'."
+  },
+  "instructions_to_main_agent": [
+    "1. SETUP: Ensure 'lucide-react' and 'framer-motion' (if available) or standard CSS animations are ready.",
+    "2. THEME: Force DARK MODE. Do not implement a light mode toggle. The app is strictly dark.",
+    "3. LAYOUT: The Home page is NOT a dashboard. It is a 'Search Engine' style interface. Center the input. Show results below only AFTER search.",
+    "4. RESULTS: The 'Top 5' must use a Bento Grid. Video #1 is the 'Hero' (large). Videos #2-5 are smaller cards.",
+    "5. ANALYSIS: The 'Why it works' modal is the core value. Make it look like a 'Declassified Document' or 'Code Breakdown'. Use monospaced fonts for the analysis text.",
+    "6. SCORE: The 'Trend Velocity Score' must be prominent. Use a color scale: <50 (Gray), 50-80 (Blue), >80 (Neon Teal/Pink).",
+    "7. NOISE: Add a fixed position div with a noise background image (base64 or url) and pointer-events-none to create the film grain effect.",
+    "8. DATA-TESTID: Add 'data-testid' to the Niche Selector, Fetch Button, Video Cards, and Modal Close button."
+  ],
+  "universal_guidelines": [
+    "Avoid generic gradients. Use dark, rich backgrounds.",
+    "Do not center align the entire app. Use left alignment for content reading.",
+    "Use 2-3x more spacing than typical.",
+    "Never use 'Inter' for Headings. Use 'Manrope'.",
+    "Interactive elements must have hover states (text color change or background shift)."
+  ]
+}
