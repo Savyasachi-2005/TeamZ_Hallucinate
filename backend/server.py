@@ -1590,6 +1590,124 @@ Return ONLY this JSON (no markdown, no extra text):
             logger.error(f"Failed to parse Gemini response: {e}")
             raise HTTPException(status_code=500, detail={"error": "Failed to parse Gemini response as JSON"})
 
+# ==================== COPILOT INTELLIGENCE LAYER ====================
+
+def detect_intent_local(message: str, context: Dict[str, Any]) -> Optional[str]:
+    """
+    Local rule-based intent detection to avoid unnecessary Gemini calls.
+    Returns response if rule-based answer possible, else None.
+    """
+    message_lower = message.lower()
+    
+    # No context available
+    if not context.get("has_context"):
+        return "I don't have any context yet. Please analyze your channel or search for trends first, then I can help you with insights."
+    
+    channel = context.get("channel_insights")
+    metrics = context.get("aggregated_metrics", {})
+    
+    # Intent: Engagement queries
+    if any(word in message_lower for word in ["engagement", "likes", "comments", "interaction"]):
+        if channel and channel.get("avg_engagement_rate") is not None:
+            rate = channel["avg_engagement_rate"] * 100
+            status = metrics.get("engagement_status", "unknown")
+            return f"Your current engagement rate is {rate:.2f}%. This is considered **{status}** for your channel size. {'Good job maintaining audience interaction!' if status == 'good' else 'Consider posting more engaging content to improve this metric.'}"
+        return None
+    
+    # Intent: Posting frequency/consistency
+    if any(word in message_lower for word in ["post", "upload", "frequency", "consistent", "regularly"]):
+        if channel:
+            freq = channel.get("upload_frequency", 0)
+            consistency = channel.get("health_dashboard", {}).get("consistency_score", 0)
+            return f"You're uploading **{freq:.1f} videos per month**. Your consistency score is **{consistency}/100**. {'Great consistency!' if consistency >= 75 else 'Try to maintain a more regular upload schedule to improve audience retention.'}"
+        return None
+    
+    # Intent: Growth/subscribers
+    if any(word in message_lower for word in ["growth", "subscriber", "growing", "audience"]):
+        if channel:
+            subs = channel.get("subscribers", 0)
+            momentum = channel.get("health_dashboard", {}).get("growth_momentum", "Unknown")
+            stage = channel.get("growth_stage", "unknown")
+            return f"You have **{subs:,} subscribers** (stage: **{stage}**). Growth momentum: **{momentum}**. {'Keep up the momentum!' if momentum == 'Improving' else 'Focus on consistency and engagement to boost growth.'}"
+        return None
+    
+    # Intent: Content topics/themes
+    if any(word in message_lower for word in ["topic", "theme", "content", "niche", "about"]):
+        if channel:
+            themes = channel.get("top_themes", [])
+            if themes:
+                return f"Your top content themes are: **{', '.join(themes[:3])}**. These define your channel's focus. Stick to these or explore related topics to maintain audience interest."
+        return None
+    
+    # Intent: Competitor comparison
+    if any(word in message_lower for word in ["competitor", "competition", "compare", "versus", "vs"]):
+        comp = context.get("competitor_insights")
+        if comp:
+            return f"Compared to **{comp['competitor_name']}**: {comp['engagement_gap']} engagement difference. {comp['posting_gap']}. Focus on their successful topics: {', '.join(comp['missed_topics'][:3])}."
+        return "You haven't compared with any competitor yet. Add a competitor URL in the channel analysis to get comparison insights."
+    
+    # Intent: Missed opportunities
+    if any(word in message_lower for word in ["missed", "opportunity", "should cover", "trending", "trend"]):
+        if channel and channel.get("missed_trends"):
+            trends = channel["missed_trends"][:3]
+            trend_list = "\n".join([f"- **{t['keyword']}** (score: {t['trend_score']}/100)" for t in trends])
+            return f"Here are trending topics you haven't covered:\n{trend_list}\n\nConsider creating content around these to capture trending traffic."
+        return None
+    
+    # No rule-based match - need AI
+    return None
+
+async def ask_copilot_ai(message: str, context: Dict[str, Any]) -> str:
+    """
+    Call Gemini ONLY when rule-based intent detection fails.
+    Uses context to provide specific, actionable advice.
+    """
+    check_api_key()
+    
+    # Build context string for Gemini
+    context_str = json.dumps(context, indent=2)
+    
+    prompt = f"""You are an AI Growth Copilot for YouTube creators. Answer the user's question using ONLY the provided context data. Do NOT hallucinate or add external information.
+
+CONTEXT DATA:
+{context_str}
+
+USER QUESTION:
+{message}
+
+INSTRUCTIONS:
+1. Answer based strictly on the context provided
+2. Be specific and actionable
+3. Keep response under 100 words
+4. Use metrics from context
+5. If context doesn't have relevant info, say "I need more analysis data to answer this"
+6. Format: Use **bold** for emphasis
+
+Answer:"""
+
+    async with httpx.AsyncClient(timeout=30.0) as client:
+        try:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={GOOGLE_API_KEY}"
+            
+            payload = {
+                "contents": [{"parts": [{"text": prompt}]}],
+                "generationConfig": {
+                    "temperature": 0.7,
+                    "maxOutputTokens": 500
+                }
+            }
+            
+            response = await client.post(url, json=payload)
+            response.raise_for_status()
+            data = response.json()
+            
+            answer = data["candidates"][0]["content"]["parts"][0]["text"]
+            return answer.strip()
+            
+        except Exception as e:
+            logger.error(f"Gemini copilot error: {e}")
+            return "I'm having trouble generating a response. Please try rephrasing your question."
+
 # ==================== API ENDPOINTS ====================
 
 @api_router.get("/")
