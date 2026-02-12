@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import "@/App.css";
 import axios from "axios";
 import { 
   TrendingUp, Zap, Play, X, Info, BarChart3, ExternalLink, Loader2, 
   User, Users, Video, Calendar, Target, Lightbulb, AlertCircle,
-  Youtube, Search, Sparkles
+  Youtube, Search, Sparkles, ArrowRight
 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -20,6 +20,8 @@ const NICHES = ["Coding", "Finance", "Fitness", "Gaming", "Education"];
 function App() {
   // Niche Trends State
   const [selectedNiche, setSelectedNiche] = useState("");
+  const [customNiche, setCustomNiche] = useState("");
+  const [currentSearchLabel, setCurrentSearchLabel] = useState("");
   const [trends, setTrends] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -35,11 +37,24 @@ function App() {
   // Active Tab
   const [activeTab, setActiveTab] = useState("trends");
 
+  // Ref for scrolling to trends
+  const trendsResultsRef = useRef(null);
+
   // ============ NICHE TRENDS FUNCTIONS ============
   
-  const fetchTrends = async () => {
-    if (!selectedNiche) {
-      toast.error("Please select a niche first");
+  const fetchTrends = async (customKeywordOverride = null) => {
+    const keyword = customKeywordOverride || customNiche.trim();
+    const niche = selectedNiche;
+
+    // Validation: prioritize custom keyword > dropdown
+    if (!keyword && !niche) {
+      toast.error("Please select a niche or enter a custom keyword");
+      return;
+    }
+
+    // Validate custom keyword length
+    if (keyword && keyword.length < 3) {
+      toast.error("Custom keyword must be at least 3 characters");
       return;
     }
 
@@ -47,11 +62,19 @@ function App() {
     setTrends([]);
     
     try {
-      const response = await axios.post(`${API}/trends`, {
-        niche: selectedNiche
-      });
+      const payload = keyword 
+        ? { custom_keyword: keyword }
+        : { niche: niche };
+      
+      const response = await axios.post(`${API}/trends`, payload);
       setTrends(response.data.top_trends);
+      setCurrentSearchLabel(response.data.niche);
       toast.success(`Found ${response.data.top_trends.length} trending videos`);
+
+      // Scroll to results
+      setTimeout(() => {
+        trendsResultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
     } catch (error) {
       console.error("Error fetching trends:", error);
       const errorMessage = error.response?.data?.detail?.error || error.response?.data?.detail || "Failed to fetch trends";
@@ -59,6 +82,18 @@ function App() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Explore trend from channel theme
+  const exploreTrendFromTheme = async (theme) => {
+    setActiveTab("trends");
+    setCustomNiche(theme);
+    setSelectedNiche("");
+    
+    // Wait for tab switch then fetch
+    setTimeout(() => {
+      fetchTrends(theme);
+    }, 100);
   };
 
   const analyzeVideo = async (video) => {
@@ -70,7 +105,7 @@ function App() {
     try {
       const response = await axios.post(`${API}/analyse`, {
         video_id: video.video_id,
-        niche: selectedNiche
+        niche: currentSearchLabel || selectedNiche || customNiche
       });
       setAnalysisData(response.data);
     } catch (error) {
