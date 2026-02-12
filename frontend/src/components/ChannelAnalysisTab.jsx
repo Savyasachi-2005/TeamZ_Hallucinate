@@ -1,7 +1,9 @@
 import { useState, useRef } from 'react';
 import { 
   Youtube, Search, Users, Video, Target, Calendar, 
-  Sparkles, Lightbulb, Zap, ExternalLink, ArrowRight, TrendingUp
+  Sparkles, Lightbulb, Zap, ExternalLink, ArrowRight, TrendingUp,
+  Activity, BarChart3, Focus, AlertTriangle, CheckCircle2, XCircle,
+  GitCompare, Trophy, AlertCircle
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
@@ -13,8 +15,10 @@ import { analyzeVideo } from '@/services/api';
 
 const ChannelAnalysisTab = () => {
   const [channelUrl, setChannelUrl] = useState('');
+  const [competitorUrl, setCompetitorUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [channelData, setChannelData] = useState(null);
+  const [showCompetitorInput, setShowCompetitorInput] = useState(false);
   
   // Theme exploration state
   const [isExploring, setIsExploring] = useState(false);
@@ -28,6 +32,19 @@ const ChannelAnalysisTab = () => {
   const [analysisData, setAnalysisData] = useState(null);
   
   const trendsRef = useRef(null);
+
+  // Helper function to get color based on score
+  const getScoreColor = (score) => {
+    if (score >= 75) return 'text-green-400 bg-green-500/10 border-green-500/30';
+    if (score >= 50) return 'text-yellow-400 bg-yellow-500/10 border-yellow-500/30';
+    return 'text-red-400 bg-red-500/10 border-red-500/30';
+  };
+
+  const getMomentumIcon = (momentum) => {
+    if (momentum === 'Improving') return <TrendingUp className="w-5 h-5 text-green-400" />;
+    if (momentum === 'Declining') return <AlertTriangle className="w-5 h-5 text-red-400" />;
+    return <Activity className="w-5 h-5 text-yellow-400" />;
+  };
 
   const handleAnalyzeChannel = async () => {
     if (!channelUrl.trim()) {
