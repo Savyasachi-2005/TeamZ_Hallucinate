@@ -698,37 +698,6 @@ def calculate_trend_scores_batch(videos: List[dict], stats: dict) -> List[dict]:
     results.sort(key=lambda x: x["trend_score"], reverse=True)
     
     return results
-        )
-        
-        # OPTIMIZED FORMULA:
-        # - 60% velocity (already includes recency via exponential decay)
-        # - 30% engagement (quality signal)
-        # - 10% competition (uniqueness)
-        trend_score = (
-            (norm_velocity * 0.60) +
-            (norm_engagement * 0.30) +
-            (competition_score * 0.10)
-        )
-        
-        trend_score = round(min(100, max(0, trend_score)), 2)
-        
-        results.append({
-            "video_id": candidate["video_id"],
-            "title": candidate["title"],
-            "channel": candidate["channel"],
-            "views": candidate["stats"]["views"],
-            "published_at": candidate["published_at"],
-            "trend_score": trend_score,
-            "views_per_day": round(candidate["views_per_day"], 2),
-            "engagement_rate": round(candidate["engagement_rate"], 4),
-            "recency_days": candidate["days"],
-            "competition_level": competition_level
-        })
-    
-    # Sort by trend_score descending
-    results.sort(key=lambda x: x["trend_score"], reverse=True)
-    
-    return results
 
 def extract_trending_topics(videos: List[dict], top_n: int = 3) -> List[str]:
     """
