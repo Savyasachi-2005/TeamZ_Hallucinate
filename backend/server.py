@@ -625,18 +625,39 @@ def calculate_trend_scores_batch(videos: List[dict], stats: dict) -> List[dict]:
     Old viral videos are filtered out - only recent, fast-growing content qualifies.
     """
     
-    # Step 1: Apply hard filters (30 days max, 0.5% engagement)
+    # Step 1: Apply hard filters with progressive relaxation
+    # Try strict filters first (30 days, 0.5% engagement)
     filtered_videos = apply_hard_filters(videos, stats, max_days=30, min_engagement=0.005)
     
-    # If fewer than 5 videos, relax to 60 days
+    # Relax to 60 days if needed
     if len(filtered_videos) < 5:
-        logger.info("Relaxing recency filter to 60 days due to insufficient results")
+        logger.info("Relaxing recency filter to 60 days")
         filtered_videos = apply_hard_filters(videos, stats, max_days=60, min_engagement=0.005)
     
-    # If still fewer than 5, relax engagement to 0.1%
+    # Relax engagement to 0.1% and 90 days if needed
     if len(filtered_videos) < 5:
-        logger.info("Relaxing engagement filter to 0.1% due to insufficient results")
+        logger.info("Relaxing filters: 90 days, 0.1% engagement")
         filtered_videos = apply_hard_filters(videos, stats, max_days=90, min_engagement=0.001)
+    
+    # Final fallback: just filter by views >= 100, no time/engagement limit
+    if len(filtered_videos) < 3:
+        logger.info("Final fallback: minimal filters")
+        filtered_videos = []
+        for video in videos:
+            video_id = video["video_id"]
+            video_stats = stats.get(video_id, {"views": 0, "likes": 0, "comments": 0})
+            views = video_stats.get("views", 0)
+            if views >= 100:
+                likes = video_stats.get("likes", 0)
+                comments = video_stats.get("comments", 0)
+                days = calculate_days_since_upload(video["published_at"])
+                engagement_rate = calculate_engagement_rate(views, likes, comments)
+                filtered_videos.append({
+                    **video,
+                    "stats": video_stats,
+                    "days": days,
+                    "engagement_rate": engagement_rate
+                })
     
     if not filtered_videos:
         return []
