@@ -89,10 +89,16 @@ class TrendVideo(BaseModel):
     published_at: str
     trend_score: float
     youtube_url: str
+    # New enhanced metrics
+    views_per_day: float
+    engagement_rate: float
+    recency_days: int
+    competition_level: str
 
 class TrendResponse(BaseModel):
     niche: str
     top_trends: List[TrendVideo]
+    trending_topics: Optional[List[str]] = None
 
 class AnalyseRequest(BaseModel):
     video_id: str
