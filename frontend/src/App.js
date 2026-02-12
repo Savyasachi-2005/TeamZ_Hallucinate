@@ -225,11 +225,47 @@ function App() {
             <div className="max-w-xl mx-auto mb-12">
               <div className="glass-card p-8">
                 <div className="space-y-6">
+                  {/* Custom Niche Input */}
                   <div>
                     <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3 block">
-                      Select Your Niche
+                      Or type a custom niche
                     </label>
-                    <Select value={selectedNiche} onValueChange={setSelectedNiche}>
+                    <Input
+                      data-testid="custom-niche-input"
+                      type="text"
+                      value={customNiche}
+                      onChange={(e) => {
+                        setCustomNiche(e.target.value);
+                        if (e.target.value.trim()) setSelectedNiche("");
+                      }}
+                      placeholder="e.g., AI tools for students, Finance for beginners..."
+                      className="w-full bg-white/5 border-white/10 focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/50 rounded-xl px-6 py-4 text-lg h-auto placeholder:text-gray-600"
+                      onKeyDown={(e) => e.key === 'Enter' && fetchTrends()}
+                    />
+                    <p className="text-xs text-gray-500 mt-2">
+                      Custom input takes priority over dropdown selection
+                    </p>
+                  </div>
+
+                  {/* Divider */}
+                  <div className="flex items-center gap-4">
+                    <div className="flex-1 h-px bg-white/10"></div>
+                    <span className="text-xs text-gray-500 uppercase">or select preset</span>
+                    <div className="flex-1 h-px bg-white/10"></div>
+                  </div>
+
+                  {/* Dropdown */}
+                  <div>
+                    <label className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3 block">
+                      Select Preset Niche
+                    </label>
+                    <Select 
+                      value={selectedNiche} 
+                      onValueChange={(val) => {
+                        setSelectedNiche(val);
+                        setCustomNiche("");
+                      }}
+                    >
                       <SelectTrigger 
                         data-testid="niche-selector"
                         className="w-full bg-white/5 border-white/10 focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/50 rounded-xl px-6 py-4 text-lg h-auto"
@@ -252,8 +288,8 @@ function App() {
                   
                   <button
                     data-testid="fetch-trends-button"
-                    onClick={fetchTrends}
-                    disabled={isLoading || !selectedNiche}
+                    onClick={() => fetchTrends()}
+                    disabled={isLoading || (!selectedNiche && !customNiche.trim())}
                     className="w-full btn-glow disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
                     {isLoading ? (
@@ -274,11 +310,11 @@ function App() {
 
             {/* Results Section */}
             {trends.length > 0 && (
-              <div className="space-y-8">
+              <div className="space-y-8" ref={trendsResultsRef}>
                 <div className="flex items-center gap-3">
                   <BarChart3 className="w-6 h-6 text-purple-400" />
                   <h2 className="text-3xl font-semibold tracking-tight">
-                    Top Trending in <span className="text-cyan-400">{selectedNiche}</span>
+                    Top Trending in <span className="text-cyan-400">{currentSearchLabel}</span>
                   </h2>
                 </div>
 
