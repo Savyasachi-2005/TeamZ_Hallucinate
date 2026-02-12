@@ -71,4 +71,9 @@ export const checkHealth = async () => {
   return response.data;
 };
 
+export const copilotChat = async (message) => {
+  const response = await api.post('/copilot-chat', { message });
+  return response.data;
+};
+
 export default api;
