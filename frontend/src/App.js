@@ -73,27 +73,27 @@ function App() {
 
         {/* Tab Navigation */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 bg-gray-900/50 border border-gray-800 rounded-2xl p-1.5 mb-10">
+          <TabsList className="grid w-full max-w-lg mx-auto grid-cols-2 bg-gray-900/60 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-2 mb-12 shadow-2xl">
             <TabsTrigger
               value="trends"
               data-testid="tab-trends"
-              className="rounded-xl py-3 px-6 text-sm font-semibold transition-all duration-300
-                data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-cyan-600 
-                data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-blue-500/25
-                data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-white"
+              className="rounded-xl py-4 px-8 text-base font-bold transition-all duration-300 relative overflow-hidden
+                data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-cyan-500 
+                data-[state=active]:text-white data-[state=active]:shadow-xl data-[state=active]:shadow-blue-500/40
+                data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-white data-[state=inactive]:hover:bg-gray-800/50"
             >
-              <TrendingUp className="w-4 h-4 mr-2 inline" />
+              <TrendingUp className="w-5 h-5 mr-2 inline" />
               Niche Trends
             </TabsTrigger>
             <TabsTrigger
               value="channel"
               data-testid="tab-channel"
-              className="rounded-xl py-3 px-6 text-sm font-semibold transition-all duration-300
+              className="rounded-xl py-4 px-8 text-base font-bold transition-all duration-300 relative overflow-hidden
                 data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600 data-[state=active]:to-purple-600 
-                data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-cyan-500/25
-                data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-white"
+                data-[state=active]:text-white data-[state=active]:shadow-xl data-[state=active]:shadow-purple-500/40
+                data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-white data-[state=inactive]:hover:bg-gray-800/50"
             >
-              <User className="w-4 h-4 mr-2 inline" />
+              <User className="w-5 h-5 mr-2 inline" />
               Channel Analysis
             </TabsTrigger>
           </TabsList>
