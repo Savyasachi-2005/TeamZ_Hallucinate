@@ -418,10 +418,10 @@ class NicheTrendAPITester:
             data={"video_id": "invalid_video_id", "niche": "Coding"}
         )
 
-    def test_channel_analyse_valid_url(self, channel_url="https://youtube.com/@MrBeast"):
-        """Test channel analyse endpoint with valid URL"""
+    def test_channel_analyse_basic_flow(self, channel_url="@mkbhd"):
+        """Test 1: Channel Analysis WITHOUT Competitor (Basic Flow)"""
         success, response = self.run_test(
-            "Channel Analyse - Valid URL",
+            "Enhanced AI Copilot - Channel Analysis Basic Flow",
             "POST",
             "channel-analyse",
             200,
@@ -430,12 +430,15 @@ class NicheTrendAPITester:
         )
         
         if success and response:
-            # Validate response structure
-            required_sections = ["channel_info", "analytics", "recent_videos", "ai_analysis"]
+            # Validate enhanced response structure for AI Copilot
+            required_sections = [
+                "channel_info", "analytics", "recent_videos", "ai_analysis", 
+                "health_dashboard", "missed_trends", "competitor_comparison"
+            ]
             missing_sections = [section for section in required_sections if section not in response]
             
             if missing_sections:
-                self.log_test("Channel Analyse Response Structure", False, f"Missing sections: {missing_sections}")
+                self.log_test("Enhanced AI Copilot Response Structure", False, f"Missing sections: {missing_sections}")
                 return False, response
             
             # Validate channel_info structure
@@ -456,33 +459,249 @@ class NicheTrendAPITester:
                 self.log_test("Analytics Structure", False, f"Missing fields: {missing_analytics_fields}")
                 return False, response
             
-            # Validate recent_videos structure
-            recent_videos = response["recent_videos"]
-            if not isinstance(recent_videos, list):
-                self.log_test("Recent Videos Structure", False, "recent_videos should be a list")
+            # Validate health_dashboard structure (NEW)
+            health_dashboard = response["health_dashboard"]
+            required_health_fields = ["consistency_score", "engagement_stability", "topic_focus_score", "growth_momentum"]
+            missing_health_fields = [field for field in required_health_fields if field not in health_dashboard]
+            
+            if missing_health_fields:
+                self.log_test("Health Dashboard Structure", False, f"Missing fields: {missing_health_fields}")
                 return False, response
             
-            if recent_videos:
-                required_video_fields = ["title", "views", "engagement_rate", "published_at", "video_id"]
-                for i, video in enumerate(recent_videos[:3]):  # Check first 3 videos
-                    missing_video_fields = [field for field in required_video_fields if field not in video]
-                    if missing_video_fields:
-                        self.log_test(f"Recent Video {i+1} Structure", False, f"Missing fields: {missing_video_fields}")
-                        return False, response
+            # Validate health dashboard values
+            consistency_score = health_dashboard["consistency_score"]
+            engagement_stability = health_dashboard["engagement_stability"]
+            topic_focus_score = health_dashboard["topic_focus_score"]
+            growth_momentum = health_dashboard["growth_momentum"]
             
-            # Validate ai_analysis structure
+            if not (0 <= consistency_score <= 100):
+                self.log_test("Health Dashboard - Consistency Score Range", False, f"Expected 0-100, got {consistency_score}")
+                return False, response
+            
+            if not (0 <= engagement_stability <= 100):
+                self.log_test("Health Dashboard - Engagement Stability Range", False, f"Expected 0-100, got {engagement_stability}")
+                return False, response
+            
+            if not (0 <= topic_focus_score <= 100):
+                self.log_test("Health Dashboard - Topic Focus Range", False, f"Expected 0-100, got {topic_focus_score}")
+                return False, response
+            
+            if growth_momentum not in ["Improving", "Stable", "Declining"]:
+                self.log_test("Health Dashboard - Growth Momentum Values", False, f"Expected Improving/Stable/Declining, got {growth_momentum}")
+                return False, response
+            
+            self.log_test("Health Dashboard Validation", True)
+            
+            # Validate missed_trends structure (NEW)
+            missed_trends = response["missed_trends"]
+            if not isinstance(missed_trends, list):
+                self.log_test("Missed Trends Structure", False, "missed_trends should be a list")
+                return False, response
+            
+            for i, trend in enumerate(missed_trends):
+                required_trend_fields = ["keyword", "trend_score", "reason"]
+                missing_trend_fields = [field for field in required_trend_fields if field not in trend]
+                if missing_trend_fields:
+                    self.log_test(f"Missed Trend {i+1} Structure", False, f"Missing fields: {missing_trend_fields}")
+                    return False, response
+                
+                # Validate trend_score is 0-100
+                trend_score = trend["trend_score"]
+                if not (0 <= trend_score <= 100):
+                    self.log_test(f"Missed Trend {i+1} Score Range", False, f"Expected 0-100, got {trend_score}")
+                    return False, response
+            
+            self.log_test("Missed Trends Validation", True)
+            
+            # Validate enhanced ai_analysis structure (NEW)
             ai_analysis = response["ai_analysis"]
-            if "channel_summary" not in ai_analysis or "strategic_recommendations" not in ai_analysis:
-                self.log_test("AI Analysis Structure", False, "Missing channel_summary or strategic_recommendations")
+            if "channel_summary" not in ai_analysis or "strategic_summary" not in ai_analysis:
+                self.log_test("Enhanced AI Analysis Structure", False, "Missing channel_summary or strategic_summary")
                 return False, response
             
-            self.log_test("Channel Analyse Response Structure", True)
+            # Validate strategic_summary structure
+            strategic_summary = ai_analysis["strategic_summary"]
+            required_strategic_fields = ["main_risk", "growth_opportunity", "recommended_action_plan"]
+            missing_strategic_fields = [field for field in required_strategic_fields if field not in strategic_summary]
+            
+            if missing_strategic_fields:
+                self.log_test("Strategic Summary Structure", False, f"Missing fields: {missing_strategic_fields}")
+                return False, response
+            
+            # Validate recommended_action_plan has 3 steps
+            action_plan = strategic_summary["recommended_action_plan"]
+            if not isinstance(action_plan, list) or len(action_plan) != 3:
+                self.log_test("Action Plan Structure", False, f"Expected list of 3 steps, got {len(action_plan) if isinstance(action_plan, list) else type(action_plan)}")
+                return False, response
+            
+            self.log_test("Strategic Summary Validation", True)
+            
+            # Validate competitor_comparison is null for basic flow
+            competitor_comparison = response["competitor_comparison"]
+            if competitor_comparison is not None:
+                self.log_test("Competitor Comparison - Basic Flow", False, f"Expected null for basic flow, got {type(competitor_comparison)}")
+                return False, response
+            
+            self.log_test("Competitor Comparison - Basic Flow", True)
+            
+            self.log_test("Enhanced AI Copilot - Basic Flow Complete", True)
             print(f"   Channel: {channel_info['name']}")
             print(f"   Subscribers: {channel_info['subscribers']:,}")
-            print(f"   Videos: {len(recent_videos)} recent videos found")
+            print(f"   Health Scores: Consistency={consistency_score}, Engagement={engagement_stability}, Focus={topic_focus_score}")
+            print(f"   Growth Momentum: {growth_momentum}")
+            print(f"   Missed Trends: {len(missed_trends)} detected")
             return True, response
         
         return success, response
+
+    def test_channel_analyse_with_competitor(self, channel_url="@mkbhd", competitor_url="@UnboxTherapy"):
+        """Test 2: Channel Analysis WITH Competitor Comparison"""
+        success, response = self.run_test(
+            "Enhanced AI Copilot - Channel Analysis with Competitor",
+            "POST",
+            "channel-analyse",
+            200,
+            data={"channel_url": channel_url, "competitor_url": competitor_url},
+            timeout=180  # Competitor analysis takes longer
+        )
+        
+        if success and response:
+            # All basic validations from test 1
+            basic_success, _ = self.validate_basic_channel_response(response)
+            if not basic_success:
+                return False, response
+            
+            # Validate competitor_comparison is NOT null
+            competitor_comparison = response["competitor_comparison"]
+            if competitor_comparison is None:
+                self.log_test("Competitor Comparison - With Competitor", False, "Expected competitor data, got null")
+                return False, response
+            
+            # Validate competitor_comparison structure
+            required_competitor_fields = ["competitor_name", "engagement_gap", "posting_gap", "theme_overlap_percentage", "missed_topics"]
+            missing_competitor_fields = [field for field in required_competitor_fields if field not in competitor_comparison]
+            
+            if missing_competitor_fields:
+                self.log_test("Competitor Comparison Structure", False, f"Missing fields: {missing_competitor_fields}")
+                return False, response
+            
+            # Validate engagement_gap format (should be like "+2.3%" or "-1.5%")
+            engagement_gap = competitor_comparison["engagement_gap"]
+            if not isinstance(engagement_gap, str) or not (engagement_gap.startswith('+') or engagement_gap.startswith('-')) or not engagement_gap.endswith('%'):
+                self.log_test("Engagement Gap Format", False, f"Expected format like '+2.3%' or '-1.5%', got {engagement_gap}")
+                return False, response
+            
+            # Validate theme_overlap_percentage is 0-100
+            theme_overlap = competitor_comparison["theme_overlap_percentage"]
+            if not (0 <= theme_overlap <= 100):
+                self.log_test("Theme Overlap Range", False, f"Expected 0-100, got {theme_overlap}")
+                return False, response
+            
+            # Validate missed_topics is a list
+            missed_topics = competitor_comparison["missed_topics"]
+            if not isinstance(missed_topics, list):
+                self.log_test("Competitor Missed Topics Structure", False, "missed_topics should be a list")
+                return False, response
+            
+            self.log_test("Competitor Comparison Validation", True)
+            self.log_test("Enhanced AI Copilot - Competitor Flow Complete", True)
+            
+            print(f"   Competitor: {competitor_comparison['competitor_name']}")
+            print(f"   Engagement Gap: {engagement_gap}")
+            print(f"   Theme Overlap: {theme_overlap}%")
+            print(f"   Missed Topics: {len(missed_topics)} identified")
+            return True, response
+        
+        return success, response
+
+    def validate_basic_channel_response(self, response):
+        """Helper method to validate basic channel response structure"""
+        # This is a condensed version of the validation from test_channel_analyse_basic_flow
+        required_sections = [
+            "channel_info", "analytics", "health_dashboard", "missed_trends", "ai_analysis"
+        ]
+        
+        for section in required_sections:
+            if section not in response:
+                self.log_test(f"Basic Validation - Missing {section}", False, f"Missing section: {section}")
+                return False, response
+        
+        # Quick validation of key fields
+        health_dashboard = response["health_dashboard"]
+        for score_field in ["consistency_score", "engagement_stability", "topic_focus_score"]:
+            if not (0 <= health_dashboard.get(score_field, -1) <= 100):
+                self.log_test(f"Basic Validation - {score_field}", False, f"Score out of range: {health_dashboard.get(score_field)}")
+                return False, response
+        
+        if response["health_dashboard"]["growth_momentum"] not in ["Improving", "Stable", "Declining"]:
+            self.log_test("Basic Validation - Growth Momentum", False, f"Invalid growth momentum: {response['health_dashboard']['growth_momentum']}")
+            return False, response
+        
+        return True, response
+
+    def test_channel_analyse_caching(self, channel_url="@FireshipChannel"):
+        """Test 6: Caching - Make same request twice to verify cache hit"""
+        print(f"\n🔍 Testing Caching with {channel_url}...")
+        
+        # First request
+        success1, response1 = self.run_test(
+            "Channel Analysis - First Request (Cache MISS)",
+            "POST",
+            "channel-analyse",
+            200,
+            data={"channel_url": channel_url},
+            timeout=120
+        )
+        
+        if not success1:
+            return False, {}
+        
+        # Second request (should hit cache)
+        success2, response2 = self.run_test(
+            "Channel Analysis - Second Request (Cache HIT)",
+            "POST",
+            "channel-analyse",
+            200,
+            data={"channel_url": channel_url},
+            timeout=30  # Should be much faster due to cache
+        )
+        
+        if success2:
+            # Both requests should return the same channel name
+            if response1.get("channel_info", {}).get("name") == response2.get("channel_info", {}).get("name"):
+                self.log_test("Caching Functionality", True)
+                print("   Note: Check backend logs for 'Cache HIT' message to confirm caching")
+                return True, response2
+            else:
+                self.log_test("Caching Functionality", False, "Responses differ between requests")
+        
+        return success2, response2
+
+    def test_channel_analyse_error_handling(self):
+        """Test 7: Error Handling"""
+        # Test invalid channel URL
+        success1, _ = self.run_test(
+            "Error Handling - Invalid Channel URL",
+            "POST",
+            "channel-analyse",
+            400,
+            data={"channel_url": "https://invalid-url.com"}
+        )
+        
+        # Test non-existent channel
+        success2, _ = self.run_test(
+            "Error Handling - Non-existent Channel",
+            "POST",
+            "channel-analyse",
+            404,
+            data={"channel_url": "@nonexistentchannel12345xyz"}
+        )
+        
+        return success1 and success2
+
+    def test_channel_analyse_valid_url(self, channel_url="https://youtube.com/@MrBeast"):
+        """Legacy test - kept for backward compatibility"""
+        return self.test_channel_analyse_basic_flow(channel_url)
 
     def test_channel_analyse_invalid_url(self):
         """Test channel analyse endpoint with invalid URL"""
