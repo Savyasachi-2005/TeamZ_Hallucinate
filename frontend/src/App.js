@@ -152,10 +152,22 @@ function App() {
     return "trend-score-low";
   };
 
+  const getCompetitionClass = (level) => {
+    if (level === "Low") return "text-green-400";
+    if (level === "Medium") return "text-yellow-400";
+    return "text-red-400";
+  };
+
   const formatViews = (views) => {
     if (views >= 1000000) return `${(views / 1000000).toFixed(1)}M`;
     if (views >= 1000) return `${(views / 1000).toFixed(1)}K`;
     return views.toString();
+  };
+
+  const formatViewsPerDay = (vpd) => {
+    if (vpd >= 1000000) return `${(vpd / 1000000).toFixed(1)}M/day`;
+    if (vpd >= 1000) return `${(vpd / 1000).toFixed(1)}K/day`;
+    return `${Math.round(vpd)}/day`;
   };
 
   const formatDate = (dateStr) => {
