@@ -12,7 +12,6 @@ window.onerror = (message, source, lineno, colno, error) => {
   return originalError ? originalError(message, source, lineno, colno, error) : false;
 };
 
-// Also suppress from error event listener
 window.addEventListener('error', (e) => {
   if (e.message?.includes?.('ResizeObserver')) {
     e.stopImmediatePropagation();
@@ -25,5 +24,5 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>,
+  </React.StrictMode>
 );
