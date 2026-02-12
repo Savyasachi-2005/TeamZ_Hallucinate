@@ -228,9 +228,9 @@ const Landing = () => {
                   <div className="text-8xl font-black text-#1E293B/50 absolute top-4 right-4 group-hover:text-blue-500/20 transition-colors">{item.step}</div>
                   <div className="relative">
                     <div className={`inline-flex p-3 rounded-xl bg-gradient-to-r ${item.gradient}  mb-4 shadow-lg group-hover:scale-110 transition-transform`}>
-                      <item.icon className="w-6 h-6 text-[#3B82F6]" />
+                      <item.icon className="w-6 h-6 text-blue-600" />
                     </div>
-                    <h3 className="text-xl font-black text-[#0F172A] mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-emerald-400 transition-all">{item.title}</h3>
+                    <h3 className="text-xl font-black text-slate-900 mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-emerald-600 transition-all">{item.title}</h3>
                     <p className="text-[#334155]">{item.desc}</p>
                   </div>
                 </div>
