@@ -7,12 +7,12 @@ import CopilotChat from '@/components/CopilotChat';
 
 const NicheTrendsPage = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-#0F172A via-blue-950/20 to-#0F172A relative overflow-hidden">
+    <div className="min-h-screen bg-white relative overflow-hidden">
       {/* Enhanced Animated Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-blue-500/5 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-blue-500/10 rounded-full  " />
+        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-emerald-500/10 rounded-full  " style={{ animationDelay: '1s' }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-blue-500/5 rounded-full  " style={{ animationDelay: '2s' }} />
       </div>
 
       {/* Noise Texture */}
@@ -37,17 +37,17 @@ const NicheTrendsPage = () => {
         {/* Page Header */}
         <header className="text-center mb-12">
           <div className="inline-flex items-center justify-center gap-3 mb-6">
-            <div className="p-4 rounded-2xl bg-gradient-to-br from-blue-600/20 to-emerald-600/20 border border-blue-500/30 shadow-xl shadow-blue-500/20">
+            <div className="p-4 rounded-2xl bg-white border border-blue-500/30 shadow-xl ">
               <TrendingUp className="w-12 h-12 text-[#3B82F6]" />
             </div>
           </div>
           <h1 className="text-5xl md:text-7xl font-black tracking-tight mb-4 leading-none">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-emerald-400 to-blue-400 animate-gradient-x">
+            <span className="text-transparent bg-clip-text bg-white ">
               Niche Trends
             </span>
           </h1>
           <div className="inline-flex items-center justify-center gap-3 px-6 py-3 rounded-full bg-blue-500/10 border border-blue-500/20 -sm">
-            <Sparkles className="w-5 h-5 text-[#3B82F6] animate-pulse" />
+            <Sparkles className="w-5 h-5 text-[#3B82F6] " />
             <p className="text-base md:text-lg text-[#1E293B] font-semibold">
               Discover what's trending in your niche with AI-powered analysis
             </p>

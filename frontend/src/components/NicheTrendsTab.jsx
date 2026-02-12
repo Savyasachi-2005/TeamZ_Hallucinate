@@ -156,15 +156,15 @@ const NicheTrendsTab = () => {
               data-testid="fetch-trends-button"
               onClick={() => handleFetchTrends()}
               disabled={isLoading || (!selectedNiche && !customNiche.trim())}
-              className="w-full bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 
+              className="w-full bg-white hover:from-blue-500 hover:to-emerald-500 
                 disabled:from-#334155 disabled:to-#334155 disabled:cursor-not-allowed
                 text-[#0F172A] font-bold rounded-xl px-8 py-4 transition-all duration-300 
-                shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 disabled:shadow-none
+                shadow-lg  hover: disabled:shadow-none
                 flex items-center justify-center gap-2"
             >
               {isLoading ? (
                 <>
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full " />
                   <span>Scanning Trends...</span>
                 </>
               ) : (
@@ -180,13 +180,13 @@ const NicheTrendsTab = () => {
 
       {/* Results Section */}
       {trends.length > 0 && (
-        <div ref={resultsRef} className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div ref={resultsRef} className="space-y-6  fade-in slide-in-from-bottom-4 duration-500">
           {/* Results Header */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <BarChart3 className="w-6 h-6 text-blue-400" />
               <h2 className="text-2xl font-bold text-[#0F172A]">
-                Trending in <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">{currentSearchLabel}</span>
+                Trending in <span className="text-transparent bg-clip-text bg-white
               </h2>
             </div>
             <span className="text-sm text-[#334155] bg-white px-3 py-1 rounded-full">

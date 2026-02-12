@@ -69,9 +69,9 @@ const Landing = () => {
     <div className="min-h-screen bg-[#F8FAFC] relative overflow-hidden">
       {/* Subtle Professional Background Gradient */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-[#3B82F6]/5 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-[#10B981]/5 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#3B82F6]/3 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-[#3B82F6]/5 rounded-full  " />
+        <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-[#10B981]/5 rounded-full  " style={{ animationDelay: '1s' }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#3B82F6]/3 rounded-full  " style={{ animationDelay: '2s' }} />
       </div>
 
       {/* Noise Texture */}
@@ -84,8 +84,8 @@ const Landing = () => {
             {/* Logo */}
             <div className="inline-flex items-center justify-center gap-4 mb-12 group">
               <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-600 rounded-3xl blur-2xl opacity-60 group-hover:opacity-80 transition-opacity duration-500 animate-pulse" />
-                <div className="relative p-4 rounded-3xl bg-gradient-to-br from-blue-600/90 to-blue-600/90 border border-blue-400/30 shadow-2xl">
+                <div className="absolute inset-0 bg-white rounded-3xl  opacity-60 group-hover:opacity-80 transition-opacity duration-500 " />
+                <div className="relative p-4 rounded-3xl bg-white border border-blue-400/30 shadow-2xl">
                   <img 
                     src="https://images.unsplash.com/photo-1639825752750-5061ded5503b?w=120&h=120&fit=crop" 
                     alt="NichePulse Logo" 
@@ -100,7 +100,7 @@ const Landing = () => {
               <span className="inline-block text-[#0F172A]">
                 Niche
               </span>
-              <span className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-[#3B82F6] to-[#10B981]">
+              <span className="inline-block text-transparent bg-clip-text bg-white
                 Pulse
               </span>
             </h1>
@@ -110,7 +110,7 @@ const Landing = () => {
               <h2 className="text-3xl md:text-5xl font-black text-[#1E293B]">
                 Predict YouTube{' '}
                 <span className="relative inline-block">
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3B82F6] to-[#10B981] animate-in fade-in slide-in-from-bottom-4 duration-500" key={currentWord}>
+                  <span className="text-transparent bg-clip-text bg-white  fade-in slide-in-from-bottom-4 duration-500" key={currentWord}>
                     {words[currentWord]}
                   </span>
                 </span>
@@ -127,9 +127,9 @@ const Landing = () => {
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
               <button
                 onClick={() => navigate('/niche-trends')}
-                className="group relative px-10 py-5 bg-gradient-to-r from-blue-600 via-emerald-600 to-blue-600 hover:from-blue-500 hover:via-emerald-500 hover:to-blue-500 
+                className="group relative px-10 py-5 bg-white hover:from-blue-500 hover:via-emerald-500 hover:to-blue-500 
                   text-[#0F172A] font-bold rounded-2xl text-lg transition-all duration-300 
-                  shadow-2xl shadow-blue-500/40 hover:shadow-blue-500/60 hover:scale-105
+                  shadow-2xl  hover: hover:scale-105
                   flex items-center gap-3"
               >
                 <Zap className="w-6 h-6" />
@@ -149,7 +149,7 @@ const Landing = () => {
             {/* Quick Stats */}
             <div className="flex flex-wrap justify-center gap-8 text-[#475569]">
               {benefits.map((benefit, idx) => (
-                <div key={idx} className="flex items-center gap-2 animate-in fade-in slide-in-from-bottom-4" style={{ animationDelay: `${idx * 100}ms` }}>
+                <div key={idx} className="flex items-center gap-2  fade-in slide-in-from-bottom-4" style={{ animationDelay: `${idx * 100}ms` }}>
                   <benefit.icon className="w-5 h-5 text-[#3B82F6]" />
                   <span className="text-sm font-bold">{benefit.text}</span>
                 </div>
@@ -164,7 +164,7 @@ const Landing = () => {
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-6xl font-black text-[#0F172A] mb-6">
                 Everything You Need to{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-blue-500">
+                <span className="text-transparent bg-clip-text bg-white
                   Dominate YouTube
                 </span>
               </h2>
@@ -179,12 +179,12 @@ const Landing = () => {
                   key={idx}
                   onClick={() => navigate(feature.route)}
                   className="group bg-white/50 -sm border border-[#E2E8F0] hover:border-blue-500/50 rounded-2xl p-8 shadow-md 
-                    transition-all duration-500 hover:shadow-2xl hover:shadow-blue-500/20 hover:-translate-y-2
-                    animate-in fade-in slide-in-from-bottom-4 text-left cursor-pointer
+                    transition-all duration-500 hover:shadow-2xl hover: hover:-translate-y-2
+                     fade-in slide-in-from-bottom-4 text-left cursor-pointer
                     hover:bg-white"
                   style={{ animationDelay: `${idx * 150}ms` }}
                 >
-                  <div className={`inline-flex p-4 rounded-2xl bg-gradient-to-br ${feature.gradient} bg-opacity-5 mb-6
+                  <div className={`inline-flex p-4 rounded-2xl bg-gradient-to-br ${feature.gradient}  mb-6
                     group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
                     <feature.icon className="w-8 h-8 text-[#0F172A]" />
                   </div>
@@ -203,7 +203,7 @@ const Landing = () => {
         </div>
 
         {/* How It Works Section */}
-        <div className="py-20 px-6 bg-gradient-to-b from-transparent via-blue-950/10 to-transparent">
+        <div className="py-20 px-6 bg-white
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-6xl font-black text-[#0F172A] mb-6">
@@ -222,12 +222,12 @@ const Landing = () => {
               ].map((item, idx) => (
                 <div 
                   key={idx}
-                  className="relative bg-white/50 -sm border border-[#E2E8F0] hover:border-blue-500/50 rounded-2xl p-8 shadow-md animate-in fade-in slide-in-from-bottom-4 group transition-all duration-300 hover:-translate-y-2"
+                  className="relative bg-white/50 -sm border border-[#E2E8F0] hover:border-blue-500/50 rounded-2xl p-8 shadow-md  fade-in slide-in-from-bottom-4 group transition-all duration-300 hover:-translate-y-2"
                   style={{ animationDelay: `${idx * 200}ms` }}
                 >
                   <div className="text-8xl font-black text-#1E293B/50 absolute top-4 right-4 group-hover:text-blue-500/20 transition-colors">{item.step}</div>
                   <div className="relative">
-                    <div className={`inline-flex p-3 rounded-xl bg-gradient-to-r ${item.gradient} bg-opacity-5 mb-4 shadow-lg group-hover:scale-110 transition-transform`}>
+                    <div className={`inline-flex p-3 rounded-xl bg-gradient-to-r ${item.gradient}  mb-4 shadow-lg group-hover:scale-110 transition-transform`}>
                       <item.icon className="w-6 h-6 text-[#3B82F6]" />
                     </div>
                     <h3 className="text-xl font-black text-[#0F172A] mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-emerald-400 transition-all">{item.title}</h3>
@@ -242,7 +242,7 @@ const Landing = () => {
         {/* Social Proof / Stats */}
         <div className="py-20 px-6">
           <div className="max-w-6xl mx-auto">
-            <div className="bg-gradient-to-r from-blue-900/30 via-emerald-900/30 to-blue-900/30 border-2 border-blue-500/30 rounded-3xl p-12 text-center -sm shadow-2xl shadow-blue-500/20">
+            <div className="bg-white border-2 border-blue-500/30 rounded-3xl p-12 text-center -sm shadow-2xl ">
               <h3 className="text-3xl md:text-5xl font-black text-[#0F172A] mb-8">
                 Powered by Advanced AI & Real-Time Data
               </h3>
@@ -253,11 +253,11 @@ const Landing = () => {
                   { label: 'Data Sources', value: 'YouTube API', icon: BarChart3, color: 'blue' },
                   { label: 'Growth Focus', value: 'Sustainable', icon: TrendingUp, color: 'purple' }
                 ].map((stat, idx) => (
-                  <div key={idx} className="animate-in fade-in slide-in-from-bottom-4 group" style={{ animationDelay: `${idx * 100}ms` }}>
+                  <div key={idx} className=" fade-in slide-in-from-bottom-4 group" style={{ animationDelay: `${idx * 100}ms` }}>
                     <div className={`inline-flex p-3 rounded-xl bg-${stat.color}-500/10 mb-3 group-hover:scale-110 transition-transform`}>
                       <stat.icon className={`w-8 h-8 text-${stat.color}-400`} />
                     </div>
-                    <div className={`text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-${stat.color}-400 to-emerald-400 mb-2`}>{stat.value}</div>
+                    <div className={`text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-white mb-2`}>{stat.value}</div>
                     <div className="text-[#334155] font-bold">{stat.label}</div>
                   </div>
                 ))}
@@ -271,7 +271,7 @@ const Landing = () => {
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl md:text-6xl font-black text-[#0F172A] mb-6">
               Ready to Transform Your{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-emerald-400 to-blue-400">
+              <span className="text-transparent bg-clip-text bg-white
                 YouTube Strategy?
               </span>
             </h2>
@@ -280,9 +280,9 @@ const Landing = () => {
             </p>
             <button
               onClick={() => navigate('/niche-trends')}
-              className="group px-12 py-6 bg-gradient-to-r from-blue-600 via-emerald-600 to-blue-600 hover:from-blue-500 hover:via-emerald-500 hover:to-blue-500 
+              className="group px-12 py-6 bg-white hover:from-blue-500 hover:via-emerald-500 hover:to-blue-500 
                 text-[#0F172A] font-bold rounded-2xl text-xl transition-all duration-300 
-                shadow-2xl shadow-blue-500/40 hover:shadow-blue-500/60 hover:scale-105
+                shadow-2xl  hover: hover:scale-105
                 flex items-center gap-3 mx-auto"
             >
               <Zap className="w-6 h-6" />

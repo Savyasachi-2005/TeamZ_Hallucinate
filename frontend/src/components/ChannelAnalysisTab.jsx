@@ -171,15 +171,15 @@ const ChannelAnalysisTab = () => {
               data-testid="analyse-channel-button"
               onClick={handleAnalyzeChannel}
               disabled={isLoading || !channelUrl.trim()}
-              className="w-full bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-500 hover:to-blue-500 
+              className="w-full bg-white hover:from-emerald-500 hover:to-blue-500 
                 disabled:from-#334155 disabled:to-#334155 disabled:cursor-not-allowed
                 text-[#0F172A] font-bold rounded-xl px-8 py-4 transition-all duration-300 
-                shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 disabled:shadow-none
+                shadow-lg  hover: disabled:shadow-none
                 flex items-center justify-center gap-2"
             >
               {isLoading ? (
                 <>
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full " />
                   <span>Analyzing Channel...</span>
                 </>
               ) : (
@@ -195,7 +195,7 @@ const ChannelAnalysisTab = () => {
 
       {/* Channel Results */}
       {channelData && (
-        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500" data-testid="channel-results">
+        <div className="space-y-8  fade-in slide-in-from-bottom-4 duration-500" data-testid="channel-results">
           
           {/* Channel Overview */}
           <div className="bg-white border border-[#E2E8F0] rounded-2xl p-6 shadow-md shadow-xl">
@@ -204,7 +204,7 @@ const ChannelAnalysisTab = () => {
                 <img
                   src={channelData.channel_info.thumbnail}
                   alt={channelData.channel_info.name}
-                  className="w-24 h-24 rounded-full border-4 border-emerald-500/50 shadow-lg shadow-emerald-500/20"
+                  className="w-24 h-24 rounded-full border-4 border-emerald-500/50 shadow-lg "
                 />
               )}
               <div className="flex-1">
@@ -243,7 +243,7 @@ const ChannelAnalysisTab = () => {
 
           {/* Growth Health Dashboard */}
           {channelData.health_dashboard && (
-            <div className="bg-gradient-to-br from-#111827 to-#1E293B border-2 border-emerald-500/30 rounded-2xl p-6 shadow-md shadow-xl">
+            <div className="bg-white border-2 border-emerald-500/30 rounded-2xl p-6 shadow-md shadow-xl">
               <h3 className="text-2xl font-bold text-[#0F172A] mb-6 flex items-center gap-2">
                 <Shield className="w-6 h-6 text-emerald-400" />
                 Growth Health Dashboard
@@ -307,7 +307,7 @@ const ChannelAnalysisTab = () => {
 
           {/* Strategic Action Summary - PROMINENT PLACEMENT */}
           {channelData.ai_analysis?.strategic_summary && (
-            <div className="bg-gradient-to-br from-blue-900/40 to-blue-900/40 border-2 border-blue-500/50 rounded-2xl p-8 shadow-2xl">
+            <div className="bg-white border-2 border-blue-500/50 rounded-2xl p-8 shadow-2xl">
               <h3 className="text-3xl font-bold text-[#0F172A] mb-6 flex items-center gap-3">
                 <Sparkles className="w-8 h-8 text-yellow-400" />
                 AI Strategic Summary
@@ -485,7 +485,7 @@ const ChannelAnalysisTab = () => {
                   <button
                     key={index}
                     onClick={() => handleExploreTrend(theme)}
-                    className="theme-chip px-5 py-2 bg-gradient-to-r from-blue-600/20 to-blue-600/20 hover:from-blue-600/30 hover:to-blue-600/30 
+                    className="theme-chip px-5 py-2 bg-white hover:from-blue-600/30 hover:to-blue-600/30 
                       border border-blue-500/30 hover:border-blue-500/50 rounded-full text-[#0F172A] font-bold 
                       transition-all duration-200 flex items-center gap-2 capitalize"
                   >
@@ -553,7 +553,7 @@ const ChannelAnalysisTab = () => {
 
       {/* Explored Trends Section */}
       {exploredTrends.length > 0 && (
-        <div ref={trendsRef} className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div ref={trendsRef} className="space-y-6  fade-in slide-in-from-bottom-4 duration-500">
           <div className="flex items-center justify-between">
             <h3 className="text-2xl font-bold text-[#0F172A] flex items-center gap-2">
               <TrendingUp className="w-7 h-7 text-emerald-400" />
