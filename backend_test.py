@@ -279,6 +279,7 @@ class NicheTrendAPITester:
             return True, response
         
         return success, response
+    def test_trends_custom_keyword_valid(self, custom_keyword="AI tools"):
         """Test trends endpoint with valid custom keyword"""
         success, response = self.run_test(
             f"Trends - Valid Custom Keyword ({custom_keyword})",
@@ -301,12 +302,20 @@ class NicheTrendAPITester:
                 
                 trends = response["top_trends"]
                 if isinstance(trends, list) and len(trends) <= 5:
-                    # Check if each trend has required fields
-                    required_fields = ["video_id", "title", "channel", "views", "published_at", "trend_score", "youtube_url"]
+                    # Check if each trend has required fields (including enhanced metrics)
+                    required_fields = [
+                        "video_id", "title", "channel", "views", "published_at", 
+                        "trend_score", "youtube_url",
+                        "views_per_day", "engagement_rate", "recency_days", "competition_level"
+                    ]
                     for i, trend in enumerate(trends):
                         missing_fields = [field for field in required_fields if field not in trend]
                         if missing_fields:
                             self.log_test(f"Custom Keyword Response Structure - Video {i+1}", False, f"Missing fields: {missing_fields}")
+                            return False, response
+                        
+                        # Validate enhanced metrics
+                        if not self.validate_enhanced_metrics(trend, i+1):
                             return False, response
                     
                     self.log_test("Custom Keyword Response Structure", True)
