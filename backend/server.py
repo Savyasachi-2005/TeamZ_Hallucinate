@@ -705,7 +705,7 @@ async def get_video_details(video_id: str) -> dict:
         try:
             url = "https://www.googleapis.com/youtube/v3/videos"
             params = {
-                "part": "snippet,statistics",
+                "part": "statistics",  # OPTIMIZED: Only statistics needed
                 "id": video_id,
                 "key": GOOGLE_API_KEY
             }
@@ -804,7 +804,7 @@ async def get_channel_metadata(channel_id: str) -> dict:
         try:
             url = "https://www.googleapis.com/youtube/v3/channels"
             params = {
-                "part": "snippet,statistics,contentDetails",
+                "part": "snippet,contentDetails",  # OPTIMIZED: Removed statistics (not needed for metadata)
                 "id": channel_id,
                 "key": GOOGLE_API_KEY
             }
