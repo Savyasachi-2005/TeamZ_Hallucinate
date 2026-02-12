@@ -64,7 +64,8 @@ NICHE_KEYWORDS = {
 
 # Existing Trend Models
 class TrendRequest(BaseModel):
-    niche: str
+    niche: Optional[str] = None
+    custom_keyword: Optional[str] = None
 
 class TrendVideo(BaseModel):
     video_id: str
