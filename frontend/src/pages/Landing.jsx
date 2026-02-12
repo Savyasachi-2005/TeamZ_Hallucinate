@@ -73,14 +73,12 @@ const Landing = () => {
         <div className="min-h-screen flex flex-col items-center justify-center px-6 py-20 bg-slate-50">
           <div className="max-w-6xl mx-auto text-center">
             {/* Logo */}
-            <div className="inline-flex items-center justify-center gap-4 mb-12">
-              <div className="p-4 rounded-2xl bg-white border-2 border-slate-200 shadow-md">
-                <img 
-                  src="https://customer-assets.emergentagent.com/job_ytcreator-buddy/artifacts/21wabeoa_images__1_-removebg-preview.png" 
-                  alt="NichePulse Logo" 
-                  className="w-20 h-20 rounded-xl object-contain"
-                />
-              </div>
+            <div className="inline-flex items-center justify-center mb-12">
+              <img 
+                src="https://customer-assets.emergentagent.com/job_ytcreator-buddy/artifacts/21wabeoa_images__1_-removebg-preview.png" 
+                alt="NichePulse Logo" 
+                className="w-24 h-24 object-contain"
+              />
             </div>
 
             {/* Title */}

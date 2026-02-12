@@ -13,13 +13,11 @@ const Navigation = () => {
             onClick={() => navigate('/')}
             className="flex items-center gap-3"
           >
-            <div className="p-2 rounded-xl bg-white border-2 border-slate-200 shadow-md">
-              <img 
-                src="https://customer-assets.emergentagent.com/job_ytcreator-buddy/artifacts/21wabeoa_images__1_-removebg-preview.png" 
-                alt="NichePulse" 
-                className="w-10 h-10 rounded-lg object-contain"
-              />
-            </div>
+            <img 
+              src="https://customer-assets.emergentagent.com/job_ytcreator-buddy/artifacts/21wabeoa_images__1_-removebg-preview.png" 
+              alt="NichePulse" 
+              className="w-12 h-12 object-contain"
+            />
             <div>
               <h1 className="text-2xl font-black text-slate-900">
                 Niche<span className="text-blue-600">Pulse</span>
