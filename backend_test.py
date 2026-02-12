@@ -316,6 +316,11 @@ def main():
     tester.test_analyse_video(niche="Coding")
     tester.test_analyse_invalid_video()
     
+    print("\n4️⃣ Channel Analysis Endpoint Tests")
+    tester.test_channel_analyse_valid_url("https://youtube.com/@MrBeast")
+    tester.test_channel_analyse_invalid_url()
+    tester.test_channel_analyse_missing_url()
+    
     # Print final summary
     success = tester.print_summary()
     
