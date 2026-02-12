@@ -38,16 +38,13 @@ const MainApp = () => {
         {/* Header */}
         <header className="text-center mb-16 pt-8">
           {/* Logo Section */}
-          <div className="inline-flex items-center justify-center gap-4 mb-8 group">
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-3xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-300" />
-              <div className="relative p-3 rounded-3xl bg-gradient-to-br from-blue-600/90 to-purple-600/90 border border-blue-400/30 shadow-2xl shadow-blue-500/30 transform group-hover:scale-105 transition-transform duration-300">
-                <img 
-                  src="https://images.unsplash.com/photo-1639825752750-5061ded5503b?w=100&h=100&fit=crop" 
-                  alt="NichePulse Logo" 
-                  className="w-16 h-16 rounded-2xl object-cover"
-                />
-              </div>
+          <div className="inline-flex items-center justify-center gap-4 mb-8">
+            <div className="p-4 rounded-2xl bg-white border-2 border-slate-200 shadow-md">
+              <img 
+                src="https://customer-assets.emergentagent.com/job_ytcreator-buddy/artifacts/21wabeoa_images__1_-removebg-preview.png" 
+                alt="NichePulse Logo" 
+                className="w-16 h-16 rounded-xl object-contain"
+              />
             </div>
           </div>
 
