@@ -1002,7 +1002,7 @@ async def get_trends(request: TrendRequest):
     if not scored_videos:
         raise HTTPException(
             status_code=404,
-            detail={"error": "No qualifying videos found (minimum 100 views required)"}
+            detail={"error": "No trending videos found within 60 days (strict recency filter)"}
         )
     
     # Extract trending topics
@@ -1028,7 +1028,8 @@ async def get_trends(request: TrendRequest):
     ]
     
     return TrendResponse(
-        niche=search_label, 
+        niche=search_label,
+        filtered_videos_count=len(scored_videos),
         top_trends=trend_videos,
         trending_topics=trending_topics if trending_topics else None
     )
