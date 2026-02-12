@@ -159,7 +159,126 @@ class NicheTrendAPITester:
             data={}
         )
 
-    def test_trends_custom_keyword_valid(self, custom_keyword="AI tools"):
+    def validate_enhanced_metrics(self, trend, video_num):
+        """Validate the new enhanced metrics from Trending Detection Engine"""
+        
+        # Validate views_per_day
+        views_per_day = trend.get("views_per_day")
+        if not isinstance(views_per_day, (int, float)) or views_per_day < 0:
+            self.log_test(f"Views Per Day Validation - Video {video_num}", False, f"Expected positive number, got {views_per_day}")
+            return False
+        
+        # Validate engagement_rate
+        engagement_rate = trend.get("engagement_rate")
+        if not isinstance(engagement_rate, (int, float)) or engagement_rate < 0:
+            self.log_test(f"Engagement Rate Validation - Video {video_num}", False, f"Expected positive number, got {engagement_rate}")
+            return False
+        
+        # Validate recency_days
+        recency_days = trend.get("recency_days")
+        if not isinstance(recency_days, int) or recency_days < 0:
+            self.log_test(f"Recency Days Validation - Video {video_num}", False, f"Expected positive integer, got {recency_days}")
+            return False
+        
+        # Validate competition_level
+        competition_level = trend.get("competition_level")
+        valid_competition_levels = ["Low", "Medium", "High"]
+        if competition_level not in valid_competition_levels:
+            self.log_test(f"Competition Level Validation - Video {video_num}", False, f"Expected one of {valid_competition_levels}, got {competition_level}")
+            return False
+        
+        # Validate trend_score is in 0-100 range
+        trend_score = trend.get("trend_score")
+        if not isinstance(trend_score, (int, float)) or trend_score < 0 or trend_score > 100:
+            self.log_test(f"Trend Score Range Validation - Video {video_num}", False, f"Expected 0-100 range, got {trend_score}")
+            return False
+        
+        # Validate views >= 100 (filtering requirement)
+        views = trend.get("views")
+        if not isinstance(views, int) or views < 100:
+            self.log_test(f"Views Filtering Validation - Video {video_num}", False, f"Expected views >= 100, got {views}")
+            return False
+        
+        return True
+
+    def test_trending_detection_engine_features(self):
+        """Test specific Trending Detection Engine features"""
+        print("\n🔍 Testing Trending Detection Engine Features...")
+        
+        # Test with a niche that should return results
+        success, response = self.run_test(
+            "Trending Detection Engine - Enhanced Metrics",
+            "POST",
+            "trends",
+            200,
+            data={"niche": "Gaming"},
+            timeout=60
+        )
+        
+        if success and response:
+            trends = response.get("top_trends", [])
+            if not trends:
+                self.log_test("Trending Detection Engine", False, "No trends returned")
+                return False, response
+            
+            # Test 1: All videos should have views >= 100
+            for i, trend in enumerate(trends):
+                if trend.get("views", 0) < 100:
+                    self.log_test("100+ Views Filter", False, f"Video {i+1} has {trend.get('views')} views (< 100)")
+                    return False, response
+            self.log_test("100+ Views Filter", True)
+            
+            # Test 2: Trend scores should be normalized to 0-100 range
+            all_scores_valid = True
+            for i, trend in enumerate(trends):
+                score = trend.get("trend_score", -1)
+                if not (0 <= score <= 100):
+                    self.log_test("Trend Score Normalization", False, f"Video {i+1} score {score} not in 0-100 range")
+                    all_scores_valid = False
+                    break
+            if all_scores_valid:
+                self.log_test("Trend Score Normalization", True)
+            
+            # Test 3: Competition levels should be valid
+            valid_levels = ["Low", "Medium", "High"]
+            all_competition_valid = True
+            for i, trend in enumerate(trends):
+                level = trend.get("competition_level")
+                if level not in valid_levels:
+                    self.log_test("Competition Level Values", False, f"Video {i+1} has invalid competition level: {level}")
+                    all_competition_valid = False
+                    break
+            if all_competition_valid:
+                self.log_test("Competition Level Values", True)
+            
+            # Test 4: Enhanced metrics should be present and valid
+            for i, trend in enumerate(trends):
+                # Check views_per_day calculation makes sense
+                views = trend.get("views", 0)
+                days = trend.get("recency_days", 1)
+                calculated_vpd = views / max(days, 1)
+                actual_vpd = trend.get("views_per_day", 0)
+                
+                # Allow for some rounding differences
+                if abs(calculated_vpd - actual_vpd) > 1:
+                    self.log_test(f"Views Per Day Calculation - Video {i+1}", False, 
+                                f"Expected ~{calculated_vpd:.2f}, got {actual_vpd}")
+                    return False, response
+            
+            self.log_test("Views Per Day Calculation", True)
+            
+            # Test 5: Check if trending_topics is present (optional field)
+            if "trending_topics" in response:
+                topics = response["trending_topics"]
+                if topics is not None and isinstance(topics, list):
+                    self.log_test("Trending Topics Structure", True)
+                    print(f"   Trending topics found: {topics}")
+                else:
+                    self.log_test("Trending Topics Structure", False, f"Expected list or null, got {type(topics)}")
+            
+            return True, response
+        
+        return success, response
         """Test trends endpoint with valid custom keyword"""
         success, response = self.run_test(
             f"Trends - Valid Custom Keyword ({custom_keyword})",
