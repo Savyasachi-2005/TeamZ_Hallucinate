@@ -250,6 +250,7 @@ def extract_themes_from_titles(titles: List[str]) -> List[str]:
 
 # ==================== YOUTUBE API FUNCTIONS ====================
 
+@cached_api_call
 async def search_youtube_videos(keywords: List[str], max_results: int = 50) -> List[dict]:
     """Search YouTube for videos matching keywords"""
     check_api_key()
