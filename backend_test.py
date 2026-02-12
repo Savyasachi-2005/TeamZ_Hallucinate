@@ -98,16 +98,39 @@ class NicheTrendAPITester:
             if "niche" in response and "top_trends" in response:
                 trends = response["top_trends"]
                 if isinstance(trends, list) and len(trends) <= 5:
-                    # Check if each trend has required fields
-                    required_fields = ["video_id", "title", "channel", "views", "published_at", "trend_score", "youtube_url"]
+                    # Check if each trend has required fields (including new enhanced metrics)
+                    required_fields = [
+                        "video_id", "title", "channel", "views", "published_at", 
+                        "trend_score", "youtube_url",
+                        # New enhanced metrics from Trending Detection Engine
+                        "views_per_day", "engagement_rate", "recency_days", "competition_level"
+                    ]
                     for i, trend in enumerate(trends):
                         missing_fields = [field for field in required_fields if field not in trend]
                         if missing_fields:
                             self.log_test(f"Trends Response Structure - Video {i+1}", False, f"Missing fields: {missing_fields}")
                             return False, response
+                        
+                        # Validate new metrics data types and ranges
+                        if not self.validate_enhanced_metrics(trend, i+1):
+                            return False, response
                     
                     self.log_test("Trends Response Structure", True)
+                    self.log_test("Enhanced Metrics Validation", True)
                     print(f"   Found {len(trends)} trending videos")
+                    
+                    # Check for optional trending_topics field
+                    if "trending_topics" in response:
+                        trending_topics = response["trending_topics"]
+                        if trending_topics is None or isinstance(trending_topics, list):
+                            self.log_test("Trending Topics Field", True)
+                            if trending_topics:
+                                print(f"   Trending topics: {trending_topics}")
+                        else:
+                            self.log_test("Trending Topics Field", False, f"Expected list or null, got {type(trending_topics)}")
+                    else:
+                        self.log_test("Trending Topics Field", False, "Missing optional trending_topics field")
+                    
                     return True, response
                 else:
                     self.log_test("Trends Response Structure", False, f"Expected list of max 5 trends, got {len(trends) if isinstance(trends, list) else type(trends)}")
