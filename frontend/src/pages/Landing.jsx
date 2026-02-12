@@ -204,7 +204,7 @@ const Landing = () => {
         </div>
 
         {/* How It Works Section */}
-        <div className="py-20 px-6 bg-gradient-to-b from-transparent to-gray-900/50">
+        <div className="py-20 px-6 bg-gradient-to-b from-transparent via-purple-950/10 to-transparent">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-6xl font-black text-white mb-6">
@@ -217,21 +217,21 @@ const Landing = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
-                { step: '01', title: 'Analyze Your Channel', desc: 'Enter your YouTube channel URL and get instant insights on growth health metrics', icon: Users },
-                { step: '02', title: 'Discover Opportunities', desc: 'AI identifies missed trends, competitor gaps, and content strategies', icon: Target },
-                { step: '03', title: 'Execute Strategy', desc: 'Follow personalized action plans to accelerate sustainable growth', icon: Zap }
+                { step: '01', title: 'Analyze Your Channel', desc: 'Enter your YouTube channel URL and get instant insights on growth health metrics', icon: Users, gradient: 'from-purple-500 to-cyan-500' },
+                { step: '02', title: 'Discover Opportunities', desc: 'AI identifies missed trends, competitor gaps, and content strategies', icon: Target, gradient: 'from-cyan-500 to-blue-500' },
+                { step: '03', title: 'Execute Strategy', desc: 'Follow personalized action plans to accelerate sustainable growth', icon: Zap, gradient: 'from-blue-500 to-purple-500' }
               ].map((item, idx) => (
                 <div 
                   key={idx}
-                  className="relative bg-gray-900 border border-gray-800 rounded-2xl p-8 animate-in fade-in slide-in-from-bottom-4"
+                  className="relative bg-gray-900/50 backdrop-blur-sm border border-gray-800 hover:border-purple-500/50 rounded-2xl p-8 animate-in fade-in slide-in-from-bottom-4 group transition-all duration-300 hover:-translate-y-2"
                   style={{ animationDelay: `${idx * 200}ms` }}
                 >
-                  <div className="text-7xl font-black text-gray-800 absolute top-4 right-4">{item.step}</div>
+                  <div className="text-8xl font-black text-gray-800/50 absolute top-4 right-4 group-hover:text-purple-500/20 transition-colors">{item.step}</div>
                   <div className="relative">
-                    <div className="inline-flex p-3 rounded-xl bg-cyan-500/10 mb-4">
-                      <item.icon className="w-6 h-6 text-cyan-400" />
+                    <div className={`inline-flex p-3 rounded-xl bg-gradient-to-r ${item.gradient} bg-opacity-10 mb-4 shadow-lg group-hover:scale-110 transition-transform`}>
+                      <item.icon className="w-6 h-6 text-purple-400" />
                     </div>
-                    <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
+                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-cyan-400 transition-all">{item.title}</h3>
                     <p className="text-gray-400">{item.desc}</p>
                   </div>
                 </div>
@@ -243,20 +243,22 @@ const Landing = () => {
         {/* Social Proof / Stats */}
         <div className="py-20 px-6">
           <div className="max-w-6xl mx-auto">
-            <div className="bg-gradient-to-r from-cyan-900/30 to-blue-900/30 border border-cyan-500/30 rounded-3xl p-12 text-center">
+            <div className="bg-gradient-to-r from-purple-900/30 via-cyan-900/30 to-blue-900/30 border-2 border-purple-500/30 rounded-3xl p-12 text-center backdrop-blur-sm shadow-2xl shadow-purple-500/20">
               <h3 className="text-3xl md:text-5xl font-black text-white mb-8">
                 Powered by Advanced AI & Real-Time Data
               </h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                 {[
-                  { label: 'Health Metrics', value: '4+', icon: Shield },
-                  { label: 'AI Insights', value: 'Real-time', icon: Sparkles },
-                  { label: 'Data Sources', value: 'YouTube API', icon: BarChart3 },
-                  { label: 'Growth Focus', value: 'Sustainable', icon: TrendingUp }
+                  { label: 'Health Metrics', value: '4+', icon: Shield, color: 'purple' },
+                  { label: 'AI Insights', value: 'Real-time', icon: Sparkles, color: 'cyan' },
+                  { label: 'Data Sources', value: 'YouTube API', icon: BarChart3, color: 'blue' },
+                  { label: 'Growth Focus', value: 'Sustainable', icon: TrendingUp, color: 'purple' }
                 ].map((stat, idx) => (
-                  <div key={idx} className="animate-in fade-in slide-in-from-bottom-4" style={{ animationDelay: `${idx * 100}ms` }}>
-                    <stat.icon className="w-8 h-8 text-cyan-400 mx-auto mb-3" />
-                    <div className="text-3xl md:text-4xl font-black text-white mb-2">{stat.value}</div>
+                  <div key={idx} className="animate-in fade-in slide-in-from-bottom-4 group" style={{ animationDelay: `${idx * 100}ms` }}>
+                    <div className={`inline-flex p-3 rounded-xl bg-${stat.color}-500/10 mb-3 group-hover:scale-110 transition-transform`}>
+                      <stat.icon className={`w-8 h-8 text-${stat.color}-400`} />
+                    </div>
+                    <div className={`text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-${stat.color}-400 to-cyan-400 mb-2`}>{stat.value}</div>
                     <div className="text-gray-400 font-semibold">{stat.label}</div>
                   </div>
                 ))}
@@ -270,7 +272,7 @@ const Landing = () => {
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl md:text-6xl font-black text-white mb-6">
               Ready to Transform Your{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-400">
                 YouTube Strategy?
               </span>
             </h2>
@@ -292,10 +294,10 @@ const Landing = () => {
         </div>
 
         {/* Footer */}
-        <footer className="border-t border-gray-800 py-8 px-6">
+        <footer className="border-t border-purple-500/20 py-8 px-6">
           <div className="max-w-6xl mx-auto text-center text-gray-500 text-sm">
             <p className="mb-2">
-              Powered by <span className="text-blue-400">YouTube Data API</span> & <span className="text-purple-400">Gemini AI</span>
+              Powered by <span className="text-purple-400">YouTube Data API</span> & <span className="text-cyan-400">Gemini AI</span>
             </p>
             <p>© 2025 NichePulse. AI Copilot for Sustainable Growth in the Creator Economy.</p>
           </div>
