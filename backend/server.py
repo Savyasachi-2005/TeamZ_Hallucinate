@@ -283,6 +283,245 @@ def extract_themes_from_titles(titles: List[str]) -> List[str]:
     # Return top 5 themes
     return [word for word, _ in word_counts.most_common(5)]
 
+# ==================== GROWTH HEALTH DASHBOARD FUNCTIONS ====================
+
+def calculate_consistency_score(upload_dates: List[str]) -> int:
+    """
+    Calculate consistency score based on upload frequency variance and gaps.
+    Returns score 0-100.
+    """
+    if len(upload_dates) < 3:
+        return 50  # Insufficient data
+    
+    # Parse dates and sort
+    dates = sorted([datetime.fromisoformat(d.replace('Z', '+00:00')) for d in upload_dates])
+    
+    # Calculate gaps between uploads (in days)
+    gaps = []
+    for i in range(1, len(dates)):
+        gap = (dates[i] - dates[i-1]).days
+        gaps.append(gap)
+    
+    if not gaps:
+        return 50
+    
+    # Calculate variance
+    avg_gap = sum(gaps) / len(gaps)
+    variance = sum((g - avg_gap) ** 2 for g in gaps) / len(gaps)
+    std_dev = variance ** 0.5
+    
+    # Check for long inactivity periods (> 30 days)
+    long_gaps = sum(1 for g in gaps if g > 30)
+    
+    # Score calculation
+    # Lower variance = higher consistency
+    consistency = 100
+    
+    # Penalize high variance
+    if avg_gap > 0:
+        cv = std_dev / avg_gap  # Coefficient of variation
+        consistency -= min(cv * 30, 40)  # Max 40 point penalty
+    
+    # Penalize long gaps
+    consistency -= long_gaps * 15  # 15 points per long gap
+    
+    return max(0, min(100, int(consistency)))
+
+def calculate_engagement_stability(engagement_rates: List[float]) -> int:
+    """
+    Calculate engagement stability based on variance in recent videos.
+    Returns score 0-100.
+    """
+    if len(engagement_rates) < 5:
+        return 50  # Insufficient data
+    
+    # Use last 15-20 videos
+    recent_rates = engagement_rates[:20]
+    
+    if not recent_rates or len(recent_rates) < 5:
+        return 50
+    
+    # Calculate variance
+    avg_rate = sum(recent_rates) / len(recent_rates)
+    if avg_rate == 0:
+        return 50
+    
+    variance = sum((r - avg_rate) ** 2 for r in recent_rates) / len(recent_rates)
+    std_dev = variance ** 0.5
+    cv = std_dev / avg_rate  # Coefficient of variation
+    
+    # Check trend direction (improving/declining)
+    recent_half = recent_rates[:len(recent_rates)//2]
+    older_half = recent_rates[len(recent_rates)//2:]
+    
+    recent_avg = sum(recent_half) / len(recent_half) if recent_half else 0
+    older_avg = sum(older_half) / len(older_half) if older_half else 0
+    
+    trend_bonus = 0
+    if recent_avg > older_avg * 1.1:  # 10% improvement
+        trend_bonus = 10
+    elif recent_avg < older_avg * 0.9:  # 10% decline
+        trend_bonus = -10
+    
+    # Score calculation
+    stability = 100
+    stability -= min(cv * 100, 50)  # Max 50 point penalty for variance
+    stability += trend_bonus
+    
+    return max(0, min(100, int(stability)))
+
+def calculate_topic_focus_score(themes: List[str], all_titles: List[str]) -> int:
+    """
+    Calculate topic focus based on theme concentration and drift.
+    Returns score 0-100.
+    """
+    if len(all_titles) < 5:
+        return 50
+    
+    # Extract themes from last 5 videos vs all videos
+    recent_titles = all_titles[:5]
+    older_titles = all_titles[5:]
+    
+    recent_themes = extract_themes_from_titles(recent_titles)
+    older_themes = extract_themes_from_titles(older_titles) if older_titles else []
+    
+    # Theme concentration (how focused on top themes)
+    theme_words = [w.lower() for w in themes]
+    all_words = []
+    for title in all_titles:
+        tokens = re.findall(r'\b[a-zA-Z]{3,}\b', title.lower())
+        all_words.extend([w for w in tokens if w not in STOPWORDS])
+    
+    if not all_words:
+        return 50
+    
+    # Count how often top themes appear
+    theme_count = sum(1 for w in all_words if w in theme_words)
+    concentration_ratio = theme_count / len(all_words)
+    
+    # Topic drift detection
+    if older_themes:
+        overlap = len(set(recent_themes) & set(older_themes))
+        drift_penalty = (5 - overlap) * 5  # Penalize if recent themes are completely different
+    else:
+        drift_penalty = 0
+    
+    # Score calculation
+    focus_score = concentration_ratio * 100
+    focus_score -= drift_penalty
+    
+    return max(0, min(100, int(focus_score)))
+
+def determine_growth_momentum(engagement_rates: List[float], upload_dates: List[str]) -> str:
+    """
+    Determine overall growth momentum: Improving, Stable, or Declining.
+    """
+    if len(engagement_rates) < 10 or len(upload_dates) < 10:
+        return "Stable"  # Insufficient data
+    
+    # Split into recent vs older periods
+    recent = engagement_rates[:5]
+    older = engagement_rates[5:10]
+    
+    recent_avg = sum(recent) / len(recent)
+    older_avg = sum(older) / len(older)
+    
+    # Calculate percentage change
+    if older_avg == 0:
+        return "Stable"
+    
+    change = (recent_avg - older_avg) / older_avg
+    
+    if change > 0.15:  # 15% improvement
+        return "Improving"
+    elif change < -0.15:  # 15% decline
+        return "Declining"
+    else:
+        return "Stable"
+
+# ==================== COMPETITOR COMPARISON FUNCTIONS ====================
+
+def compute_competitor_gap(
+    creator_analytics: dict,
+    creator_themes: List[str],
+    competitor_analytics: dict,
+    competitor_themes: List[str]
+) -> dict:
+    """
+    Compute gap analysis between creator and competitor.
+    """
+    # Engagement gap
+    creator_engagement = creator_analytics.get('average_engagement_rate', 0)
+    competitor_engagement = competitor_analytics.get('average_engagement_rate', 0)
+    
+    engagement_diff = competitor_engagement - creator_engagement
+    engagement_gap = f"+{engagement_diff:.1f}%" if engagement_diff > 0 else f"{engagement_diff:.1f}%"
+    
+    # Posting frequency gap
+    creator_freq = creator_analytics.get('upload_frequency_per_month', 0)
+    competitor_freq = competitor_analytics.get('upload_frequency_per_month', 0)
+    
+    if creator_freq > 0:
+        freq_ratio = competitor_freq / creator_freq
+        if freq_ratio > 1.2:
+            posting_gap = f"Competitor posts {freq_ratio:.1f}x more frequently"
+        elif freq_ratio < 0.8:
+            posting_gap = f"You post {1/freq_ratio:.1f}x more frequently"
+        else:
+            posting_gap = "Similar posting frequency"
+    else:
+        posting_gap = "Insufficient data"
+    
+    # Theme overlap
+    creator_theme_set = set([t.lower() for t in creator_themes])
+    competitor_theme_set = set([t.lower() for t in competitor_themes])
+    
+    overlap = len(creator_theme_set & competitor_theme_set)
+    total_unique = len(creator_theme_set | competitor_theme_set)
+    
+    overlap_percentage = int((overlap / total_unique * 100)) if total_unique > 0 else 0
+    
+    # Missed topics (topics competitor covers but creator doesn't)
+    missed = list(competitor_theme_set - creator_theme_set)[:5]  # Top 5 missed topics
+    
+    return {
+        "engagement_gap": engagement_gap,
+        "posting_gap": posting_gap,
+        "theme_overlap_percentage": overlap_percentage,
+        "missed_topics": missed
+    }
+
+# ==================== MISSED TREND DETECTOR ====================
+
+def detect_missed_trends(creator_themes: List[str], niche_keywords: List[str], trending_videos: List[dict]) -> List[dict]:
+    """
+    Detect trending topics the creator hasn't covered.
+    """
+    if not trending_videos:
+        return []
+    
+    # Extract themes from trending videos
+    trending_titles = [v.get('title', '') for v in trending_videos]
+    trending_themes = extract_themes_from_titles(trending_titles)
+    
+    # Find themes in trending but not in creator's content
+    creator_theme_set = set([t.lower() for t in creator_themes])
+    missed = []
+    
+    for theme in trending_themes[:10]:  # Check top 10 trending themes
+        if theme.lower() not in creator_theme_set:
+            # Calculate approximate trend score (count appearances in trending videos)
+            appearances = sum(1 for title in trending_titles if theme in title.lower())
+            trend_score = min(100, (appearances / len(trending_videos)) * 300)  # Normalize to 0-100
+            
+            missed.append({
+                "keyword": theme,
+                "trend_score": round(trend_score, 1),
+                "reason": f"High momentum in trending videos, not covered in your recent uploads"
+            })
+    
+    return missed[:5]  # Return top 5 missed trends
+
 # ==================== YOUTUBE API FUNCTIONS ====================
 
 @cached_api_call
