@@ -480,8 +480,228 @@ async def get_playlist_videos(playlist_id: str, max_results: int = 20) -> List[d
 
 # ==================== ANALYTICS FUNCTIONS ====================
 
+# ==================== TRENDING DETECTION ENGINE ====================
+
+def extract_title_keywords(title: str, top_n: int = 3) -> List[str]:
+    """Extract top N keywords from a title"""
+    tokens = re.findall(r'\b[a-zA-Z]{3,}\b', title.lower())
+    filtered = [w for w in tokens if w not in STOPWORDS]
+    return filtered[:top_n]
+
+def calculate_days_since_upload(published_at: str) -> int:
+    """Calculate days since video was uploaded"""
+    try:
+        published_dt = datetime.fromisoformat(published_at.replace("Z", "+00:00"))
+        now = datetime.now(timezone.utc)
+        days = (now - published_dt).days
+        return max(days, 1)
+    except Exception:
+        return 1
+
+def calculate_views_per_day(views: int, days: int) -> float:
+    """Calculate growth velocity (views per day)"""
+    return views / max(days, 1)
+
+def calculate_engagement_rate(views: int, likes: int, comments: int) -> float:
+    """Calculate engagement rate"""
+    return (likes + comments) / max(views, 1)
+
+def calculate_recency_score(days: int) -> int:
+    """Calculate recency score based on upload age"""
+    if days <= 3:
+        return 100
+    elif days <= 7:
+        return 75
+    elif days <= 30:
+        return 50
+    else:
+        return 20
+
+def calculate_competition_score(video_keywords: List[str], all_keywords_list: List[List[str]]) -> tuple:
+    """
+    Calculate competition score based on title similarity.
+    Returns (score, level_string)
+    """
+    if not video_keywords or not all_keywords_list:
+        return 100, "Low"
+    
+    # Count how many other videos share similar keywords
+    similar_count = 0
+    video_keywords_set = set(video_keywords)
+    
+    for other_keywords in all_keywords_list:
+        other_set = set(other_keywords)
+        # Check for keyword overlap
+        if video_keywords_set & other_set:  # intersection
+            similar_count += 1
+    
+    # Don't count self
+    similar_count = max(0, similar_count - 1)
+    
+    if similar_count >= 8:
+        return 30, "High"
+    elif similar_count >= 4:
+        return 60, "Medium"
+    else:
+        return 100, "Low"
+
+def normalize_scores(values: List[float]) -> List[float]:
+    """Normalize a list of values to 0-100 scale"""
+    if not values:
+        return []
+    
+    max_val = max(values)
+    if max_val == 0:
+        return [0.0] * len(values)
+    
+    return [min(100, max(0, (v / max_val) * 100)) for v in values]
+
+def calculate_trend_scores_batch(videos: List[dict], stats: dict) -> List[dict]:
+    """
+    Calculate trend scores for a batch of videos using the new algorithm.
+    
+    Formula: trend_score = 
+        (normalized_velocity * 0.45) + 
+        (normalized_engagement * 0.25) + 
+        (recency_score * 0.20) + 
+        (competition_score * 0.10)
+    """
+    
+    # Filter videos with < 100 views
+    valid_videos = []
+    for video in videos:
+        video_id = video["video_id"]
+        video_stats = stats.get(video_id, {"views": 0, "likes": 0, "comments": 0})
+        if video_stats["views"] >= 100:
+            valid_videos.append({
+                **video,
+                "stats": video_stats
+            })
+    
+    if not valid_videos:
+        return []
+    
+    # Step 1: Calculate raw metrics for all videos
+    raw_metrics = []
+    all_title_keywords = []
+    
+    for video in valid_videos:
+        video_stats = video["stats"]
+        views = video_stats["views"]
+        likes = video_stats.get("likes", 0)
+        comments = video_stats.get("comments", 0)
+        
+        days = calculate_days_since_upload(video["published_at"])
+        views_per_day = calculate_views_per_day(views, days)
+        engagement_rate = calculate_engagement_rate(views, likes, comments)
+        recency_score = calculate_recency_score(days)
+        title_keywords = extract_title_keywords(video["title"])
+        
+        all_title_keywords.append(title_keywords)
+        
+        raw_metrics.append({
+            "video": video,
+            "days": days,
+            "views_per_day": views_per_day,
+            "engagement_rate": engagement_rate,
+            "recency_score": recency_score,
+            "title_keywords": title_keywords
+        })
+    
+    # Step 2: Normalize velocity and engagement
+    velocities = [m["views_per_day"] for m in raw_metrics]
+    engagements = [m["engagement_rate"] for m in raw_metrics]
+    
+    normalized_velocities = normalize_scores(velocities)
+    normalized_engagements = normalize_scores(engagements)
+    
+    # Step 3: Calculate competition scores and final trend scores
+    results = []
+    
+    for i, metrics in enumerate(raw_metrics):
+        video = metrics["video"]
+        video_stats = video["stats"]
+        
+        # Get normalized values
+        norm_velocity = normalized_velocities[i]
+        norm_engagement = normalized_engagements[i]
+        recency_score = metrics["recency_score"]
+        
+        # Calculate competition score
+        competition_score, competition_level = calculate_competition_score(
+            metrics["title_keywords"], 
+            all_title_keywords
+        )
+        
+        # Final trend score calculation
+        trend_score = (
+            (norm_velocity * 0.45) +
+            (norm_engagement * 0.25) +
+            (recency_score * 0.20) +
+            (competition_score * 0.10)
+        )
+        
+        # Clamp and round
+        trend_score = round(min(100, max(0, trend_score)), 2)
+        
+        results.append({
+            "video_id": video["video_id"],
+            "title": video["title"],
+            "channel": video["channel"],
+            "views": video_stats["views"],
+            "published_at": video["published_at"],
+            "trend_score": trend_score,
+            "views_per_day": round(metrics["views_per_day"], 2),
+            "engagement_rate": round(metrics["engagement_rate"], 4),
+            "recency_days": metrics["days"],
+            "competition_level": competition_level
+        })
+    
+    # Sort by trend_score descending
+    results.sort(key=lambda x: x["trend_score"], reverse=True)
+    
+    return results
+
+def extract_trending_topics(videos: List[dict], top_n: int = 3) -> List[str]:
+    """
+    Extract trending topics from video titles.
+    Group similar 2-3 word phrases and return top by average trend score.
+    """
+    if not videos:
+        return []
+    
+    # Extract bigrams and trigrams from titles
+    phrase_scores = {}
+    
+    for video in videos:
+        title = video.get("title", "")
+        score = video.get("trend_score", 0)
+        
+        # Tokenize
+        tokens = re.findall(r'\b[a-zA-Z]{3,}\b', title.lower())
+        filtered = [w for w in tokens if w not in STOPWORDS]
+        
+        # Generate bigrams
+        for i in range(len(filtered) - 1):
+            phrase = f"{filtered[i]} {filtered[i+1]}"
+            if phrase not in phrase_scores:
+                phrase_scores[phrase] = []
+            phrase_scores[phrase].append(score)
+    
+    # Calculate average score per phrase
+    phrase_avg = {}
+    for phrase, scores in phrase_scores.items():
+        if len(scores) >= 2:  # Only phrases appearing in 2+ videos
+            phrase_avg[phrase] = sum(scores) / len(scores)
+    
+    # Sort by average score
+    sorted_phrases = sorted(phrase_avg.items(), key=lambda x: x[1], reverse=True)
+    
+    return [phrase for phrase, _ in sorted_phrases[:top_n]]
+
+# Legacy function for backward compatibility (channel analysis uses this)
 def calculate_trend_score(video: dict, stats: dict) -> float:
-    """Calculate trend velocity score for a video"""
+    """Legacy trend score calculation - kept for channel analysis compatibility"""
     views = stats.get("views", 0)
     likes = stats.get("likes", 0)
     comments = stats.get("comments", 0)
