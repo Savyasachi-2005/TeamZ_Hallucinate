@@ -127,9 +127,9 @@ const Landing = () => {
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
               <button
                 onClick={() => navigate('/niche-trends')}
-                className="group relative px-10 py-5 bg-white hover:from-blue-500 hover:via-emerald-500 hover:to-blue-500 
-                  text-[#0F172A] font-bold rounded-2xl text-lg transition-all duration-300 
-                  shadow-2xl  hover: hover:scale-105
+                className="group relative px-10 py-5 bg-gradient-to-r from-blue-600 via-emerald-600 to-blue-600 hover:from-blue-500 hover:via-emerald-500 hover:to-blue-500 
+                  text-white font-bold rounded-2xl text-lg transition-all duration-300 
+                  shadow-2xl shadow-blue-500/40 hover:shadow-blue-500/60 hover:scale-105
                   flex items-center gap-3"
               >
                 <Zap className="w-6 h-6" />
@@ -139,8 +139,8 @@ const Landing = () => {
               
               <button
                 onClick={() => document.getElementById('features').scrollIntoView({ behavior: 'smooth' })}
-                className="px-10 py-5 bg-white/50 hover:bg-white border-2 border-#334155 hover:border-blue-500/50
-                  text-[#0F172A] font-bold rounded-2xl text-lg transition-all duration-300 -sm"
+                className="px-10 py-5 bg-white hover:bg-slate-50 border-2 border-slate-300 hover:border-blue-500/50
+                  text-slate-900 font-bold rounded-2xl text-lg transition-all duration-300 shadow-sm"
               >
                 Explore Features
               </button>
@@ -162,13 +162,13 @@ const Landing = () => {
         <div id="features" className="py-20 px-6">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-6xl font-black text-[#0F172A] mb-6">
+              <h2 className="text-4xl md:text-6xl font-black text-slate-900 mb-6">
                 Everything You Need to{' '}
-                <span className="text-transparent bg-clip-text bg-white
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-blue-600">
                   Dominate YouTube
                 </span>
               </h2>
-              <p className="text-xl text-[#334155] max-w-2xl mx-auto">
+              <p className="text-xl text-slate-600 max-w-2xl mx-auto">
                 Built for creators who want data-driven insights, not just analytics dashboards
               </p>
             </div>
@@ -178,9 +178,9 @@ const Landing = () => {
                 <button
                   key={idx}
                   onClick={() => navigate(feature.route)}
-                  className="group bg-white/50 -sm border border-[#E2E8F0] hover:border-blue-500/50 rounded-2xl p-8 shadow-md 
-                    transition-all duration-500 hover:shadow-2xl hover: hover:-translate-y-2
-                     fade-in slide-in-from-bottom-4 text-left cursor-pointer
+                  className="group bg-white/80 backdrop-blur-sm border border-slate-200 hover:border-blue-500/50 rounded-2xl p-8 shadow-md 
+                    transition-all duration-500 hover:shadow-2xl hover:shadow-blue-500/20 hover:-translate-y-2
+                    animate-in fade-in slide-in-from-bottom-4 text-left cursor-pointer
                     hover:bg-white"
                   style={{ animationDelay: `${idx * 150}ms` }}
                 >
@@ -203,13 +203,13 @@ const Landing = () => {
         </div>
 
         {/* How It Works Section */}
-        <div className="py-20 px-6 bg-white
+        <div className="py-20 px-6 bg-gradient-to-b from-transparent via-blue-50/30 to-transparent">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-6xl font-black text-[#0F172A] mb-6">
+              <h2 className="text-4xl md:text-6xl font-black text-slate-900 mb-6">
                 How It Works
               </h2>
-              <p className="text-xl text-[#334155]">
+              <p className="text-xl text-slate-600">
                 From analysis to action in three simple steps
               </p>
             </div>
@@ -269,20 +269,20 @@ const Landing = () => {
         {/* Final CTA */}
         <div className="py-20 px-6">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-6xl font-black text-[#0F172A] mb-6">
+            <h2 className="text-4xl md:text-6xl font-black text-slate-900 mb-6">
               Ready to Transform Your{' '}
-              <span className="text-transparent bg-clip-text bg-white
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-emerald-600 to-blue-600">
                 YouTube Strategy?
               </span>
             </h2>
-            <p className="text-xl text-[#334155] mb-10">
+            <p className="text-xl text-slate-600 mb-10">
               Join creators who make data-driven decisions for sustainable growth
             </p>
             <button
               onClick={() => navigate('/niche-trends')}
-              className="group px-12 py-6 bg-white hover:from-blue-500 hover:via-emerald-500 hover:to-blue-500 
-                text-[#0F172A] font-bold rounded-2xl text-xl transition-all duration-300 
-                shadow-2xl  hover: hover:scale-105
+              className="group px-12 py-6 bg-gradient-to-r from-blue-600 via-emerald-600 to-blue-600 hover:from-blue-500 hover:via-emerald-500 hover:to-blue-500 
+                text-white font-bold rounded-2xl text-xl transition-all duration-300 
+                shadow-2xl shadow-blue-500/40 hover:shadow-blue-500/60 hover:scale-105
                 flex items-center gap-3 mx-auto"
             >
               <Zap className="w-6 h-6" />
