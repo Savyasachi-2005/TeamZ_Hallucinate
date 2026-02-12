@@ -222,7 +222,7 @@ const Landing = () => {
               ].map((item, idx) => (
                 <div 
                   key={idx}
-                  className="relative bg-white/50 -sm border border-[#E2E8F0] hover:border-blue-500/50 rounded-2xl p-8 shadow-md  fade-in slide-in-from-bottom-4 group transition-all duration-300 hover:-translate-y-2"
+                  className="relative bg-white/80 backdrop-blur-sm border border-slate-200 hover:border-blue-500/50 rounded-2xl p-8 shadow-md animate-in fade-in slide-in-from-bottom-4 group transition-all duration-300 hover:-translate-y-2"
                   style={{ animationDelay: `${idx * 200}ms` }}
                 >
                   <div className="text-8xl font-black text-#1E293B/50 absolute top-4 right-4 group-hover:text-blue-500/20 transition-colors">{item.step}</div>
@@ -231,7 +231,7 @@ const Landing = () => {
                       <item.icon className="w-6 h-6 text-blue-600" />
                     </div>
                     <h3 className="text-xl font-black text-slate-900 mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-emerald-600 transition-all">{item.title}</h3>
-                    <p className="text-[#334155]">{item.desc}</p>
+                    <p className="text-slate-600">{item.desc}</p>
                   </div>
                 </div>
               ))}
