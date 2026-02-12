@@ -105,7 +105,7 @@ const NicheTrendsTab = () => {
                   if (e.target.value.trim()) setSelectedNiche('');
                 }}
                 placeholder="e.g., AI tools for students, React tutorials..."
-                className="w-full bg-#1E293B border-#334155 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-xl px-5 py-4 text-lg h-auto placeholder:text-#64748B text-[#F8FAFC]"
+                className="w-full bg-#1E293B border-#334155 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-xl px-5 py-4 text-lg h-auto placeholder:text-#64748B text-[#0F172A]"
                 onKeyDown={(e) => e.key === 'Enter' && handleFetchTrends()}
               />
               <p className="text-xs text-#64748B mt-2">Custom input takes priority over dropdown</p>
@@ -133,7 +133,7 @@ const NicheTrendsTab = () => {
               >
                 <SelectTrigger
                   data-testid="niche-selector"
-                  className="w-full bg-#1E293B border-#334155 focus:border-blue-500 rounded-xl px-5 py-4 text-lg h-auto text-[#F8FAFC]"
+                  className="w-full bg-#1E293B border-#334155 focus:border-blue-500 rounded-xl px-5 py-4 text-lg h-auto text-[#0F172A]"
                 >
                   <SelectValue placeholder="Choose a niche..." />
                 </SelectTrigger>
@@ -142,7 +142,7 @@ const NicheTrendsTab = () => {
                     <SelectItem
                       key={niche}
                       value={niche}
-                      className="text-[#F8FAFC] hover:bg-#1E293B focus:bg-#1E293B cursor-pointer"
+                      className="text-[#0F172A] hover:bg-#1E293B focus:bg-#1E293B cursor-pointer"
                     >
                       {niche}
                     </SelectItem>
@@ -158,7 +158,7 @@ const NicheTrendsTab = () => {
               disabled={isLoading || (!selectedNiche && !customNiche.trim())}
               className="w-full bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 
                 disabled:from-#334155 disabled:to-#334155 disabled:cursor-not-allowed
-                text-[#F8FAFC] font-bold rounded-xl px-8 py-4 transition-all duration-300 
+                text-[#0F172A] font-bold rounded-xl px-8 py-4 transition-all duration-300 
                 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 disabled:shadow-none
                 flex items-center justify-center gap-2"
             >
@@ -185,7 +185,7 @@ const NicheTrendsTab = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <BarChart3 className="w-6 h-6 text-blue-400" />
-              <h2 className="text-2xl font-bold text-[#F8FAFC]">
+              <h2 className="text-2xl font-bold text-[#0F172A]">
                 Trending in <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">{currentSearchLabel}</span>
               </h2>
             </div>

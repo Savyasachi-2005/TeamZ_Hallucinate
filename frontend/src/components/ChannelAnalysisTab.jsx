@@ -128,7 +128,7 @@ const ChannelAnalysisTab = () => {
                   value={channelUrl}
                   onChange={(e) => setChannelUrl(e.target.value)}
                   placeholder="https://youtube.com/@channelname"
-                  className="w-full bg-#1E293B border-#334155 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 rounded-xl pl-12 pr-5 py-4 text-lg h-auto placeholder:text-#64748B text-[#F8FAFC]"
+                  className="w-full bg-#1E293B border-#334155 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 rounded-xl pl-12 pr-5 py-4 text-lg h-auto placeholder:text-#64748B text-[#0F172A]"
                   onKeyDown={(e) => e.key === 'Enter' && handleAnalyzeChannel()}
                 />
               </div>
@@ -160,7 +160,7 @@ const ChannelAnalysisTab = () => {
                       value={competitorUrl}
                       onChange={(e) => setCompetitorUrl(e.target.value)}
                       placeholder="https://youtube.com/@competitor"
-                      className="w-full bg-#1E293B border-#334155 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-xl pl-12 pr-5 py-3 h-auto placeholder:text-#64748B text-[#F8FAFC]"
+                      className="w-full bg-#1E293B border-#334155 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-xl pl-12 pr-5 py-3 h-auto placeholder:text-#64748B text-[#0F172A]"
                     />
                   </div>
                 </div>
@@ -173,7 +173,7 @@ const ChannelAnalysisTab = () => {
               disabled={isLoading || !channelUrl.trim()}
               className="w-full bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-500 hover:to-blue-500 
                 disabled:from-#334155 disabled:to-#334155 disabled:cursor-not-allowed
-                text-[#F8FAFC] font-bold rounded-xl px-8 py-4 transition-all duration-300 
+                text-[#0F172A] font-bold rounded-xl px-8 py-4 transition-all duration-300 
                 shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 disabled:shadow-none
                 flex items-center justify-center gap-2"
             >
@@ -208,31 +208,31 @@ const ChannelAnalysisTab = () => {
                 />
               )}
               <div className="flex-1">
-                <h2 className="text-3xl font-bold text-[#F8FAFC] mb-3" data-testid="channel-name">
+                <h2 className="text-3xl font-bold text-[#0F172A] mb-3" data-testid="channel-name">
                   {channelData.channel_info.name}
                 </h2>
                 <div className="flex flex-wrap gap-6 text-#94A3B8">
                   <div className="flex items-center gap-2">
                     <Users className="w-5 h-5 text-blue-400" />
-                    <span className="font-mono text-[#F8FAFC]" data-testid="subscriber-count">
+                    <span className="font-mono text-[#0F172A]" data-testid="subscriber-count">
                       {formatNumber(channelData.channel_info.subscribers)} subscribers
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Video className="w-5 h-5 text-emerald-400" />
-                    <span className="font-mono text-[#F8FAFC]" data-testid="video-count">
+                    <span className="font-mono text-[#0F172A]" data-testid="video-count">
                       {channelData.channel_info.total_videos} videos
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Target className="w-5 h-5 text-green-400" />
-                    <span className="font-mono text-[#F8FAFC]">
+                    <span className="font-mono text-[#0F172A]">
                       {(channelData.analytics.average_engagement_rate * 100).toFixed(2)}% avg engagement
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Calendar className="w-5 h-5 text-blue-400" />
-                    <span className="font-mono text-[#F8FAFC]">
+                    <span className="font-mono text-[#0F172A]">
                       {channelData.analytics.upload_frequency_per_month.toFixed(1)} videos/month
                     </span>
                   </div>
@@ -244,7 +244,7 @@ const ChannelAnalysisTab = () => {
           {/* Growth Health Dashboard */}
           {channelData.health_dashboard && (
             <div className="bg-gradient-to-br from-#111827 to-#1E293B border-2 border-emerald-500/30 rounded-2xl p-6 shadow-xl">
-              <h3 className="text-2xl font-bold text-[#F8FAFC] mb-6 flex items-center gap-2">
+              <h3 className="text-2xl font-bold text-[#0F172A] mb-6 flex items-center gap-2">
                 <Shield className="w-6 h-6 text-emerald-400" />
                 Growth Health Dashboard
               </h3>
@@ -308,7 +308,7 @@ const ChannelAnalysisTab = () => {
           {/* Strategic Action Summary - PROMINENT PLACEMENT */}
           {channelData.ai_analysis?.strategic_summary && (
             <div className="bg-gradient-to-br from-blue-900/40 to-blue-900/40 border-2 border-blue-500/50 rounded-2xl p-8 shadow-2xl">
-              <h3 className="text-3xl font-bold text-[#F8FAFC] mb-6 flex items-center gap-3">
+              <h3 className="text-3xl font-bold text-[#0F172A] mb-6 flex items-center gap-3">
                 <Sparkles className="w-8 h-8 text-yellow-400" />
                 AI Strategic Summary
               </h3>
@@ -341,7 +341,7 @@ const ChannelAnalysisTab = () => {
                   <ol className="space-y-2">
                     {channelData.ai_analysis.strategic_summary.recommended_action_plan.map((action, idx) => (
                       <li key={idx} className="flex gap-3">
-                        <span className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-500 text-[#F8FAFC] flex items-center justify-center text-sm font-bold">
+                        <span className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-500 text-[#0F172A] flex items-center justify-center text-sm font-bold">
                           {idx + 1}
                         </span>
                         <span className="text-#E2E8F0">{action}</span>
@@ -356,7 +356,7 @@ const ChannelAnalysisTab = () => {
           {/* Missed Trends Panel */}
           {channelData.missed_trends && channelData.missed_trends.length > 0 && (
             <div className="bg-#111827 border-2 border-yellow-500/30 rounded-2xl p-6 shadow-xl">
-              <h3 className="text-2xl font-bold text-[#F8FAFC] mb-4 flex items-center gap-2">
+              <h3 className="text-2xl font-bold text-[#0F172A] mb-4 flex items-center gap-2">
                 <Flame className="w-6 h-6 text-yellow-400" />
                 Missed Trend Opportunities
               </h3>
@@ -366,7 +366,7 @@ const ChannelAnalysisTab = () => {
                 {channelData.missed_trends.map((trend, idx) => (
                   <div key={idx} className="bg-#1E293B rounded-xl p-4 border border-yellow-500/20 hover:border-yellow-500/40 transition-colors">
                     <div className="flex items-start justify-between mb-2">
-                      <h4 className="font-bold text-[#F8FAFC] capitalize">{trend.keyword}</h4>
+                      <h4 className="font-bold text-[#0F172A] capitalize">{trend.keyword}</h4>
                       <span className="px-3 py-1 bg-yellow-500/20 text-yellow-400 rounded-full text-xs font-bold">
                         {trend.trend_score}/100
                       </span>
@@ -387,7 +387,7 @@ const ChannelAnalysisTab = () => {
           {/* Competitor Comparison */}
           {channelData.competitor_comparison && (
             <div className="bg-#111827 border-2 border-blue-500/30 rounded-2xl p-6 shadow-xl">
-              <h3 className="text-2xl font-bold text-[#F8FAFC] mb-6 flex items-center gap-2">
+              <h3 className="text-2xl font-bold text-[#0F172A] mb-6 flex items-center gap-2">
                 <GitCompare className="w-6 h-6 text-blue-400" />
                 Competitor Comparison: {channelData.competitor_comparison.competitor_name}
               </h3>
@@ -396,7 +396,7 @@ const ChannelAnalysisTab = () => {
                 {/* Engagement Gap */}
                 <div className="bg-#1E293B rounded-xl p-5 border border-#334155">
                   <h4 className="font-bold text-#94A3B8 mb-2 uppercase text-xs tracking-wider">Engagement Gap</h4>
-                  <div className="text-3xl font-black text-[#F8FAFC] mb-2">
+                  <div className="text-3xl font-black text-[#0F172A] mb-2">
                     {channelData.competitor_comparison.engagement_gap}
                   </div>
                   <p className="text-sm text-#94A3B8">Competitor's engagement advantage</p>
@@ -405,7 +405,7 @@ const ChannelAnalysisTab = () => {
                 {/* Posting Frequency */}
                 <div className="bg-#1E293B rounded-xl p-5 border border-#334155">
                   <h4 className="font-bold text-#94A3B8 mb-2 uppercase text-xs tracking-wider">Posting Frequency</h4>
-                  <div className="text-lg font-bold text-[#F8FAFC] mb-2">
+                  <div className="text-lg font-bold text-[#0F172A] mb-2">
                     {channelData.competitor_comparison.posting_gap}
                   </div>
                 </div>
@@ -413,7 +413,7 @@ const ChannelAnalysisTab = () => {
                 {/* Theme Overlap */}
                 <div className="bg-#1E293B rounded-xl p-5 border border-#334155">
                   <h4 className="font-bold text-#94A3B8 mb-2 uppercase text-xs tracking-wider">Content Overlap</h4>
-                  <div className="text-3xl font-black text-[#F8FAFC] mb-2">
+                  <div className="text-3xl font-black text-[#0F172A] mb-2">
                     {channelData.competitor_comparison.theme_overlap_percentage}%
                   </div>
                   <p className="text-sm text-#94A3B8">Shared topic coverage</p>
@@ -437,7 +437,7 @@ const ChannelAnalysisTab = () => {
           {/* Channel Summary */}
           {channelData.ai_analysis?.channel_summary && (
             <div className="bg-#111827 border border-#1E293B rounded-2xl p-6 shadow-xl">
-              <h3 className="text-xl font-bold text-[#F8FAFC] mb-6 flex items-center gap-2">
+              <h3 className="text-xl font-bold text-[#0F172A] mb-6 flex items-center gap-2">
                 <BarChart3 className="w-6 h-6 text-emerald-400" />
                 Channel Summary
               </h3>
@@ -445,29 +445,29 @@ const ChannelAnalysisTab = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <h4 className="font-bold text-#94A3B8 mb-2 uppercase text-xs tracking-wider">Primary Niche</h4>
-                  <p className="text-[#F8FAFC] text-lg">{channelData.ai_analysis.channel_summary.primary_niche}</p>
+                  <p className="text-[#0F172A] text-lg">{channelData.ai_analysis.channel_summary.primary_niche}</p>
                 </div>
                 <div>
                   <h4 className="font-bold text-#94A3B8 mb-2 uppercase text-xs tracking-wider">Content Style</h4>
-                  <p className="text-[#F8FAFC] text-lg">{channelData.ai_analysis.channel_summary.content_style}</p>
+                  <p className="text-[#0F172A] text-lg">{channelData.ai_analysis.channel_summary.content_style}</p>
                 </div>
                 <div>
                   <h4 className="font-bold text-#94A3B8 mb-2 uppercase text-xs tracking-wider">Growth Pattern</h4>
-                  <p className="text-[#F8FAFC] text-lg">{channelData.ai_analysis.channel_summary.growth_pattern}</p>
+                  <p className="text-[#0F172A] text-lg">{channelData.ai_analysis.channel_summary.growth_pattern}</p>
                 </div>
                 <div>
                   <h4 className="font-bold text-#94A3B8 mb-2 uppercase text-xs tracking-wider flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-green-400" />
                     Key Strength
                   </h4>
-                  <p className="text-[#F8FAFC] text-lg">{channelData.ai_analysis.channel_summary.strength}</p>
+                  <p className="text-[#0F172A] text-lg">{channelData.ai_analysis.channel_summary.strength}</p>
                 </div>
                 <div className="md:col-span-2">
                   <h4 className="font-bold text-#94A3B8 mb-2 uppercase text-xs tracking-wider flex items-center gap-2">
                     <AlertCircle className="w-4 h-4 text-yellow-400" />
                     Area to Improve
                   </h4>
-                  <p className="text-[#F8FAFC] text-lg">{channelData.ai_analysis.channel_summary.weakness}</p>
+                  <p className="text-[#0F172A] text-lg">{channelData.ai_analysis.channel_summary.weakness}</p>
                 </div>
               </div>
             </div>
@@ -476,7 +476,7 @@ const ChannelAnalysisTab = () => {
           {/* Top Themes */}
           {channelData.analytics.top_themes && channelData.analytics.top_themes.length > 0 && (
             <div className="bg-#111827 border border-#1E293B rounded-2xl p-6 shadow-xl">
-              <h3 className="text-xl font-bold text-[#F8FAFC] mb-4 flex items-center gap-2">
+              <h3 className="text-xl font-bold text-[#0F172A] mb-4 flex items-center gap-2">
                 <Lightbulb className="w-6 h-6 text-yellow-400" />
                 Top Content Themes
               </h3>
@@ -486,7 +486,7 @@ const ChannelAnalysisTab = () => {
                     key={index}
                     onClick={() => handleExploreTrend(theme)}
                     className="theme-chip px-5 py-2 bg-gradient-to-r from-blue-600/20 to-blue-600/20 hover:from-blue-600/30 hover:to-blue-600/30 
-                      border border-blue-500/30 hover:border-blue-500/50 rounded-full text-[#F8FAFC] font-semibold 
+                      border border-blue-500/30 hover:border-blue-500/50 rounded-full text-[#0F172A] font-semibold 
                       transition-all duration-200 flex items-center gap-2 capitalize"
                   >
                     {theme}
@@ -500,7 +500,7 @@ const ChannelAnalysisTab = () => {
           {/* Recent Videos */}
           {channelData.recent_videos && channelData.recent_videos.length > 0 && (
             <div className="bg-#111827 border border-#1E293B rounded-2xl p-6 shadow-xl">
-              <h3 className="text-xl font-bold text-[#F8FAFC] mb-6 flex items-center gap-2">
+              <h3 className="text-xl font-bold text-[#0F172A] mb-6 flex items-center gap-2">
                 <Video className="w-6 h-6 text-emerald-400" />
                 Recent Videos (Last 5)
               </h3>
@@ -511,7 +511,7 @@ const ChannelAnalysisTab = () => {
                     className="flex items-start gap-4 p-4 bg-#1E293B rounded-xl border border-#334155 hover:border-emerald-500/50 transition-colors"
                   >
                     <div className="flex-1">
-                      <h4 className="text-[#F8FAFC] font-semibold mb-2 line-clamp-2">{video.title}</h4>
+                      <h4 className="text-[#0F172A] font-semibold mb-2 line-clamp-2">{video.title}</h4>
                       <div className="flex flex-wrap gap-4 text-sm text-#94A3B8">
                         <span className="flex items-center gap-1">
                           <Target className="w-4 h-4 text-green-400" />
@@ -555,13 +555,13 @@ const ChannelAnalysisTab = () => {
       {exploredTrends.length > 0 && (
         <div ref={trendsRef} className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="flex items-center justify-between">
-            <h3 className="text-2xl font-bold text-[#F8FAFC] flex items-center gap-2">
+            <h3 className="text-2xl font-bold text-[#0F172A] flex items-center gap-2">
               <TrendingUp className="w-7 h-7 text-emerald-400" />
               Trending: "{exploredTheme}"
             </h3>
             <button
               onClick={() => setExploredTrends([])}
-              className="text-#94A3B8 hover:text-[#F8FAFC] transition-colors"
+              className="text-#94A3B8 hover:text-[#0F172A] transition-colors"
             >
               <XCircle className="w-6 h-6" />
             </button>

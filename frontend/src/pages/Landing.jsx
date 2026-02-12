@@ -128,7 +128,7 @@ const Landing = () => {
               <button
                 onClick={() => navigate('/niche-trends')}
                 className="group relative px-10 py-5 bg-gradient-to-r from-blue-600 via-emerald-600 to-blue-600 hover:from-blue-500 hover:via-emerald-500 hover:to-blue-500 
-                  text-[#F8FAFC] font-bold rounded-2xl text-lg transition-all duration-300 
+                  text-[#0F172A] font-bold rounded-2xl text-lg transition-all duration-300 
                   shadow-2xl shadow-blue-500/40 hover:shadow-blue-500/60 hover:scale-105
                   flex items-center gap-3"
               >
@@ -140,7 +140,7 @@ const Landing = () => {
               <button
                 onClick={() => document.getElementById('features').scrollIntoView({ behavior: 'smooth' })}
                 className="px-10 py-5 bg-#1E293B/50 hover:bg-#1E293B border-2 border-#334155 hover:border-blue-500/50
-                  text-[#F8FAFC] font-bold rounded-2xl text-lg transition-all duration-300 backdrop-blur-sm"
+                  text-[#0F172A] font-bold rounded-2xl text-lg transition-all duration-300 backdrop-blur-sm"
               >
                 Explore Features
               </button>
@@ -162,7 +162,7 @@ const Landing = () => {
         <div id="features" className="py-20 px-6">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-6xl font-black text-[#F8FAFC] mb-6">
+              <h2 className="text-4xl md:text-6xl font-black text-[#0F172A] mb-6">
                 Everything You Need to{' '}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-blue-500">
                   Dominate YouTube
@@ -184,11 +184,11 @@ const Landing = () => {
                     hover:bg-#111827/80"
                   style={{ animationDelay: `${idx * 150}ms` }}
                 >
-                  <div className={`inline-flex p-4 rounded-2xl bg-gradient-to-br ${feature.gradient} bg-opacity-10 mb-6
+                  <div className={`inline-flex p-4 rounded-2xl bg-gradient-to-br ${feature.gradient} bg-opacity-5 mb-6
                     group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
-                    <feature.icon className="w-8 h-8 text-[#F8FAFC]" />
+                    <feature.icon className="w-8 h-8 text-[#0F172A]" />
                   </div>
-                  <h3 className="text-2xl font-bold text-[#F8FAFC] mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-emerald-400 transition-all">
+                  <h3 className="text-2xl font-bold text-[#0F172A] mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-emerald-400 transition-all">
                     {feature.title}
                   </h3>
                   <p className="text-#94A3B8 text-base leading-relaxed mb-4">{feature.description}</p>
@@ -206,7 +206,7 @@ const Landing = () => {
         <div className="py-20 px-6 bg-gradient-to-b from-transparent via-blue-950/10 to-transparent">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-6xl font-black text-[#F8FAFC] mb-6">
+              <h2 className="text-4xl md:text-6xl font-black text-[#0F172A] mb-6">
                 How It Works
               </h2>
               <p className="text-xl text-#94A3B8">
@@ -227,10 +227,10 @@ const Landing = () => {
                 >
                   <div className="text-8xl font-black text-#1E293B/50 absolute top-4 right-4 group-hover:text-blue-500/20 transition-colors">{item.step}</div>
                   <div className="relative">
-                    <div className={`inline-flex p-3 rounded-xl bg-gradient-to-r ${item.gradient} bg-opacity-10 mb-4 shadow-lg group-hover:scale-110 transition-transform`}>
+                    <div className={`inline-flex p-3 rounded-xl bg-gradient-to-r ${item.gradient} bg-opacity-5 mb-4 shadow-lg group-hover:scale-110 transition-transform`}>
                       <item.icon className="w-6 h-6 text-blue-400" />
                     </div>
-                    <h3 className="text-xl font-bold text-[#F8FAFC] mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-emerald-400 transition-all">{item.title}</h3>
+                    <h3 className="text-xl font-bold text-[#0F172A] mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-emerald-400 transition-all">{item.title}</h3>
                     <p className="text-#94A3B8">{item.desc}</p>
                   </div>
                 </div>
@@ -243,7 +243,7 @@ const Landing = () => {
         <div className="py-20 px-6">
           <div className="max-w-6xl mx-auto">
             <div className="bg-gradient-to-r from-blue-900/30 via-emerald-900/30 to-blue-900/30 border-2 border-blue-500/30 rounded-3xl p-12 text-center backdrop-blur-sm shadow-2xl shadow-blue-500/20">
-              <h3 className="text-3xl md:text-5xl font-black text-[#F8FAFC] mb-8">
+              <h3 className="text-3xl md:text-5xl font-black text-[#0F172A] mb-8">
                 Powered by Advanced AI & Real-Time Data
               </h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -269,7 +269,7 @@ const Landing = () => {
         {/* Final CTA */}
         <div className="py-20 px-6">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-6xl font-black text-[#F8FAFC] mb-6">
+            <h2 className="text-4xl md:text-6xl font-black text-[#0F172A] mb-6">
               Ready to Transform Your{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-emerald-400 to-blue-400">
                 YouTube Strategy?
@@ -281,7 +281,7 @@ const Landing = () => {
             <button
               onClick={() => navigate('/niche-trends')}
               className="group px-12 py-6 bg-gradient-to-r from-blue-600 via-emerald-600 to-blue-600 hover:from-blue-500 hover:via-emerald-500 hover:to-blue-500 
-                text-[#F8FAFC] font-bold rounded-2xl text-xl transition-all duration-300 
+                text-[#0F172A] font-bold rounded-2xl text-xl transition-all duration-300 
                 shadow-2xl shadow-blue-500/40 hover:shadow-blue-500/60 hover:scale-105
                 flex items-center gap-3 mx-auto"
             >
