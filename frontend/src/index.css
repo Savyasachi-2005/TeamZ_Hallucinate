@@ -51,65 +51,21 @@
     }
 }
 
-/* Custom Animations */
-@keyframes fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes slide-in-from-bottom {
-    from { 
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to { 
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes pulse-glow {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
-}
-
-@keyframes gradient-x {
-    0%, 100% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-}
-
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0px);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
-}
-
-.animate-gradient-x {
-    background-size: 200% 200%;
-    animation: gradient-x 3s ease infinite;
-}
-
-.animate-float {
-    animation: float 3s ease-in-out infinite;
-}
-
-.animate-in {
-    animation: fade-in 0.5s ease-out forwards;
-}
-
-.fade-in {
-    animation: fade-in 0.5s ease-out forwards;
-}
-
+/* Remove ALL animations, effects, filters */
+.animate-gradient-x,
+.animate-float,
+.animate-pulse,
+.backdrop-blur,
+.blur-3xl,
+.blur-xl,
+.blur-lg,
+.blur-md,
+.animate-in,
+.fade-in,
 .slide-in-from-bottom-4 {
-    animation: slide-in-from-bottom 0.5s ease-out forwards;
+    animation: none !important;
+    backdrop-filter: none !important;
+    filter: none !important;
 }
 
 /* Line Clamp */
