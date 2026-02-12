@@ -2026,6 +2026,45 @@ async def analyse_channel(request: ChannelAnalyseRequest):
         competitor_comparison=competitor_comparison_data
     )
 
+@api_router.post("/copilot-chat", response_model=CopilotChatResponse)
+async def copilot_chat(request: CopilotChatRequest):
+    """
+    Mini-RAG Contextual AI Copilot - Answers using context memory.
+    Minimizes API calls with rule-based intent detection.
+    """
+    
+    # Step 1: Build context summary from memory
+    context = build_context_summary()
+    
+    # Step 2: Try local rule-based intent detection first
+    rule_based_response = detect_intent_local(request.message, context)
+    
+    if rule_based_response:
+        # Rule-based answer found - NO Gemini call needed
+        logger.info(f"Copilot: Rule-based response for '{request.message[:50]}'")
+        return CopilotChatResponse(
+            response=rule_based_response,
+            source="rule_based",
+            context_used=context.get("has_context", False)
+        )
+    
+    # Step 3: Fallback to Gemini for complex questions
+    if not context.get("has_context"):
+        return CopilotChatResponse(
+            response="Please analyze your channel or search trends first so I can provide personalized insights.",
+            source="rule_based",
+            context_used=False
+        )
+    
+    logger.info(f"Copilot: Calling Gemini for '{request.message[:50]}'")
+    ai_response = await ask_copilot_ai(request.message, context)
+    
+    return CopilotChatResponse(
+        response=ai_response,
+        source="ai_generated",
+        context_used=True
+    )
+
 # Include the router in the main app
 app.include_router(api_router)
 
