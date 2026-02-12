@@ -66,13 +66,13 @@ const Landing = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-purple-950/30 to-gray-950 relative overflow-hidden">
-      {/* Enhanced AI-themed Animated Background */}
+    <div className="min-h-screen bg-[#0F172A] relative overflow-hidden">
+      {/* Enhanced Professional Animated Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-purple-500/15 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-cyan-500/15 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-500/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
-        <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-pink-500/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '0.5s' }} />
+        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-[#3B82F6]/10 rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-[#10B981]/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#3B82F6]/5 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-[#10B981]/5 rounded-full blur-3xl animate-float" style={{ animationDelay: '0.5s' }} />
       </div>
 
       {/* Noise Texture */}
