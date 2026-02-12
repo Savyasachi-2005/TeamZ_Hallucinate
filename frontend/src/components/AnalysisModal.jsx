@@ -31,7 +31,7 @@ const AnalysisModal = ({ isOpen, onClose, video, analysisData, isLoading }) => {
                 className="w-36 h-20 object-cover rounded-lg"
               />
               <div className="flex-1 min-w-0">
-                <h4 className="font-semibold text-white truncate">{video.title}</h4>
+                <h4 className="font-bold text-white truncate">{video.title}</h4>
                 <p className="text-gray-400 text-sm mt-1">{video.channel}</p>
                 <div className="flex items-center gap-3 mt-2">
                   <span className="px-3 py-1 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-sm font-bold">
@@ -43,7 +43,7 @@ const AnalysisModal = ({ isOpen, onClose, video, analysisData, isLoading }) => {
 
             {/* Why It's Trending */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+              <h3 className="text-lg font-bold text-white flex items-center gap-2">
                 <BarChart3 className="w-5 h-5 text-purple-400" />
                 Why It's Trending
               </h3>
@@ -81,7 +81,7 @@ const AnalysisModal = ({ isOpen, onClose, video, analysisData, isLoading }) => {
 
             {/* Creator Angle */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+              <h3 className="text-lg font-bold text-white flex items-center gap-2">
                 <Lightbulb className="w-5 h-5 text-yellow-400" />
                 Your Creator Angle
               </h3>
@@ -89,7 +89,7 @@ const AnalysisModal = ({ isOpen, onClose, video, analysisData, isLoading }) => {
               <div className="bg-gradient-to-br from-blue-900/30 to-purple-900/30 border border-blue-500/20 rounded-xl p-6 space-y-4">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-wider text-cyan-400 mb-2">Suggested Title</p>
-                  <p className="text-lg font-semibold text-white" data-testid="suggested-title">
+                  <p className="text-lg font-bold text-white" data-testid="suggested-title">
                     {analysisData.creator_angle?.suggested_title}
                   </p>
                 </div>

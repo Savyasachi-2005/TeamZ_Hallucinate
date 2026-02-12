@@ -64,7 +64,7 @@ const MainApp = () => {
           {/* Subtitle */}
           <div className="inline-flex items-center justify-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 backdrop-blur-sm">
             <Sparkles className="w-5 h-5 text-yellow-400 animate-pulse" />
-            <p className="text-base md:text-lg text-gray-300 font-medium">
+            <p className="text-base md:text-lg text-gray-300 font-semibold">
               AI-powered trend intelligence for YouTube creators
             </p>
             <Sparkles className="w-5 h-5 text-yellow-400 animate-pulse" />
@@ -80,7 +80,7 @@ const MainApp = () => {
               className="rounded-xl py-4 px-8 text-base font-bold transition-all duration-300 relative overflow-hidden
                 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-cyan-500 
                 data-[state=active]:text-white data-[state=active]:shadow-xl data-[state=active]:shadow-blue-500/40
-                data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-white data-[state=inactive]:hover:bg-gray-800/50"
+                data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-white data-[state=inactive]:hover:bg-gray-800"
             >
               <TrendingUp className="w-5 h-5 mr-2 inline" />
               Niche Trends
@@ -91,7 +91,7 @@ const MainApp = () => {
               className="rounded-xl py-4 px-8 text-base font-bold transition-all duration-300 relative overflow-hidden
                 data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600 data-[state=active]:to-purple-600 
                 data-[state=active]:text-white data-[state=active]:shadow-xl data-[state=active]:shadow-purple-500/40
-                data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-white data-[state=inactive]:hover:bg-gray-800/50"
+                data-[state=inactive]:text-gray-400 data-[state=inactive]:hover:text-white data-[state=inactive]:hover:bg-gray-800"
             >
               <User className="w-5 h-5 mr-2 inline" />
               Channel Analysis
@@ -109,7 +109,7 @@ const MainApp = () => {
       </div>
 
       {/* Footer */}
-      <footer className="relative z-10 text-center py-8 border-t border-gray-800/50">
+      <footer className="relative z-10 text-center py-8 border-t border-gray-800">
         <p className="text-gray-500 text-sm">
           Powered by <span className="text-blue-400">YouTube Data API</span> & <span className="text-purple-400">Gemini AI</span>
         </p>

@@ -46,7 +46,7 @@ const ChannelAnalysisPage = () => {
           </h1>
           <div className="inline-flex items-center justify-center gap-3 px-6 py-3 rounded-full bg-emerald-500/10 border border-emerald-500/20 backdrop-blur-sm">
             <Sparkles className="w-5 h-5 text-emerald-400 animate-pulse" />
-            <p className="text-base md:text-lg text-gray-300 font-medium">
+            <p className="text-base md:text-lg text-gray-300 font-semibold">
               AI-powered copilot for sustainable growth in the creator economy
             </p>
           </div>
@@ -58,7 +58,7 @@ const ChannelAnalysisPage = () => {
 
       {/* Footer */}
       <footer className="relative z-10 text-center py-8 border-t border-emerald-500/20 mt-20">
-        <p className="text-[#64748B] text-sm">
+        <p className="text-[#475569] text-sm">
           Powered by <span className="text-emerald-400">YouTube Data API</span> & <span className="text-blue-400">Gemini AI</span>
         </p>
       </footer>

@@ -118,8 +118,8 @@ const Landing = () => {
             </div>
 
             {/* Value Proposition */}
-            <p className="text-xl md:text-2xl text-[#475569] max-w-3xl mx-auto mb-12 leading-relaxed">
-              Your AI-powered copilot for <span className="text-emerald-400 font-semibold">sustainable growth</span> in the creator economy.
+            <p className="text-xl md:text-2xl text-[#334155] max-w-3xl mx-auto mb-12 leading-relaxed">
+              Your AI-powered copilot for <span className="text-emerald-400 font-bold">sustainable growth</span> in the creator economy.
               Detect trends, analyze competitors, and get strategic insights—all in one place.
             </p>
 
@@ -147,11 +147,11 @@ const Landing = () => {
             </div>
 
             {/* Quick Stats */}
-            <div className="flex flex-wrap justify-center gap-8 text-[#475569]">
+            <div className="flex flex-wrap justify-center gap-8 text-[#334155]">
               {benefits.map((benefit, idx) => (
                 <div key={idx} className="flex items-center gap-2 animate-in fade-in slide-in-from-bottom-4" style={{ animationDelay: `${idx * 100}ms` }}>
                   <benefit.icon className="w-5 h-5 text-emerald-400" />
-                  <span className="text-sm font-semibold">{benefit.text}</span>
+                  <span className="text-sm font-bold">{benefit.text}</span>
                 </div>
               ))}
             </div>
@@ -168,7 +168,7 @@ const Landing = () => {
                   Dominate YouTube
                 </span>
               </h2>
-              <p className="text-xl text-[#475569] max-w-2xl mx-auto">
+              <p className="text-xl text-[#334155] max-w-2xl mx-auto">
                 Built for creators who want data-driven insights, not just analytics dashboards
               </p>
             </div>
@@ -181,7 +181,7 @@ const Landing = () => {
                   className="group bg-white/50 backdrop-blur-sm border border-[#E2E8F0] hover:border-blue-500/50 rounded-2xl p-8 shadow-md 
                     transition-all duration-500 hover:shadow-2xl hover:shadow-blue-500/20 hover:-translate-y-2
                     animate-in fade-in slide-in-from-bottom-4 text-left cursor-pointer
-                    hover:bg-white/80"
+                    hover:bg-white"
                   style={{ animationDelay: `${idx * 150}ms` }}
                 >
                   <div className={`inline-flex p-4 rounded-2xl bg-gradient-to-br ${feature.gradient} bg-opacity-5 mb-6
@@ -191,8 +191,8 @@ const Landing = () => {
                   <h3 className="text-2xl font-bold text-[#0F172A] mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-emerald-400 transition-all">
                     {feature.title}
                   </h3>
-                  <p className="text-[#475569] text-base leading-relaxed mb-4">{feature.description}</p>
-                  <div className="flex items-center gap-2 text-blue-400 font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+                  <p className="text-[#334155] text-base leading-relaxed mb-4">{feature.description}</p>
+                  <div className="flex items-center gap-2 text-blue-400 font-bold opacity-0 group-hover:opacity-100 transition-opacity">
                     <span>Explore</span>
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </div>
@@ -209,7 +209,7 @@ const Landing = () => {
               <h2 className="text-4xl md:text-6xl font-black text-[#0F172A] mb-6">
                 How It Works
               </h2>
-              <p className="text-xl text-[#475569]">
+              <p className="text-xl text-[#334155]">
                 From analysis to action in three simple steps
               </p>
             </div>
@@ -231,7 +231,7 @@ const Landing = () => {
                       <item.icon className="w-6 h-6 text-blue-400" />
                     </div>
                     <h3 className="text-xl font-bold text-[#0F172A] mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-emerald-400 transition-all">{item.title}</h3>
-                    <p className="text-[#475569]">{item.desc}</p>
+                    <p className="text-[#334155]">{item.desc}</p>
                   </div>
                 </div>
               ))}
@@ -258,7 +258,7 @@ const Landing = () => {
                       <stat.icon className={`w-8 h-8 text-${stat.color}-400`} />
                     </div>
                     <div className={`text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-${stat.color}-400 to-emerald-400 mb-2`}>{stat.value}</div>
-                    <div className="text-[#475569] font-semibold">{stat.label}</div>
+                    <div className="text-[#334155] font-bold">{stat.label}</div>
                   </div>
                 ))}
               </div>
@@ -275,7 +275,7 @@ const Landing = () => {
                 YouTube Strategy?
               </span>
             </h2>
-            <p className="text-xl text-[#475569] mb-10">
+            <p className="text-xl text-[#334155] mb-10">
               Join creators who make data-driven decisions for sustainable growth
             </p>
             <button
@@ -294,7 +294,7 @@ const Landing = () => {
 
         {/* Footer */}
         <footer className="border-t border-blue-500/20 py-8 px-6">
-          <div className="max-w-6xl mx-auto text-center text-[#64748B] text-sm">
+          <div className="max-w-6xl mx-auto text-center text-[#475569] text-sm">
             <p className="mb-2">
               Powered by <span className="text-blue-400">YouTube Data API</span> & <span className="text-emerald-400">Gemini AI</span>
             </p>

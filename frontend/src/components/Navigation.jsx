@@ -28,7 +28,7 @@ const Navigation = () => {
                 <span className="text-[#0F172A]">Niche</span>
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3B82F6] to-[#10B981]">Pulse</span>
               </h1>
-              <p className="text-xs text-[#64748B]">AI Copilot</p>
+              <p className="text-xs text-[#475569]">AI Copilot</p>
             </div>
           </button>
 
@@ -36,21 +36,21 @@ const Navigation = () => {
           <div className="flex items-center gap-2">
             <button
               onClick={() => navigate('/')}
-              className="px-4 py-2 rounded-xl text-[#475569] hover:text-[#0F172A] hover:bg-[#F1F5F9] transition-all flex items-center gap-2"
+              className="px-4 py-2 rounded-xl text-[#334155] hover:text-[#0F172A] hover:bg-[#F1F5F9] transition-all flex items-center gap-2"
             >
               <Home className="w-4 h-4" />
               <span className="hidden md:inline">Home</span>
             </button>
             <button
               onClick={() => navigate('/niche-trends')}
-              className="px-4 py-2 rounded-xl text-[#475569] hover:text-[#0F172A] hover:bg-[#3B82F6]/5 hover:border-[#3B82F6]/20 border border-transparent transition-all flex items-center gap-2"
+              className="px-4 py-2 rounded-xl text-[#334155] hover:text-[#0F172A] hover:bg-[#3B82F6]/5 hover:border-[#3B82F6]/20 border border-transparent transition-all flex items-center gap-2"
             >
               <TrendingUp className="w-4 h-4" />
               <span className="hidden md:inline">Niche Trends</span>
             </button>
             <button
               onClick={() => navigate('/channel-analysis')}
-              className="px-4 py-2 rounded-xl text-[#475569] hover:text-[#0F172A] hover:bg-[#10B981]/5 hover:border-[#10B981]/20 border border-transparent transition-all flex items-center gap-2"
+              className="px-4 py-2 rounded-xl text-[#334155] hover:text-[#0F172A] hover:bg-[#10B981]/5 hover:border-[#10B981]/20 border border-transparent transition-all flex items-center gap-2"
             >
               <User className="w-4 h-4" />
               <span className="hidden md:inline">Channel Analysis</span>

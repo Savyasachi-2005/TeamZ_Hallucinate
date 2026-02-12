@@ -74,7 +74,7 @@ const TrendCard = ({ video, index, onClick }) => {
         
         {/* Competition Badge */}
         {video.competition_level && (
-          <div className={`absolute bottom-3 left-3 px-3 py-1 rounded-lg border text-xs font-semibold ${getCompetitionColor(video.competition_level)}`}>
+          <div className={`absolute bottom-3 left-3 px-3 py-1 rounded-lg border text-xs font-bold ${getCompetitionColor(video.competition_level)}`}>
             {video.competition_level} Competition
           </div>
         )}
@@ -82,7 +82,7 @@ const TrendCard = ({ video, index, onClick }) => {
       
       {/* Content Section */}
       <div className="p-5">
-        <h3 className="font-semibold text-white text-lg mb-2 line-clamp-2 group-hover:text-blue-400 transition-colors">
+        <h3 className="font-bold text-white text-lg mb-2 line-clamp-2 group-hover:text-blue-400 transition-colors">
           {video.title}
         </h3>
         
@@ -93,21 +93,21 @@ const TrendCard = ({ video, index, onClick }) => {
         
         {/* Metrics Grid */}
         <div className="grid grid-cols-2 gap-2 mb-4">
-          <div className="bg-gray-800/50 rounded-xl px-3 py-2 border border-gray-700/50">
+          <div className="bg-gray-800/50 rounded-xl px-3 py-2 border border-gray-700">
             <p className="text-[10px] uppercase tracking-wider text-gray-500 mb-1">Views</p>
-            <p className="font-mono text-sm text-white font-medium">{formatViews(video.views)}</p>
+            <p className="font-mono text-sm text-white font-semibold">{formatViews(video.views)}</p>
           </div>
-          <div className="bg-gray-800/50 rounded-xl px-3 py-2 border border-gray-700/50">
+          <div className="bg-gray-800/50 rounded-xl px-3 py-2 border border-gray-700">
             <p className="text-[10px] uppercase tracking-wider text-gray-500 mb-1">Velocity</p>
-            <p className="font-mono text-sm text-cyan-400 font-medium">{formatVelocity(video.views_per_day)}</p>
+            <p className="font-mono text-sm text-cyan-400 font-semibold">{formatVelocity(video.views_per_day)}</p>
           </div>
-          <div className="bg-gray-800/50 rounded-xl px-3 py-2 border border-gray-700/50">
+          <div className="bg-gray-800/50 rounded-xl px-3 py-2 border border-gray-700">
             <p className="text-[10px] uppercase tracking-wider text-gray-500 mb-1">Engagement</p>
-            <p className="font-mono text-sm text-purple-400 font-medium">{(video.engagement_rate * 100).toFixed(2)}%</p>
+            <p className="font-mono text-sm text-purple-400 font-semibold">{(video.engagement_rate * 100).toFixed(2)}%</p>
           </div>
-          <div className="bg-gray-800/50 rounded-xl px-3 py-2 border border-gray-700/50">
+          <div className="bg-gray-800/50 rounded-xl px-3 py-2 border border-gray-700">
             <p className="text-[10px] uppercase tracking-wider text-gray-500 mb-1">Age</p>
-            <p className="font-mono text-sm text-white font-medium flex items-center gap-1">
+            <p className="font-mono text-sm text-white font-semibold flex items-center gap-1">
               <Clock className="w-3 h-3 text-gray-500" />
               {video.recency_days}d ago
             </p>
