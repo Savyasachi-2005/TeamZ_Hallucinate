@@ -913,7 +913,7 @@ async def health():
 
 @api_router.post("/trends", response_model=TrendResponse)
 async def get_trends(request: TrendRequest):
-    """Fetch trending YouTube videos for a niche or custom keyword"""
+    """Fetch trending YouTube videos using robust Trending Detection Engine"""
     
     check_api_key()
     
@@ -945,7 +945,8 @@ async def get_trends(request: TrendRequest):
             detail={"error": "Please provide either a niche or custom keyword"}
         )
     
-    videos = await search_youtube_videos(keywords, max_results=15)
+    # Fetch 30-50 videos for better trend analysis
+    videos = await search_youtube_videos(keywords, max_results=40)
     
     if not videos:
         raise HTTPException(
@@ -953,29 +954,46 @@ async def get_trends(request: TrendRequest):
             detail={"error": "No videos found for this search"}
         )
     
+    # Get statistics for all videos
     video_ids = [v["video_id"] for v in videos]
     stats = await get_video_statistics(video_ids)
     
-    trend_videos = []
-    for video in videos:
-        video_id = video["video_id"]
-        video_stats = stats.get(video_id, {"views": 0, "likes": 0, "comments": 0})
-        trend_score = calculate_trend_score(video, video_stats)
-        
-        trend_videos.append(TrendVideo(
-            video_id=video_id,
-            title=video["title"],
-            channel=video["channel"],
-            views=video_stats["views"],
-            published_at=video["published_at"],
-            trend_score=trend_score,
-            youtube_url=f"https://youtube.com/watch?v={video_id}"
-        ))
+    # Use new Trending Detection Engine
+    scored_videos = calculate_trend_scores_batch(videos, stats)
     
-    trend_videos.sort(key=lambda x: x.trend_score, reverse=True)
-    top_5 = trend_videos[:5]
+    if not scored_videos:
+        raise HTTPException(
+            status_code=404,
+            detail={"error": "No qualifying videos found (minimum 100 views required)"}
+        )
     
-    return TrendResponse(niche=search_label, top_trends=top_5)
+    # Extract trending topics
+    trending_topics = extract_trending_topics(scored_videos)
+    
+    # Build response with top 5 videos
+    top_videos = scored_videos[:5]
+    trend_videos = [
+        TrendVideo(
+            video_id=v["video_id"],
+            title=v["title"],
+            channel=v["channel"],
+            views=v["views"],
+            published_at=v["published_at"],
+            trend_score=v["trend_score"],
+            youtube_url=f"https://youtube.com/watch?v={v['video_id']}",
+            views_per_day=v["views_per_day"],
+            engagement_rate=v["engagement_rate"],
+            recency_days=v["recency_days"],
+            competition_level=v["competition_level"]
+        )
+        for v in top_videos
+    ]
+    
+    return TrendResponse(
+        niche=search_label, 
+        top_trends=trend_videos,
+        trending_topics=trending_topics if trending_topics else None
+    )
 
 @api_router.post("/analyse", response_model=AnalyseResponse)
 async def analyse_video(request: AnalyseRequest):
