@@ -610,11 +610,9 @@ def calculate_trend_scores_batch(videos: List[dict], stats: dict) -> List[dict]:
     # Step 2: Separate into tiers by recency
     # Tier 1: <= 7 days (truly trending)
     # Tier 2: 8-30 days (recent)
-    # Tier 3: > 30 days (not trending, only use if needed)
     
     tier1 = [c for c in candidates if c["days"] <= 7]
     tier2 = [c for c in candidates if 7 < c["days"] <= 30]
-    tier3 = [c for c in candidates if c["days"] > 30]
     
     # Prioritize recent videos
     if len(tier1) >= 5:
