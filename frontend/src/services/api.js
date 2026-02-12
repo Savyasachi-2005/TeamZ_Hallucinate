@@ -56,10 +56,13 @@ export const analyzeVideo = async (videoId, niche) => {
   return response.data;
 };
 
-export const analyzeChannel = async (channelUrl) => {
-  const response = await api.post('/channel-analyse', {
-    channel_url: channelUrl,
-  });
+export const analyzeChannel = async (channelUrl, competitorUrl = null) => {
+  const payload = { channel_url: channelUrl };
+  if (competitorUrl) {
+    payload.competitor_url = competitorUrl;
+  }
+  
+  const response = await api.post('/channel-analyse', payload);
   return response.data;
 };
 
