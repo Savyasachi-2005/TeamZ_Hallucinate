@@ -228,30 +228,14 @@ async def analyze_with_gemini(video_details: dict, niche: str) -> dict:
     """Use Gemini to analyze why a video is trending"""
     check_api_key()
     
-    prompt = f"""Analyze this YouTube video and explain why it's trending in the {niche} niche.
+    prompt = f"""Analyze this YouTube video trending in {niche}:
 
-Video Title: {video_details['title']}
+Title: {video_details['title']}
 Channel: {video_details['channel']}
-Description: {video_details['description']}
-Tags: {', '.join(video_details.get('tags', []))}
 Views: {video_details['views']:,}
-Likes: {video_details['likes']:,}
-Comments: {video_details['comments']:,}
 
-You MUST respond with ONLY valid JSON in this exact format, no markdown, no extra text:
-{{
-  "analysis": {{
-    "hook_style": "Describe the hook style used in the title/thumbnail",
-    "title_pattern": "Identify the title pattern or formula used",
-    "emotional_driver": "What emotional trigger makes viewers click",
-    "why_it_works": "Explain why this content works in the {niche} niche"
-  }},
-  "creator_angle": {{
-    "suggested_title": "A specific title idea for a creator to use",
-    "content_direction": "What specific content should they create",
-    "hook_example": "An opening hook script example"
-  }}
-}}"""
+Return ONLY this JSON (no markdown):
+{{"analysis":{{"hook_style":"brief description","title_pattern":"pattern used","emotional_driver":"trigger","why_it_works":"reason"}},"creator_angle":{{"suggested_title":"title idea","content_direction":"what to create","hook_example":"opening line"}}}}"""
 
     async with httpx.AsyncClient(timeout=60.0) as client:
         try:
@@ -266,7 +250,8 @@ You MUST respond with ONLY valid JSON in this exact format, no markdown, no extr
                 }],
                 "generationConfig": {
                     "temperature": 0.7,
-                    "maxOutputTokens": 1024
+                    "maxOutputTokens": 2048,
+                    "responseMimeType": "application/json"
                 }
             }
             
