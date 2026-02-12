@@ -367,6 +367,13 @@ function App() {
                         <div className={`absolute top-4 right-4 px-4 py-2 rounded-xl bg-black/60 backdrop-blur-sm border border-white/10 font-mono text-lg font-bold ${getTrendScoreClass(video.trend_score)}`}>
                           {video.trend_score.toFixed(1)}
                         </div>
+
+                        {/* Competition badge */}
+                        {video.competition_level && (
+                          <div className={`absolute bottom-4 left-4 px-2 py-1 rounded-lg bg-black/60 backdrop-blur-sm border border-white/10 text-xs font-semibold ${getCompetitionClass(video.competition_level)}`}>
+                            {video.competition_level} Competition
+                          </div>
+                        )}
                       </div>
                       
                       {/* Content */}
@@ -375,18 +382,35 @@ function App() {
                           {video.title}
                         </h3>
                         
-                        <p className="text-gray-400 text-sm mb-4">{video.channel}</p>
-                        
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="font-mono text-gray-500">
-                            {formatViews(video.views)} views
-                          </span>
-                          <span className="text-gray-500">
-                            {formatDate(video.published_at)}
-                          </span>
+                        <p className="text-gray-400 text-sm mb-3">{video.channel}</p>
+
+                        {/* Enhanced Metrics Grid */}
+                        <div className="grid grid-cols-2 gap-2 mb-4">
+                          <div className="bg-white/5 rounded-lg px-3 py-2">
+                            <p className="text-[10px] uppercase tracking-wider text-gray-500">Views</p>
+                            <p className="font-mono text-sm text-white">{formatViews(video.views)}</p>
+                          </div>
+                          <div className="bg-white/5 rounded-lg px-3 py-2">
+                            <p className="text-[10px] uppercase tracking-wider text-gray-500">Velocity</p>
+                            <p className="font-mono text-sm text-cyan-400">
+                              {video.views_per_day ? formatViewsPerDay(video.views_per_day) : 'N/A'}
+                            </p>
+                          </div>
+                          <div className="bg-white/5 rounded-lg px-3 py-2">
+                            <p className="text-[10px] uppercase tracking-wider text-gray-500">Engagement</p>
+                            <p className="font-mono text-sm text-purple-400">
+                              {video.engagement_rate ? formatPercentage(video.engagement_rate) : 'N/A'}
+                            </p>
+                          </div>
+                          <div className="bg-white/5 rounded-lg px-3 py-2">
+                            <p className="text-[10px] uppercase tracking-wider text-gray-500">Age</p>
+                            <p className="font-mono text-sm text-white">
+                              {video.recency_days ? `${video.recency_days}d ago` : formatDate(video.published_at)}
+                            </p>
+                          </div>
                         </div>
                         
-                        <div className="mt-4 pt-4 border-t border-white/5 flex items-center justify-between">
+                        <div className="pt-3 border-t border-white/5 flex items-center justify-between">
                           <span className="text-xs text-gray-500 flex items-center gap-2">
                             <Info className="w-4 h-4" />
                             Click to analyze
