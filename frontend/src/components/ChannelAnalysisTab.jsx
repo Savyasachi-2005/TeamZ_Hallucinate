@@ -113,26 +113,26 @@ const ChannelAnalysisTab = () => {
     <div className="space-y-8">
       {/* Channel Input Section */}
       <div className="max-w-2xl mx-auto">
-        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-8 shadow-xl">
+        <div className="bg-#111827 border border-#1E293B rounded-2xl p-8 shadow-xl">
           <div className="space-y-6">
             <div>
-              <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">
+              <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-#94A3B8 mb-3">
                 <Youtube className="w-4 h-4 text-red-500" />
                 YouTube Channel URL
               </label>
               <div className="relative">
-                <Youtube className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                <Youtube className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-#64748B" />
                 <Input
                   data-testid="channel-url-input"
                   type="text"
                   value={channelUrl}
                   onChange={(e) => setChannelUrl(e.target.value)}
                   placeholder="https://youtube.com/@channelname"
-                  className="w-full bg-gray-800 border-gray-700 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl pl-12 pr-5 py-4 text-lg h-auto placeholder:text-gray-500 text-white"
+                  className="w-full bg-#1E293B border-#334155 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 rounded-xl pl-12 pr-5 py-4 text-lg h-auto placeholder:text-#64748B text-[#F8FAFC]"
                   onKeyDown={(e) => e.key === 'Enter' && handleAnalyzeChannel()}
                 />
               </div>
-              <p className="text-xs text-gray-500 mt-2">
+              <p className="text-xs text-#64748B mt-2">
                 Supports: @username, /channel/ID, /c/name, /user/name
               </p>
             </div>
@@ -141,26 +141,26 @@ const ChannelAnalysisTab = () => {
             <div>
               <button
                 onClick={() => setShowCompetitorInput(!showCompetitorInput)}
-                className="flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300 transition-colors"
+                className="flex items-center gap-2 text-sm text-emerald-400 hover:text-emerald-300 transition-colors"
               >
                 <GitCompare className="w-4 h-4" />
                 {showCompetitorInput ? 'Hide' : 'Add'} Competitor Comparison (Optional)
               </button>
               
               {showCompetitorInput && (
-                <div className="mt-4 p-4 bg-gray-800/50 rounded-xl border border-gray-700">
-                  <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">
-                    <GitCompare className="w-4 h-4 text-purple-500" />
+                <div className="mt-4 p-4 bg-#1E293B/50 rounded-xl border border-#334155">
+                  <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-#94A3B8 mb-3">
+                    <GitCompare className="w-4 h-4 text-blue-500" />
                     Competitor Channel URL
                   </label>
                   <div className="relative">
-                    <Youtube className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                    <Youtube className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-#64748B" />
                     <Input
                       type="text"
                       value={competitorUrl}
                       onChange={(e) => setCompetitorUrl(e.target.value)}
                       placeholder="https://youtube.com/@competitor"
-                      className="w-full bg-gray-800 border-gray-700 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 rounded-xl pl-12 pr-5 py-3 h-auto placeholder:text-gray-500 text-white"
+                      className="w-full bg-#1E293B border-#334155 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-xl pl-12 pr-5 py-3 h-auto placeholder:text-#64748B text-[#F8FAFC]"
                     />
                   </div>
                 </div>
@@ -171,10 +171,10 @@ const ChannelAnalysisTab = () => {
               data-testid="analyse-channel-button"
               onClick={handleAnalyzeChannel}
               disabled={isLoading || !channelUrl.trim()}
-              className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 
-                disabled:from-gray-700 disabled:to-gray-700 disabled:cursor-not-allowed
-                text-white font-bold rounded-xl px-8 py-4 transition-all duration-300 
-                shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 disabled:shadow-none
+              className="w-full bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-500 hover:to-blue-500 
+                disabled:from-#334155 disabled:to-#334155 disabled:cursor-not-allowed
+                text-[#F8FAFC] font-bold rounded-xl px-8 py-4 transition-all duration-300 
+                shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 disabled:shadow-none
                 flex items-center justify-center gap-2"
             >
               {isLoading ? (
@@ -198,41 +198,41 @@ const ChannelAnalysisTab = () => {
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500" data-testid="channel-results">
           
           {/* Channel Overview */}
-          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 shadow-xl">
+          <div className="bg-#111827 border border-#1E293B rounded-2xl p-6 shadow-xl">
             <div className="flex flex-col md:flex-row gap-6 items-start">
               {channelData.channel_info.thumbnail && (
                 <img
                   src={channelData.channel_info.thumbnail}
                   alt={channelData.channel_info.name}
-                  className="w-24 h-24 rounded-full border-4 border-cyan-500/50 shadow-lg shadow-cyan-500/20"
+                  className="w-24 h-24 rounded-full border-4 border-emerald-500/50 shadow-lg shadow-emerald-500/20"
                 />
               )}
               <div className="flex-1">
-                <h2 className="text-3xl font-bold text-white mb-3" data-testid="channel-name">
+                <h2 className="text-3xl font-bold text-[#F8FAFC] mb-3" data-testid="channel-name">
                   {channelData.channel_info.name}
                 </h2>
-                <div className="flex flex-wrap gap-6 text-gray-400">
+                <div className="flex flex-wrap gap-6 text-#94A3B8">
                   <div className="flex items-center gap-2">
-                    <Users className="w-5 h-5 text-purple-400" />
-                    <span className="font-mono text-white" data-testid="subscriber-count">
+                    <Users className="w-5 h-5 text-blue-400" />
+                    <span className="font-mono text-[#F8FAFC]" data-testid="subscriber-count">
                       {formatNumber(channelData.channel_info.subscribers)} subscribers
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Video className="w-5 h-5 text-cyan-400" />
-                    <span className="font-mono text-white" data-testid="video-count">
+                    <Video className="w-5 h-5 text-emerald-400" />
+                    <span className="font-mono text-[#F8FAFC]" data-testid="video-count">
                       {channelData.channel_info.total_videos} videos
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Target className="w-5 h-5 text-green-400" />
-                    <span className="font-mono text-white">
+                    <span className="font-mono text-[#F8FAFC]">
                       {(channelData.analytics.average_engagement_rate * 100).toFixed(2)}% avg engagement
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Calendar className="w-5 h-5 text-blue-400" />
-                    <span className="font-mono text-white">
+                    <span className="font-mono text-[#F8FAFC]">
                       {channelData.analytics.upload_frequency_per_month.toFixed(1)} videos/month
                     </span>
                   </div>
@@ -243,9 +243,9 @@ const ChannelAnalysisTab = () => {
 
           {/* Growth Health Dashboard */}
           {channelData.health_dashboard && (
-            <div className="bg-gradient-to-br from-gray-900 to-gray-800 border-2 border-cyan-500/30 rounded-2xl p-6 shadow-xl">
-              <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-                <Shield className="w-6 h-6 text-cyan-400" />
+            <div className="bg-gradient-to-br from-#111827 to-#1E293B border-2 border-emerald-500/30 rounded-2xl p-6 shadow-xl">
+              <h3 className="text-2xl font-bold text-[#F8FAFC] mb-6 flex items-center gap-2">
+                <Shield className="w-6 h-6 text-emerald-400" />
                 Growth Health Dashboard
               </h3>
               
@@ -307,8 +307,8 @@ const ChannelAnalysisTab = () => {
 
           {/* Strategic Action Summary - PROMINENT PLACEMENT */}
           {channelData.ai_analysis?.strategic_summary && (
-            <div className="bg-gradient-to-br from-purple-900/40 to-blue-900/40 border-2 border-purple-500/50 rounded-2xl p-8 shadow-2xl">
-              <h3 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <div className="bg-gradient-to-br from-blue-900/40 to-blue-900/40 border-2 border-blue-500/50 rounded-2xl p-8 shadow-2xl">
+              <h3 className="text-3xl font-bold text-[#F8FAFC] mb-6 flex items-center gap-3">
                 <Sparkles className="w-8 h-8 text-yellow-400" />
                 AI Strategic Summary
               </h3>
@@ -320,7 +320,7 @@ const ChannelAnalysisTab = () => {
                     <AlertTriangle className="w-5 h-5" />
                     Main Risk
                   </h4>
-                  <p className="text-gray-200">{channelData.ai_analysis.strategic_summary.main_risk}</p>
+                  <p className="text-#E2E8F0">{channelData.ai_analysis.strategic_summary.main_risk}</p>
                 </div>
 
                 {/* Growth Opportunity */}
@@ -329,7 +329,7 @@ const ChannelAnalysisTab = () => {
                     <Trophy className="w-5 h-5" />
                     Growth Opportunity
                   </h4>
-                  <p className="text-gray-200">{channelData.ai_analysis.strategic_summary.growth_opportunity}</p>
+                  <p className="text-#E2E8F0">{channelData.ai_analysis.strategic_summary.growth_opportunity}</p>
                 </div>
 
                 {/* Action Plan */}
@@ -341,10 +341,10 @@ const ChannelAnalysisTab = () => {
                   <ol className="space-y-2">
                     {channelData.ai_analysis.strategic_summary.recommended_action_plan.map((action, idx) => (
                       <li key={idx} className="flex gap-3">
-                        <span className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-bold">
+                        <span className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-500 text-[#F8FAFC] flex items-center justify-center text-sm font-bold">
                           {idx + 1}
                         </span>
-                        <span className="text-gray-200">{action}</span>
+                        <span className="text-#E2E8F0">{action}</span>
                       </li>
                     ))}
                   </ol>
@@ -355,26 +355,26 @@ const ChannelAnalysisTab = () => {
 
           {/* Missed Trends Panel */}
           {channelData.missed_trends && channelData.missed_trends.length > 0 && (
-            <div className="bg-gray-900 border-2 border-yellow-500/30 rounded-2xl p-6 shadow-xl">
-              <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+            <div className="bg-#111827 border-2 border-yellow-500/30 rounded-2xl p-6 shadow-xl">
+              <h3 className="text-2xl font-bold text-[#F8FAFC] mb-4 flex items-center gap-2">
                 <Flame className="w-6 h-6 text-yellow-400" />
                 Missed Trend Opportunities
               </h3>
-              <p className="text-gray-400 mb-6">High-momentum topics you haven't covered yet</p>
+              <p className="text-#94A3B8 mb-6">High-momentum topics you haven't covered yet</p>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {channelData.missed_trends.map((trend, idx) => (
-                  <div key={idx} className="bg-gray-800 rounded-xl p-4 border border-yellow-500/20 hover:border-yellow-500/40 transition-colors">
+                  <div key={idx} className="bg-#1E293B rounded-xl p-4 border border-yellow-500/20 hover:border-yellow-500/40 transition-colors">
                     <div className="flex items-start justify-between mb-2">
-                      <h4 className="font-bold text-white capitalize">{trend.keyword}</h4>
+                      <h4 className="font-bold text-[#F8FAFC] capitalize">{trend.keyword}</h4>
                       <span className="px-3 py-1 bg-yellow-500/20 text-yellow-400 rounded-full text-xs font-bold">
                         {trend.trend_score}/100
                       </span>
                     </div>
-                    <p className="text-sm text-gray-400">{trend.reason}</p>
+                    <p className="text-sm text-#94A3B8">{trend.reason}</p>
                     <button
                       onClick={() => handleExploreTrend(trend.keyword)}
-                      className="mt-3 text-sm text-cyan-400 hover:text-cyan-300 flex items-center gap-1 font-semibold"
+                      className="mt-3 text-sm text-emerald-400 hover:text-emerald-300 flex items-center gap-1 font-semibold"
                     >
                       Explore Trend <ArrowRight className="w-4 h-4" />
                     </button>
@@ -386,42 +386,42 @@ const ChannelAnalysisTab = () => {
 
           {/* Competitor Comparison */}
           {channelData.competitor_comparison && (
-            <div className="bg-gray-900 border-2 border-purple-500/30 rounded-2xl p-6 shadow-xl">
-              <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-                <GitCompare className="w-6 h-6 text-purple-400" />
+            <div className="bg-#111827 border-2 border-blue-500/30 rounded-2xl p-6 shadow-xl">
+              <h3 className="text-2xl font-bold text-[#F8FAFC] mb-6 flex items-center gap-2">
+                <GitCompare className="w-6 h-6 text-blue-400" />
                 Competitor Comparison: {channelData.competitor_comparison.competitor_name}
               </h3>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Engagement Gap */}
-                <div className="bg-gray-800 rounded-xl p-5 border border-gray-700">
-                  <h4 className="font-bold text-gray-400 mb-2 uppercase text-xs tracking-wider">Engagement Gap</h4>
-                  <div className="text-3xl font-black text-white mb-2">
+                <div className="bg-#1E293B rounded-xl p-5 border border-#334155">
+                  <h4 className="font-bold text-#94A3B8 mb-2 uppercase text-xs tracking-wider">Engagement Gap</h4>
+                  <div className="text-3xl font-black text-[#F8FAFC] mb-2">
                     {channelData.competitor_comparison.engagement_gap}
                   </div>
-                  <p className="text-sm text-gray-400">Competitor's engagement advantage</p>
+                  <p className="text-sm text-#94A3B8">Competitor's engagement advantage</p>
                 </div>
 
                 {/* Posting Frequency */}
-                <div className="bg-gray-800 rounded-xl p-5 border border-gray-700">
-                  <h4 className="font-bold text-gray-400 mb-2 uppercase text-xs tracking-wider">Posting Frequency</h4>
-                  <div className="text-lg font-bold text-white mb-2">
+                <div className="bg-#1E293B rounded-xl p-5 border border-#334155">
+                  <h4 className="font-bold text-#94A3B8 mb-2 uppercase text-xs tracking-wider">Posting Frequency</h4>
+                  <div className="text-lg font-bold text-[#F8FAFC] mb-2">
                     {channelData.competitor_comparison.posting_gap}
                   </div>
                 </div>
 
                 {/* Theme Overlap */}
-                <div className="bg-gray-800 rounded-xl p-5 border border-gray-700">
-                  <h4 className="font-bold text-gray-400 mb-2 uppercase text-xs tracking-wider">Content Overlap</h4>
-                  <div className="text-3xl font-black text-white mb-2">
+                <div className="bg-#1E293B rounded-xl p-5 border border-#334155">
+                  <h4 className="font-bold text-#94A3B8 mb-2 uppercase text-xs tracking-wider">Content Overlap</h4>
+                  <div className="text-3xl font-black text-[#F8FAFC] mb-2">
                     {channelData.competitor_comparison.theme_overlap_percentage}%
                   </div>
-                  <p className="text-sm text-gray-400">Shared topic coverage</p>
+                  <p className="text-sm text-#94A3B8">Shared topic coverage</p>
                 </div>
 
                 {/* Missed Topics */}
-                <div className="bg-gray-800 rounded-xl p-5 border border-gray-700">
-                  <h4 className="font-bold text-gray-400 mb-3 uppercase text-xs tracking-wider">You're Missing</h4>
+                <div className="bg-#1E293B rounded-xl p-5 border border-#334155">
+                  <h4 className="font-bold text-#94A3B8 mb-3 uppercase text-xs tracking-wider">You're Missing</h4>
                   <div className="flex flex-wrap gap-2">
                     {channelData.competitor_comparison.missed_topics.map((topic, idx) => (
                       <span key={idx} className="px-3 py-1 bg-red-500/20 text-red-400 rounded-full text-sm font-semibold capitalize">
@@ -436,38 +436,38 @@ const ChannelAnalysisTab = () => {
 
           {/* Channel Summary */}
           {channelData.ai_analysis?.channel_summary && (
-            <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 shadow-xl">
-              <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                <BarChart3 className="w-6 h-6 text-cyan-400" />
+            <div className="bg-#111827 border border-#1E293B rounded-2xl p-6 shadow-xl">
+              <h3 className="text-xl font-bold text-[#F8FAFC] mb-6 flex items-center gap-2">
+                <BarChart3 className="w-6 h-6 text-emerald-400" />
                 Channel Summary
               </h3>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h4 className="font-bold text-gray-400 mb-2 uppercase text-xs tracking-wider">Primary Niche</h4>
-                  <p className="text-white text-lg">{channelData.ai_analysis.channel_summary.primary_niche}</p>
+                  <h4 className="font-bold text-#94A3B8 mb-2 uppercase text-xs tracking-wider">Primary Niche</h4>
+                  <p className="text-[#F8FAFC] text-lg">{channelData.ai_analysis.channel_summary.primary_niche}</p>
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-400 mb-2 uppercase text-xs tracking-wider">Content Style</h4>
-                  <p className="text-white text-lg">{channelData.ai_analysis.channel_summary.content_style}</p>
+                  <h4 className="font-bold text-#94A3B8 mb-2 uppercase text-xs tracking-wider">Content Style</h4>
+                  <p className="text-[#F8FAFC] text-lg">{channelData.ai_analysis.channel_summary.content_style}</p>
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-400 mb-2 uppercase text-xs tracking-wider">Growth Pattern</h4>
-                  <p className="text-white text-lg">{channelData.ai_analysis.channel_summary.growth_pattern}</p>
+                  <h4 className="font-bold text-#94A3B8 mb-2 uppercase text-xs tracking-wider">Growth Pattern</h4>
+                  <p className="text-[#F8FAFC] text-lg">{channelData.ai_analysis.channel_summary.growth_pattern}</p>
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-400 mb-2 uppercase text-xs tracking-wider flex items-center gap-2">
+                  <h4 className="font-bold text-#94A3B8 mb-2 uppercase text-xs tracking-wider flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-green-400" />
                     Key Strength
                   </h4>
-                  <p className="text-white text-lg">{channelData.ai_analysis.channel_summary.strength}</p>
+                  <p className="text-[#F8FAFC] text-lg">{channelData.ai_analysis.channel_summary.strength}</p>
                 </div>
                 <div className="md:col-span-2">
-                  <h4 className="font-bold text-gray-400 mb-2 uppercase text-xs tracking-wider flex items-center gap-2">
+                  <h4 className="font-bold text-#94A3B8 mb-2 uppercase text-xs tracking-wider flex items-center gap-2">
                     <AlertCircle className="w-4 h-4 text-yellow-400" />
                     Area to Improve
                   </h4>
-                  <p className="text-white text-lg">{channelData.ai_analysis.channel_summary.weakness}</p>
+                  <p className="text-[#F8FAFC] text-lg">{channelData.ai_analysis.channel_summary.weakness}</p>
                 </div>
               </div>
             </div>
@@ -475,8 +475,8 @@ const ChannelAnalysisTab = () => {
 
           {/* Top Themes */}
           {channelData.analytics.top_themes && channelData.analytics.top_themes.length > 0 && (
-            <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 shadow-xl">
-              <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+            <div className="bg-#111827 border border-#1E293B rounded-2xl p-6 shadow-xl">
+              <h3 className="text-xl font-bold text-[#F8FAFC] mb-4 flex items-center gap-2">
                 <Lightbulb className="w-6 h-6 text-yellow-400" />
                 Top Content Themes
               </h3>
@@ -485,8 +485,8 @@ const ChannelAnalysisTab = () => {
                   <button
                     key={index}
                     onClick={() => handleExploreTrend(theme)}
-                    className="theme-chip px-5 py-2 bg-gradient-to-r from-blue-600/20 to-purple-600/20 hover:from-blue-600/30 hover:to-purple-600/30 
-                      border border-blue-500/30 hover:border-blue-500/50 rounded-full text-white font-semibold 
+                    className="theme-chip px-5 py-2 bg-gradient-to-r from-blue-600/20 to-blue-600/20 hover:from-blue-600/30 hover:to-blue-600/30 
+                      border border-blue-500/30 hover:border-blue-500/50 rounded-full text-[#F8FAFC] font-semibold 
                       transition-all duration-200 flex items-center gap-2 capitalize"
                   >
                     {theme}
@@ -499,26 +499,26 @@ const ChannelAnalysisTab = () => {
 
           {/* Recent Videos */}
           {channelData.recent_videos && channelData.recent_videos.length > 0 && (
-            <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 shadow-xl">
-              <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                <Video className="w-6 h-6 text-cyan-400" />
+            <div className="bg-#111827 border border-#1E293B rounded-2xl p-6 shadow-xl">
+              <h3 className="text-xl font-bold text-[#F8FAFC] mb-6 flex items-center gap-2">
+                <Video className="w-6 h-6 text-emerald-400" />
                 Recent Videos (Last 5)
               </h3>
               <div className="space-y-4">
                 {channelData.recent_videos.map((video, index) => (
                   <div
                     key={index}
-                    className="flex items-start gap-4 p-4 bg-gray-800 rounded-xl border border-gray-700 hover:border-cyan-500/50 transition-colors"
+                    className="flex items-start gap-4 p-4 bg-#1E293B rounded-xl border border-#334155 hover:border-emerald-500/50 transition-colors"
                   >
                     <div className="flex-1">
-                      <h4 className="text-white font-semibold mb-2 line-clamp-2">{video.title}</h4>
-                      <div className="flex flex-wrap gap-4 text-sm text-gray-400">
+                      <h4 className="text-[#F8FAFC] font-semibold mb-2 line-clamp-2">{video.title}</h4>
+                      <div className="flex flex-wrap gap-4 text-sm text-#94A3B8">
                         <span className="flex items-center gap-1">
                           <Target className="w-4 h-4 text-green-400" />
                           {(video.engagement_rate * 100).toFixed(2)}% engagement
                         </span>
                         <span className="flex items-center gap-1">
-                          <Users className="w-4 h-4 text-purple-400" />
+                          <Users className="w-4 h-4 text-blue-400" />
                           {formatNumber(video.views)} views
                         </span>
                         <span className="flex items-center gap-1">
@@ -531,7 +531,7 @@ const ChannelAnalysisTab = () => {
                       href={`https://youtube.com/watch?v=${video.video_id}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-shrink-0 p-2 text-cyan-400 hover:text-cyan-300 transition-colors"
+                      className="flex-shrink-0 p-2 text-emerald-400 hover:text-emerald-300 transition-colors"
                     >
                       <ExternalLink className="w-5 h-5" />
                     </a>
@@ -547,7 +547,7 @@ const ChannelAnalysisTab = () => {
       {isLoading && (
         <div className="flex flex-col items-center justify-center py-20">
           <LoadingSpinner />
-          <p className="text-gray-400 mt-6 text-lg">Analyzing channel with AI Copilot...</p>
+          <p className="text-#94A3B8 mt-6 text-lg">Analyzing channel with AI Copilot...</p>
         </div>
       )}
 
@@ -555,13 +555,13 @@ const ChannelAnalysisTab = () => {
       {exploredTrends.length > 0 && (
         <div ref={trendsRef} className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
           <div className="flex items-center justify-between">
-            <h3 className="text-2xl font-bold text-white flex items-center gap-2">
-              <TrendingUp className="w-7 h-7 text-cyan-400" />
+            <h3 className="text-2xl font-bold text-[#F8FAFC] flex items-center gap-2">
+              <TrendingUp className="w-7 h-7 text-emerald-400" />
               Trending: "{exploredTheme}"
             </h3>
             <button
               onClick={() => setExploredTrends([])}
-              className="text-gray-400 hover:text-white transition-colors"
+              className="text-#94A3B8 hover:text-[#F8FAFC] transition-colors"
             >
               <XCircle className="w-6 h-6" />
             </button>

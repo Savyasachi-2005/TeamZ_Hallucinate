@@ -88,12 +88,12 @@ const NicheTrendsTab = () => {
     <div className="space-y-8">
       {/* Search Section */}
       <div className="max-w-2xl mx-auto">
-        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-8 shadow-xl">
+        <div className="bg-#111827 border border-#1E293B rounded-2xl p-8 shadow-xl">
           <div className="space-y-6">
             {/* Custom Input */}
             <div>
-              <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">
-                <Sparkles className="w-4 h-4 text-purple-400" />
+              <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-#94A3B8 mb-3">
+                <Sparkles className="w-4 h-4 text-blue-400" />
                 Custom Niche Search
               </label>
               <Input
@@ -105,23 +105,23 @@ const NicheTrendsTab = () => {
                   if (e.target.value.trim()) setSelectedNiche('');
                 }}
                 placeholder="e.g., AI tools for students, React tutorials..."
-                className="w-full bg-gray-800 border-gray-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-xl px-5 py-4 text-lg h-auto placeholder:text-gray-500 text-white"
+                className="w-full bg-#1E293B border-#334155 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-xl px-5 py-4 text-lg h-auto placeholder:text-#64748B text-[#F8FAFC]"
                 onKeyDown={(e) => e.key === 'Enter' && handleFetchTrends()}
               />
-              <p className="text-xs text-gray-500 mt-2">Custom input takes priority over dropdown</p>
+              <p className="text-xs text-#64748B mt-2">Custom input takes priority over dropdown</p>
             </div>
 
             {/* Divider */}
             <div className="flex items-center gap-4">
-              <div className="flex-1 h-px bg-gray-800" />
-              <span className="text-xs text-gray-500 uppercase font-medium">or select preset</span>
-              <div className="flex-1 h-px bg-gray-800" />
+              <div className="flex-1 h-px bg-#1E293B" />
+              <span className="text-xs text-#64748B uppercase font-medium">or select preset</span>
+              <div className="flex-1 h-px bg-#1E293B" />
             </div>
 
             {/* Dropdown */}
             <div>
-              <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">
-                <TrendingUp className="w-4 h-4 text-cyan-400" />
+              <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-#94A3B8 mb-3">
+                <TrendingUp className="w-4 h-4 text-emerald-400" />
                 Preset Niches
               </label>
               <Select
@@ -133,16 +133,16 @@ const NicheTrendsTab = () => {
               >
                 <SelectTrigger
                   data-testid="niche-selector"
-                  className="w-full bg-gray-800 border-gray-700 focus:border-blue-500 rounded-xl px-5 py-4 text-lg h-auto text-white"
+                  className="w-full bg-#1E293B border-#334155 focus:border-blue-500 rounded-xl px-5 py-4 text-lg h-auto text-[#F8FAFC]"
                 >
                   <SelectValue placeholder="Choose a niche..." />
                 </SelectTrigger>
-                <SelectContent className="bg-gray-900 border-gray-800">
+                <SelectContent className="bg-#111827 border-#1E293B">
                   {NICHES.map((niche) => (
                     <SelectItem
                       key={niche}
                       value={niche}
-                      className="text-white hover:bg-gray-800 focus:bg-gray-800 cursor-pointer"
+                      className="text-[#F8FAFC] hover:bg-#1E293B focus:bg-#1E293B cursor-pointer"
                     >
                       {niche}
                     </SelectItem>
@@ -156,9 +156,9 @@ const NicheTrendsTab = () => {
               data-testid="fetch-trends-button"
               onClick={() => handleFetchTrends()}
               disabled={isLoading || (!selectedNiche && !customNiche.trim())}
-              className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 
-                disabled:from-gray-700 disabled:to-gray-700 disabled:cursor-not-allowed
-                text-white font-bold rounded-xl px-8 py-4 transition-all duration-300 
+              className="w-full bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 
+                disabled:from-#334155 disabled:to-#334155 disabled:cursor-not-allowed
+                text-[#F8FAFC] font-bold rounded-xl px-8 py-4 transition-all duration-300 
                 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 disabled:shadow-none
                 flex items-center justify-center gap-2"
             >
@@ -184,12 +184,12 @@ const NicheTrendsTab = () => {
           {/* Results Header */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <BarChart3 className="w-6 h-6 text-purple-400" />
-              <h2 className="text-2xl font-bold text-white">
-                Trending in <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">{currentSearchLabel}</span>
+              <BarChart3 className="w-6 h-6 text-blue-400" />
+              <h2 className="text-2xl font-bold text-[#F8FAFC]">
+                Trending in <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">{currentSearchLabel}</span>
               </h2>
             </div>
-            <span className="text-sm text-gray-400 bg-gray-800 px-3 py-1 rounded-full">
+            <span className="text-sm text-#94A3B8 bg-#1E293B px-3 py-1 rounded-full">
               {filteredCount} videos found
             </span>
           </div>
