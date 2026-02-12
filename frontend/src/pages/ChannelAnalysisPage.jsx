@@ -1,4 +1,5 @@
-import { Shield, Sparkles } from 'lucide-react';
+import { useState } from 'react';
+import { User, Sparkles } from 'lucide-react';
 import { Toaster } from 'sonner';
 import Navigation from '@/components/Navigation';
 import ChannelAnalysisTab from '@/components/ChannelAnalysisTab';
@@ -6,49 +7,36 @@ import CopilotChat from '@/components/CopilotChat';
 
 const ChannelAnalysisPage = () => {
   return (
-    <div className="min-h-screen bg-white relative overflow-hidden">
-      {/* Enhanced Animated Background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-emerald-500/10 rounded-full  " />
-        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-blue-500/10 rounded-full  " style={{ animationDelay: '1s' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-blue-500/5 rounded-full  " style={{ animationDelay: '2s' }} />
-      </div>
-
-      {/* Noise Texture */}
-      <div className="fixed inset-0  pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuNjUiIG51bU9jdGF2ZXM9IjMiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2UpIi8+PC9zdmc+')]" />
-
+    <div className="min-h-screen bg-slate-50">
       <Navigation />
 
       <Toaster 
-        theme="dark" 
         position="top-right"
         toastOptions={{
           style: {
-            background: '#1f2937',
-            border: '1px solid #10B981',
-            color: '#fff',
+            background: '#ffffff',
+            border: '2px solid #e2e8f0',
+            color: '#0f172a',
           },
         }}
       />
 
       {/* Main Content */}
-      <div className="relative z-10 max-w-6xl mx-auto px-6 py-12">
+      <div className="max-w-6xl mx-auto px-6 py-12">
         {/* Page Header */}
         <header className="text-center mb-12">
           <div className="inline-flex items-center justify-center gap-3 mb-6">
-            <div className="p-4 rounded-2xl bg-white border border-emerald-500/30 shadow-xl ">
-              <Shield className="w-12 h-12 text-[#10B981]" />
+            <div className="p-4 rounded-xl bg-blue-600 shadow-md">
+              <User className="w-12 h-12 text-white" />
             </div>
           </div>
-          <h1 className="text-5xl md:text-7xl font-black tracking-tight mb-4 leading-none">
-            <span className="text-transparent bg-clip-text bg-white ">
-              Channel Analysis
-            </span>
+          <h1 className="text-5xl md:text-7xl font-black tracking-tight mb-4 leading-none text-slate-900">
+            Channel Analysis
           </h1>
-          <div className="inline-flex items-center justify-center gap-3 px-6 py-3 rounded-full bg-emerald-500/10 border border-emerald-500/20 -sm">
-            <Sparkles className="w-5 h-5 text-[#10B981] " />
-            <p className="text-base md:text-lg text-[#1E293B] font-semibold">
-              AI-powered copilot for sustainable growth in the creator economy
+          <div className="inline-flex items-center justify-center gap-3 px-6 py-3 rounded-full bg-blue-50 border-2 border-blue-200">
+            <Sparkles className="w-5 h-5 text-blue-600" />
+            <p className="text-base md:text-lg text-slate-900 font-semibold">
+              Get comprehensive insights about your YouTube channel growth
             </p>
           </div>
         </header>
@@ -61,9 +49,9 @@ const ChannelAnalysisPage = () => {
       <CopilotChat />
 
       {/* Footer */}
-      <footer className="relative z-10 text-center py-8 border-t border-emerald-500/20 mt-20">
-        <p className="text-[#475569] text-sm">
-          Powered by <span className="text-[#10B981]">YouTube Data API</span> & <span className="text-[#3B82F6]">Gemini AI</span>
+      <footer className="text-center py-8 border-t-2 border-slate-200 mt-20 bg-white">
+        <p className="text-slate-700 text-sm font-semibold">
+          Powered by <span className="text-blue-600">YouTube Data API</span> & <span className="text-blue-600">Gemini AI</span>
         </p>
       </footer>
     </div>
