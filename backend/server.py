@@ -1636,10 +1636,15 @@ async def analyse_video(request: AnalyseRequest):
     
     analysis = await analyze_with_gemini(video_details, request.niche)
     
-    return AnalyseResponse(
+    result = AnalyseResponse(
         analysis=AnalysisDetails(**analysis["analysis"]),
         creator_angle=CreatorAngle(**analysis["creator_angle"])
     )
+    
+    # Cache result
+    set_cache(cache_key, result, CACHE_TTL["analysis"])
+    
+    return result
 
 @api_router.post("/channel-analyse", response_model=ChannelAnalyseResponse)
 async def analyse_channel(request: ChannelAnalyseRequest):
