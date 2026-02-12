@@ -97,20 +97,20 @@ const Landing = () => {
 
             {/* Animated Title */}
             <h1 className="text-6xl md:text-8xl font-black tracking-tight mb-8 leading-none">
-              <span className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-100 to-emerald-100">
+              <span className="inline-block text-[#0F172A]">
                 Niche
               </span>
-              <span className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-emerald-400 to-blue-500 animate-gradient-x">
+              <span className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-[#3B82F6] to-[#10B981]">
                 Pulse
               </span>
             </h1>
 
             {/* Dynamic Subtitle */}
             <div className="mb-8 h-20 flex items-center justify-center">
-              <h2 className="text-3xl md:text-5xl font-bold text-gray-300">
+              <h2 className="text-3xl md:text-5xl font-black text-[#1E293B]">
                 Predict YouTube{' '}
                 <span className="relative inline-block">
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-blue-500 animate-in fade-in slide-in-from-bottom-4 duration-500" key={currentWord}>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3B82F6] to-[#10B981] animate-in fade-in slide-in-from-bottom-4 duration-500" key={currentWord}>
                     {words[currentWord]}
                   </span>
                 </span>
@@ -118,8 +118,8 @@ const Landing = () => {
             </div>
 
             {/* Value Proposition */}
-            <p className="text-xl md:text-2xl text-[#334155] max-w-3xl mx-auto mb-12 leading-relaxed">
-              Your AI-powered copilot for <span className="text-emerald-400 font-bold">sustainable growth</span> in the creator economy.
+            <p className="text-xl md:text-2xl text-[#334155] font-semibold max-w-3xl mx-auto mb-12 leading-relaxed">
+              Your AI-powered copilot for <span className="text-[#10B981] font-bold">sustainable growth</span> in the creator economy.
               Detect trends, analyze competitors, and get strategic insights—all in one place.
             </p>
 
@@ -147,10 +147,10 @@ const Landing = () => {
             </div>
 
             {/* Quick Stats */}
-            <div className="flex flex-wrap justify-center gap-8 text-[#334155]">
+            <div className="flex flex-wrap justify-center gap-8 text-[#475569]">
               {benefits.map((benefit, idx) => (
                 <div key={idx} className="flex items-center gap-2 animate-in fade-in slide-in-from-bottom-4" style={{ animationDelay: `${idx * 100}ms` }}>
-                  <benefit.icon className="w-5 h-5 text-emerald-400" />
+                  <benefit.icon className="w-5 h-5 text-[#3B82F6]" />
                   <span className="text-sm font-bold">{benefit.text}</span>
                 </div>
               ))}
