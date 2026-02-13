@@ -1,21 +1,6 @@
-"use client";
-
 import { memo, useCallback, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { animate } from "motion/react";
-
-interface GlowingEffectProps {
-  blur?: number;
-  inactiveZone?: number;
-  proximity?: number;
-  spread?: number;
-  variant?: "default" | "white";
-  glow?: boolean;
-  className?: string;
-  disabled?: boolean;
-  movementDuration?: number;
-  borderWidth?: number;
-}
 
 const GlowingEffect = memo(
   ({
@@ -29,13 +14,13 @@ const GlowingEffect = memo(
     movementDuration = 2,
     borderWidth = 1,
     disabled = true,
-  }: GlowingEffectProps) => {
-    const containerRef = useRef<HTMLDivElement>(null);
+  }) => {
+    const containerRef = useRef(null);
     const lastPosition = useRef({ x: 0, y: 0 });
-    const animationFrameRef = useRef<number>(0);
+    const animationFrameRef = useRef(0);
 
     const handleMove = useCallback(
-      (e?: MouseEvent | { x: number; y: number }) => {
+      (e) => {
         if (!containerRef.current) return;
 
         if (animationFrameRef.current) {
@@ -102,7 +87,7 @@ const GlowingEffect = memo(
       if (disabled) return;
 
       const handleScroll = () => handleMove();
-      const handlePointerMove = (e: PointerEvent) => handleMove(e);
+      const handlePointerMove = (e) => handleMove(e);
 
       window.addEventListener("scroll", handleScroll, { passive: true });
       document.body.addEventListener("pointermove", handlePointerMove, {
