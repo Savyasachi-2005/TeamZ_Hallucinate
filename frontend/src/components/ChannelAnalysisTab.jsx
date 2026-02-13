@@ -354,7 +354,7 @@ const ChannelAnalysisTab = () => {
           )}
 
           {/* Missed Trends Panel */}
-          {!showDashboard && channelData.missed_trends && channelData.missed_trends.length > 0 && (
+          {channelData.missed_trends && channelData.missed_trends.length > 0 && (
             <div className="bg-white border-2 border-yellow-500/30 rounded-2xl p-6 shadow-md shadow-xl">
               <h3 className="text-2xl font-bold text-slate-900 mb-4 flex items-center gap-2">
                 <Flame className="w-6 h-6 text-yellow-400" />
