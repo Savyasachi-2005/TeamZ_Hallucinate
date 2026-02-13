@@ -56,6 +56,16 @@ const NicheTrendsPage = () => {
       {/* Footer */}
       <footer className="border-t border-slate-200 mt-20 bg-white">
         <div className="max-w-6xl mx-auto px-6 py-8 text-center">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <img 
+              src="https://customer-assets.emergentagent.com/job_growth-intel-2/artifacts/t0qb6cuw_images__1_-removebg-preview.png" 
+              alt="NichePulse" 
+              className="w-6 h-6"
+            />
+            <span className="text-lg font-black text-slate-900">
+              Niche<span className="text-indigo-600">Pulse</span>
+            </span>
+          </div>
           <p className="text-slate-600 text-sm font-medium">
             Powered by <span className="text-indigo-600 font-bold">YouTube Data API</span> & <span className="text-indigo-600 font-bold">Gemini AI</span>
           </p>
