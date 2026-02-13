@@ -277,8 +277,8 @@ const AnalyticsDashboard = ({ channelData }) => {
               <PieChartIcon className="w-5 h-5 text-purple-500" />
               Content Theme Distribution
             </h3>
-            <div className="h-64 flex items-center">
-              <ResponsiveContainer width="60%" height="100%">
+            <div className="h-64 flex items-center justify-center">
+              <ResponsiveContainer width="50%" height="100%">
                 <PieChart>
                   <Pie
                     data={themeDistributionData}
@@ -296,7 +296,7 @@ const AnalyticsDashboard = ({ channelData }) => {
                   <Tooltip content={<CustomTooltip />} />
                 </PieChart>
               </ResponsiveContainer>
-              <div className="flex flex-col gap-2 w-40%">
+              <div className="flex flex-col gap-2">
                 {themeDistributionData.map((theme, index) => (
                   <div key={index} className="flex items-center gap-2">
                     <div 
