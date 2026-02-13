@@ -106,11 +106,34 @@ const Landing = () => {
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
                 <button
                   onClick={() => navigate('/niche-trends')}
-                  className="btn-primary flex items-center justify-center gap-2"
+                  className="btn-primary flex items-center justify-center gap-2 relative overflow-hidden"
+                  onMouseEnter={(e) => {
+                    const btn = e.currentTarget;
+                    const particles = btn.querySelectorAll('.magnetize-particle');
+                    particles.forEach(p => p.style.opacity = '1');
+                  }}
+                  onMouseLeave={(e) => {
+                    const btn = e.currentTarget;
+                    const particles = btn.querySelectorAll('.magnetize-particle');
+                    particles.forEach(p => p.style.opacity = '0.2');
+                  }}
                 >
-                  <Zap className="w-5 h-5" />
-                  <span>Start Analyzing</span>
-                  <ArrowRight className="w-5 h-5" />
+                  {[...Array(10)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="magnetize-particle absolute w-1 h-1 rounded-full bg-white/60 pointer-events-none transition-opacity duration-300 opacity-20"
+                      style={{
+                        left: '50%',
+                        top: '50%',
+                        transform: `translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px)`,
+                      }}
+                    />
+                  ))}
+                  <span className="relative z-10 flex items-center gap-2">
+                    <Zap className="w-5 h-5" />
+                    <span>Start Analyzing</span>
+                    <ArrowRight className="w-5 h-5" />
+                  </span>
                 </button>
                 <button
                   onClick={() => navigate('/channel-analysis')}
@@ -265,11 +288,50 @@ const Landing = () => {
           </p>
           <button
             onClick={() => navigate('/niche-trends')}
-            className="inline-flex items-center gap-3 px-8 py-4 bg-white text-indigo-600 font-bold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105"
+            className="inline-flex items-center gap-3 px-8 py-4 bg-white text-indigo-600 font-bold rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 relative overflow-hidden group"
+            onMouseEnter={(e) => {
+              const btn = e.currentTarget;
+              const particles = btn.querySelectorAll('.cta-particle');
+              particles.forEach(p => {
+                p.style.transform = 'translate(-50%, -50%)';
+                p.style.opacity = '1';
+              });
+            }}
+            onMouseLeave={(e) => {
+              const btn = e.currentTarget;
+              const particles = btn.querySelectorAll('.cta-particle');
+              particles.forEach((p, i) => {
+                const angle = (i / 10) * Math.PI * 2;
+                const distance = 60;
+                const x = Math.cos(angle) * distance;
+                const y = Math.sin(angle) * distance;
+                p.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+                p.style.opacity = '0.3';
+              });
+            }}
           >
-            <Zap className="w-5 h-5" />
-            <span>Get Started Now</span>
-            <ArrowRight className="w-5 h-5" />
+            {[...Array(10)].map((_, i) => {
+              const angle = (i / 10) * Math.PI * 2;
+              const distance = 60;
+              const x = Math.cos(angle) * distance;
+              const y = Math.sin(angle) * distance;
+              return (
+                <div
+                  key={i}
+                  className="cta-particle absolute w-1.5 h-1.5 rounded-full bg-indigo-600/60 pointer-events-none transition-all duration-500 opacity-30"
+                  style={{
+                    left: '50%',
+                    top: '50%',
+                    transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
+                  }}
+                />
+              );
+            })}
+            <span className="relative z-10 flex items-center gap-3">
+              <Zap className="w-5 h-5" />
+              <span>Get Started Now</span>
+              <ArrowRight className="w-5 h-5" />
+            </span>
           </button>
         </div>
       </section>
