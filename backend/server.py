@@ -715,12 +715,22 @@ def detect_missed_trends(creator_themes: List[str], niche_keywords: List[str], t
 # ==================== YOUTUBE API FUNCTIONS ====================
 
 @cached_api_call
-async def search_youtube_videos(keywords: List[str], max_results: int = 50) -> List[dict]:
-    """Search YouTube for videos matching keywords"""
+async def search_youtube_videos(keywords: List[str], max_results: int = 50, max_age_days: int = 5) -> List[dict]:
+    """Search YouTube for videos matching keywords
+    
+    Args:
+        keywords: List of search keywords
+        max_results: Maximum number of videos to return
+        max_age_days: Only include videos published within this many days (default: 5)
+    """
     check_api_key()
     
     all_videos = []
     videos_per_keyword = max(15, max_results // len(keywords))
+    
+    # Calculate publishedAfter date for recency filter
+    from datetime import timedelta
+    published_after = (datetime.now(timezone.utc) - timedelta(days=max_age_days)).isoformat()
     
     async with httpx.AsyncClient() as client:
         for keyword in keywords:
@@ -732,6 +742,7 @@ async def search_youtube_videos(keywords: List[str], max_results: int = 50) -> L
                     "type": "video",
                     "order": "relevance",  # Changed from viewCount for better trend detection
                     "maxResults": videos_per_keyword,
+                    "publishedAfter": published_after,  # Only videos from last N days
                     "key": GOOGLE_API_KEY
                 }
                 
