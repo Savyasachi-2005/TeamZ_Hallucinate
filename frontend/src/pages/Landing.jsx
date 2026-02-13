@@ -93,8 +93,8 @@ const Landing = () => {
 
               {/* Main Headline */}
               <h1 className="text-5xl lg:text-7xl font-black tracking-tight mb-6 leading-tight">
-                Predict YouTube
-                <span className="gradient-text"> Success</span>
+                Stop Guessing.
+                <span className="gradient-text"> Start Growing Smarter.</span>
               </h1>
 
               {/* Subheadline */}
