@@ -221,9 +221,21 @@ const ChannelAnalysisTab = () => {
                 />
               )}
               <div className="flex-1">
-                <h2 className="text-3xl font-bold text-slate-900 mb-3" data-testid="channel-name">
-                  {channelData.channel_info.name}
-                </h2>
+                <div className="flex items-start justify-between mb-3">
+                  <h2 className="text-3xl font-bold text-slate-900" data-testid="channel-name">
+                    {channelData.channel_info.name}
+                  </h2>
+                  {/* View Dashboard Button */}
+                  <button
+                    data-testid="view-dashboard-btn"
+                    onClick={handleViewDashboard}
+                    className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-all duration-300 shadow-md hover:shadow-lg"
+                  >
+                    <LayoutDashboard className="w-5 h-5" />
+                    <span>View Dashboard</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
                 <div className="flex flex-wrap gap-6 text-slate-700">
                   <div className="flex items-center gap-2">
                     <Users className="w-5 h-5 text-blue-400" />
