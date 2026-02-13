@@ -472,7 +472,7 @@ const ChannelAnalysisTab = () => {
           )}
 
           {/* Channel Summary */}
-          {channelData.ai_analysis?.channel_summary && (
+          {!showDashboard && channelData.ai_analysis?.channel_summary && (
             <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-md shadow-xl">
               <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
                 <BarChart3 className="w-6 h-6 text-emerald-400" />
