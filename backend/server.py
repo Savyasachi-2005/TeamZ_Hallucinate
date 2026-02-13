@@ -965,10 +965,19 @@ async def get_playlist_videos(playlist_id: str, max_results: int = 20) -> List[d
             data = response.json()
             
             for item in data.get("items", []):
+                # Get thumbnail - prefer medium, fallback to default
+                thumbnails = item["snippet"].get("thumbnails", {})
+                thumbnail_url = (
+                    thumbnails.get("medium", {}).get("url") or 
+                    thumbnails.get("default", {}).get("url") or
+                    thumbnails.get("high", {}).get("url")
+                )
+                
                 videos.append({
                     "video_id": item["contentDetails"]["videoId"],
                     "title": item["snippet"]["title"],
-                    "published_at": item["snippet"]["publishedAt"]
+                    "published_at": item["snippet"]["publishedAt"],
+                    "thumbnail": thumbnail_url
                 })
             
             # Fetch statistics for all videos
