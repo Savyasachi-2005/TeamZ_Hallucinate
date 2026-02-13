@@ -2014,7 +2014,8 @@ async def analyse_channel(request: ChannelAnalyseRequest):
             views=views,
             engagement_rate=round(engagement, 4),
             published_at=video["published_at"],
-            video_id=video["video_id"]
+            video_id=video["video_id"],
+            thumbnail=video.get("thumbnail")
         ))
     
     return ChannelAnalyseResponse(
