@@ -21,6 +21,9 @@ const ChannelAnalysisTab = () => {
   const [channelData, setChannelData] = useState(null);
   const [showCompetitorInput, setShowCompetitorInput] = useState(false);
   
+  // Dashboard view toggle
+  const [showDashboard, setShowDashboard] = useState(true);
+  
   // Theme exploration state
   const [isExploring, setIsExploring] = useState(false);
   const [exploredTrends, setExploredTrends] = useState([]);
