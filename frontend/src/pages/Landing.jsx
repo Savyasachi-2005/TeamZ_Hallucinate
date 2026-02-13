@@ -6,6 +6,7 @@ import {
   Activity, Trophy, Lightbulb, Play
 } from 'lucide-react';
 import Navigation from '@/components/Navigation';
+import { GlowingEffect } from '@/components/ui/glowing-effect';
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -200,40 +201,62 @@ const Landing = () => {
             </p>
           </div>
 
-          {/* Feature Cards Grid */}
+          {/* Feature Cards Grid with Glowing Effect */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((feature, idx) => {
               const Icon = feature.icon;
               return (
-                <button
-                  key={idx}
-                  onClick={() => navigate(feature.route)}
-                  onMouseEnter={() => setActiveFeature(idx)}
-                  className={`card-hover bg-white rounded-2xl p-8 border-2 text-left transition-all duration-300 ${
-                    activeFeature === idx
-                      ? 'border-indigo-500 shadow-lg'
-                      : 'border-slate-200 hover:border-indigo-300'
-                  }`}
-                >
-                  <div className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${feature.color} mb-4`}>
-                    <Icon className="w-6 h-6 text-white" />
+                <div key={idx} className="relative">
+                  <div className="relative h-full rounded-2xl border-2 border-slate-200 p-2 transition-all duration-300">
+                    <GlowingEffect
+                      spread={40}
+                      glow={true}
+                      disabled={false}
+                      proximity={64}
+                      inactiveZone={0.01}
+                      borderWidth={3}
+                    />
+                    <button
+                      onClick={() => navigate(feature.route)}
+                      onMouseEnter={() => setActiveFeature(idx)}
+                      className="relative w-full h-full bg-white rounded-xl p-8 text-left transition-all duration-300 hover:shadow-md"
+                    >
+                      <div className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${feature.color} mb-4`}>
+                        <Icon className="w-6 h-6 text-white" />
+                      </div>
+                      <h3 className="text-xl font-bold text-slate-900 mb-3">{feature.title}</h3>
+                      <p className="text-slate-600 mb-4 leading-relaxed">{feature.description}</p>
+                      <div className="flex items-center gap-2 text-indigo-600 font-semibold">
+                        <span>Learn more</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </div>
+                    </button>
                   </div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-3">{feature.title}</h3>
-                  <p className="text-slate-600 mb-4 leading-relaxed">{feature.description}</p>
-                  <div className="flex items-center gap-2 text-indigo-600 font-semibold">
-                    <span>Learn more</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </div>
-                </button>
+                </div>
               );
             })}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-indigo-600 to-blue-500">
-        <div className="max-w-4xl mx-auto px-6 text-center">
+      {/* Dynamic CTA Section with Mesh Gradient */}
+      <section className="relative py-20 overflow-hidden">
+        {/* Dynamic Mesh Background */}
+        <div className="absolute inset-0 bg-slate-900"></div>
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-indigo-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
+          <div className="absolute top-0 right-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
+          <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000"></div>
+        </div>
+
+        {/* Dot Pattern Overlay */}
+        <div className="absolute inset-0" style={{
+          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px)',
+          backgroundSize: '30px 30px'
+        }}></div>
+
+        {/* Content */}
+        <div className="relative max-w-4xl mx-auto px-6 text-center">
           <h2 className="text-4xl lg:text-5xl font-black text-white mb-6">
             Ready to Transform Your Strategy?
           </h2>
