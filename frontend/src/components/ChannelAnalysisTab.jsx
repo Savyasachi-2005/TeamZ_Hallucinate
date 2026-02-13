@@ -533,10 +533,46 @@ const ChannelAnalysisTab = () => {
                 {channelData.recent_videos.map((video, index) => (
                   <div
                     key={index}
-                    className="flex items-start gap-4 p-4 bg-white rounded-xl border border-#334155 hover:border-emerald-500/50 transition-colors"
+                    className="flex items-start gap-4 p-4 bg-white rounded-xl border border-slate-200 hover:border-emerald-500/50 transition-colors"
                   >
-                    <div className="flex-1">
-                      <h4 className="text-slate-900 font-bold mb-2 line-clamp-2">{video.title}</h4>
+                    {/* Video Thumbnail */}
+                    <a
+                      href={`https://youtube.com/watch?v=${video.video_id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-shrink-0 relative group"
+                    >
+                      {video.thumbnail ? (
+                        <img
+                          src={video.thumbnail}
+                          alt={video.title}
+                          className="w-40 h-24 object-cover rounded-lg border border-slate-200 group-hover:border-emerald-500 transition-colors"
+                        />
+                      ) : (
+                        <div className="w-40 h-24 bg-slate-100 rounded-lg flex items-center justify-center">
+                          <Video className="w-8 h-8 text-slate-400" />
+                        </div>
+                      )}
+                      {/* Play overlay on hover */}
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                        <div className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center">
+                          <div className="w-0 h-0 border-t-[6px] border-t-transparent border-l-[10px] border-l-red-600 border-b-[6px] border-b-transparent ml-1"></div>
+                        </div>
+                      </div>
+                    </a>
+                    
+                    {/* Video Info */}
+                    <div className="flex-1 min-w-0">
+                      <a
+                        href={`https://youtube.com/watch?v=${video.video_id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block"
+                      >
+                        <h4 className="text-slate-900 font-bold mb-2 line-clamp-2 hover:text-indigo-600 transition-colors">
+                          {video.title}
+                        </h4>
+                      </a>
                       <div className="flex flex-wrap gap-4 text-sm text-slate-700">
                         <span className="flex items-center gap-1">
                           <Target className="w-4 h-4 text-green-400" />
@@ -552,11 +588,13 @@ const ChannelAnalysisTab = () => {
                         </span>
                       </div>
                     </div>
+                    
+                    {/* External Link Button */}
                     <a
                       href={`https://youtube.com/watch?v=${video.video_id}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-shrink-0 p-2 text-emerald-400 hover:text-emerald-300 transition-colors"
+                      className="flex-shrink-0 p-2 text-slate-400 hover:text-emerald-500 transition-colors"
                     >
                       <ExternalLink className="w-5 h-5" />
                     </a>
