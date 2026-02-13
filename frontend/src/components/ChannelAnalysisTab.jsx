@@ -498,7 +498,7 @@ const ChannelAnalysisTab = () => {
           )}
 
           {/* Recent Videos */}
-          {!showDashboard && channelData.recent_videos && channelData.recent_videos.length > 0 && (
+          {channelData.recent_videos && channelData.recent_videos.length > 0 && (
             <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-md shadow-xl">
               <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
                 <Video className="w-6 h-6 text-emerald-400" />
