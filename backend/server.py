@@ -994,12 +994,12 @@ async def get_playlist_videos(playlist_id: str, max_results: int = 20) -> List[d
 
 # ==================== STRICT TRENDING DETECTION ENGINE ====================
 # Trending = High Growth Velocity + High Engagement + Strong Recency + Relative Acceleration
-# STRICT RULE: Videos older than 60 days are NEVER included
+# STRICT RULE: Videos older than 5 days are NEVER included in trending
 
 import math
 
-# Maximum age in days - STRICT LIMIT
-MAX_VIDEO_AGE_DAYS = 60
+# Maximum age in days - STRICT LIMIT for trending videos
+MAX_VIDEO_AGE_DAYS = 5
 
 def extract_title_keywords(title: str, top_n: int = 3) -> List[str]:
     """Extract top N keywords from a title"""
