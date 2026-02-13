@@ -1773,8 +1773,8 @@ async def get_trends(request: TrendRequest):
             detail={"error": "Please provide either a niche or custom keyword"}
         )
     
-    # Fetch 30-50 videos for better trend analysis
-    videos = await search_youtube_videos(keywords, max_results=40)
+    # Fetch 40-50 videos from the last 5 days for better trend analysis
+    videos = await search_youtube_videos(keywords, max_results=50, max_age_days=5)
     
     if not videos:
         raise HTTPException(
@@ -1792,7 +1792,7 @@ async def get_trends(request: TrendRequest):
     if not scored_videos:
         raise HTTPException(
             status_code=404,
-            detail={"error": "No trending videos found within 60 days (strict recency filter)"}
+            detail={"error": "No trending videos found within 5 days (strict recency filter)"}
         )
     
     # Extract trending topics
