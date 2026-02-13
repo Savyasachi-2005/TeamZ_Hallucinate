@@ -241,41 +241,8 @@ const ChannelAnalysisTab = () => {
             </div>
           </div>
 
-          {/* View Toggle */}
-          <div className="flex items-center justify-center gap-2 bg-white border border-slate-200 rounded-xl p-2 max-w-md mx-auto">
-            <button
-              data-testid="toggle-dashboard-view"
-              onClick={() => setShowDashboard(true)}
-              className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold transition-all ${
-                showDashboard 
-                  ? 'bg-indigo-600 text-white shadow-md' 
-                  : 'text-slate-600 hover:bg-slate-100'
-              }`}
-            >
-              <ChartArea className="w-4 h-4" />
-              Dashboard View
-            </button>
-            <button
-              data-testid="toggle-detailed-view"
-              onClick={() => setShowDashboard(false)}
-              className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold transition-all ${
-                !showDashboard 
-                  ? 'bg-indigo-600 text-white shadow-md' 
-                  : 'text-slate-600 hover:bg-slate-100'
-              }`}
-            >
-              <BarChart3 className="w-4 h-4" />
-              Detailed View
-            </button>
-          </div>
-
-          {/* Interactive Dashboard */}
-          {showDashboard && (
-            <AnalyticsDashboard channelData={channelData} />
-          )}
-
-          {/* Detailed View - Growth Health Dashboard */}
-          {!showDashboard && channelData.health_dashboard && (
+          {/* Growth Health Dashboard */}
+          {channelData.health_dashboard && (
             <div className="bg-white border-2 border-emerald-500/30 rounded-2xl p-6 shadow-md shadow-xl">
               <h3 className="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2">
                 <Shield className="w-6 h-6 text-emerald-400" />
