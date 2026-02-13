@@ -3,7 +3,7 @@ import {
   Youtube, Search, Users, Video, Target, Calendar, 
   Sparkles, Lightbulb, Zap, ExternalLink, ArrowRight, TrendingUp,
   Activity, BarChart3, Focus, AlertTriangle, CheckCircle2, XCircle,
-  GitCompare, Trophy, AlertCircle, Shield, Flame, ChartArea
+  GitCompare, Trophy, AlertCircle, Shield, Flame
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
@@ -11,7 +11,6 @@ import { analyzeChannel, fetchTrends } from '@/services/api';
 import LoadingSpinner from './LoadingSpinner';
 import TrendCard from './TrendCard';
 import AnalysisModal from './AnalysisModal';
-import AnalyticsDashboard from './AnalyticsDashboard';
 import { analyzeVideo } from '@/services/api';
 
 const ChannelAnalysisTab = () => {
