@@ -321,6 +321,7 @@ class RecentVideo(BaseModel):
     engagement_rate: float
     published_at: str
     video_id: str
+    thumbnail: Optional[str] = None
 
 class ChannelSummary(BaseModel):
     primary_niche: str
