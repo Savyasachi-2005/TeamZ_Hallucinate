@@ -226,7 +226,7 @@ const Landing = () => {
 
           {/* Feature Cards Grid with Glowing Effect */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((feature, idx) => {
+            {features.slice(0, 3).map((feature, idx) => {
               const Icon = feature.icon;
               return (
                 <div key={idx} className="relative">
@@ -242,6 +242,42 @@ const Landing = () => {
                     <button
                       onClick={() => navigate(feature.route)}
                       onMouseEnter={() => setActiveFeature(idx)}
+                      className="relative w-full h-full bg-white rounded-xl p-8 text-left transition-all duration-300 hover:shadow-md"
+                    >
+                      <div className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${feature.color} mb-4`}>
+                        <Icon className="w-6 h-6 text-white" />
+                      </div>
+                      <h3 className="text-xl font-bold text-slate-900 mb-3">{feature.title}</h3>
+                      <p className="text-slate-600 mb-4 leading-relaxed">{feature.description}</p>
+                      <div className="flex items-center gap-2 text-indigo-600 font-semibold">
+                        <span>Learn more</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          
+          {/* Last 2 Feature Cards - Centered */}
+          <div className="flex justify-center gap-6 mt-6">
+            {features.slice(3).map((feature, idx) => {
+              const Icon = feature.icon;
+              return (
+                <div key={idx + 3} className="relative w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]">
+                  <div className="relative h-full rounded-2xl border-2 border-slate-200 p-2 transition-all duration-300">
+                    <GlowingEffect
+                      spread={40}
+                      glow={true}
+                      disabled={false}
+                      proximity={64}
+                      inactiveZone={0.01}
+                      borderWidth={3}
+                    />
+                    <button
+                      onClick={() => navigate(feature.route)}
+                      onMouseEnter={() => setActiveFeature(idx + 3)}
                       className="relative w-full h-full bg-white rounded-xl p-8 text-left transition-all duration-300 hover:shadow-md"
                     >
                       <div className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${feature.color} mb-4`}>
