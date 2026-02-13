@@ -1924,8 +1924,8 @@ async def analyse_channel(request: ChannelAnalyseRequest):
         # Fallback: use a broader search
         detected_niche_keywords = [channel_data["title"].split()[0]] if channel_data["title"] else ["trending"]
     
-    # Search for trending videos in detected niche with better query
-    trending_videos = await search_youtube_videos(detected_niche_keywords, max_results=50)
+    # Search for trending videos in detected niche (last 7 days for missed trends)
+    trending_videos = await search_youtube_videos(detected_niche_keywords, max_results=50, max_age_days=7)
     
     # Enhanced missed trend detection
     missed_trends = detect_missed_trends(
