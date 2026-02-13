@@ -76,7 +76,7 @@ const Landing = () => {
       <Navigation />
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-indigo-50/30">
+      <section className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 pt-20">
         {/* Decorative Elements */}
         <div className="absolute top-20 right-10 w-72 h-72 bg-indigo-500/5 rounded-full blur-3xl"></div>
         <div className="absolute bottom-20 left-10 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl"></div>
