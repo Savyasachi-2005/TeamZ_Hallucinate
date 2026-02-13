@@ -306,7 +306,7 @@ const ChannelAnalysisTab = () => {
           )}
 
           {/* Strategic Action Summary - PROMINENT PLACEMENT */}
-          {!showDashboard && channelData.ai_analysis?.strategic_summary && (
+          {channelData.ai_analysis?.strategic_summary && (
             <div className="bg-white border-2 border-blue-500/50 rounded-2xl p-8 shadow-2xl">
               <h3 className="text-3xl font-bold text-slate-900 mb-6 flex items-center gap-3">
                 <Sparkles className="w-8 h-8 text-yellow-400" />
