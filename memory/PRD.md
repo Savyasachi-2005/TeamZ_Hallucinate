@@ -1,14 +1,16 @@
 # Niche Pulse - PRD
 
 ## Original Problem Statement
-Build a Niche Trend Intelligence Copilot for YouTube creators with two modes:
+Build a Niche Trend Intelligence Copilot for YouTube creators with multiple modes:
 1. **Niche Trends**: Select niche, fetch top 5 trending videos, click to analyze with Gemini
 2. **Channel Analysis**: Paste YouTube channel URL, get full channel analysis with AI strategic insights
+3. **Analytics Dashboard**: Interactive charts and visualizations for channel data
 
 ## User Choices
-- Dark theme design
-- Gemini 2.5 Flash model
+- Light theme design with professional SaaS aesthetic
+- Gemini AI model for strategic analysis
 - User's own GOOGLE_API_KEY
+- Recharts library for data visualization
 
 ## Architecture
 
@@ -16,21 +18,22 @@ Build a Niche Trend Intelligence Copilot for YouTube creators with two modes:
 **Existing Endpoints:**
 - `POST /api/trends` - Fetch and rank top 5 trending videos for a niche
 - `POST /api/analyse` - AI-powered video analysis using Gemini
-
-**New Endpoint (Feb 2026):**
-- `POST /api/channel-analyse` - Full channel analysis including:
-  - Channel metadata (name, subscribers, video count)
-  - Analytics (engagement rate, upload frequency, top themes)
-  - Recent videos with engagement metrics
-  - AI strategic insights (niche, style, growth pattern, strengths, weaknesses, recommendations)
+- `POST /api/channel-analyse` - Full channel analysis with health dashboard, missed trends, competitor comparison
+- `POST /api/copilot-chat` - Contextual AI assistant
 
 ### Frontend (React)
-- Tabs for switching between Niche Trends and Channel Analysis
-- Shadcn UI components (Select, Dialog, Tabs, Input)
-- Dark glassmorphism design
-- Bento grid layout for video cards
-- Analytics cards for channel metrics
-- AI insights panel with strategic recommendations
+**Pages:**
+- `/` - Landing page with feature cards
+- `/niche-trends` - Niche trend exploration
+- `/channel-analysis` - Detailed channel analysis with AI insights
+- `/dashboard` - **NEW: Interactive Analytics Dashboard**
+
+**UI Components:**
+- Tubelight navbar for navigation
+- Expandable chat widget for AI copilot
+- Magnetize buttons with particle animation
+- Glowing effect cards
+- Recharts visualizations (Bar, Line, Area, Pie, RadialBar)
 
 ## User Personas
 - YouTube content creators seeking trend intelligence
@@ -52,6 +55,7 @@ Build a Niche Trend Intelligence Copilot for YouTube creators with two modes:
 - [x] AI strategic insights
 - [x] Loading states
 - [x] Error handling
+- [x] **NEW: Interactive Analytics Dashboard with charts**
 
 ## What's Been Implemented
 
@@ -63,18 +67,39 @@ Build a Niche Trend Intelligence Copilot for YouTube creators with two modes:
 - Responsive bento grid layout
 
 ### Phase 2 (Feb 2026)
-- **NEW: Channel Analysis Mode**
+- **Channel Analysis Mode**
   - Channel URL parsing (multiple formats supported)
   - Channel metadata fetching via YouTube API
   - Analytics computation (engagement rate, upload frequency)
   - Topic/theme extraction from video titles
   - AI strategic analysis via Gemini
-  - Full UI for channel results display
+  - Health dashboard with scores
+  - Missed trends detection
+  - Competitor comparison
+
+### Phase 3 (Feb 2026) - CURRENT
+- **UI/UX Overhaul to Light Theme**
+  - Professional minimal SaaS aesthetic
+  - Tubelight navbar with animated indicator
+  - Expandable chat widget
+  - Magnetize button animations
+  - Glowing effect cards
+
+- **NEW: Separate Analytics Dashboard Page** (`/dashboard`)
+  - Radial gauge charts for health scores (Consistency, Stability, Focus, Momentum)
+  - Horizontal bar chart for recent video views
+  - Area chart for engagement trends over time
+  - Donut chart for content theme distribution
+  - Vertical bar chart for video engagement rates
+  - Quick stats summary cards (Subscribers, Avg Engagement, Videos/Month, Total Videos)
+  - Competitor comparison bar chart (when competitor URL provided)
 
 ## Tech Stack
-- Backend: FastAPI, httpx, Pydantic
-- Frontend: React, Tailwind CSS, Shadcn UI
-- APIs: YouTube Data API v3, Google Gemini 2.5 Flash
+- Backend: FastAPI, httpx, Pydantic, cachetools
+- Frontend: React, Tailwind CSS, Shadcn UI, Recharts, D3-shape
+- Animation: Framer Motion, Motion library
+- Icons: Lucide React
+- APIs: YouTube Data API v3, Google Gemini AI
 
 ## Backlog
 ### P0 (Done)
@@ -82,21 +107,30 @@ Build a Niche Trend Intelligence Copilot for YouTube creators with two modes:
 - Gemini analysis integration
 - UI implementation
 - Channel Analysis feature
+- Interactive Analytics Dashboard
 
 ### P1 (Future)
+- User-configurable filter for video age (30/60/90 days) in trend analysis
+- Search history for custom niches
 - Save favorite videos/analyses
 - Export analysis reports
-- Compare trends across niches
-- Channel comparison mode
 
 ### P2 (Future)
 - Historical trend tracking
-- Custom niche keyword inputs
+- Trend-over-time visualization
 - Batch video analysis
 - Multi-channel comparison
 
+## Files of Reference
+- `/app/backend/server.py` - Backend API (monolithic, needs refactoring)
+- `/app/frontend/src/pages/DashboardPage.jsx` - Analytics Dashboard page
+- `/app/frontend/src/components/AnalyticsDashboard.jsx` - Dashboard charts component
+- `/app/frontend/src/components/ChannelAnalysisTab.jsx` - Channel analysis UI
+- `/app/frontend/src/components/Navigation.jsx` - Tubelight navbar
+- `/app/frontend/src/components/ui/` - Reusable UI components
+
 ## Next Tasks
-1. Add ability to save channel analysis results
-2. Implement channel comparison feature
-3. Add export functionality for reports
-4. Create historical trend tracking
+1. Add user-configurable filter for video age in trend analysis
+2. Implement search history for niches
+3. Add export functionality for dashboard/reports
+4. Refactor server.py into smaller modules
