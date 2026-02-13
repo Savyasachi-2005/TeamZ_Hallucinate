@@ -1,9 +1,10 @@
 import { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   Youtube, Search, Users, Video, Target, Calendar, 
   Sparkles, Lightbulb, Zap, ExternalLink, ArrowRight, TrendingUp,
   Activity, BarChart3, Focus, AlertTriangle, CheckCircle2, XCircle,
-  GitCompare, Trophy, AlertCircle, Shield, Flame
+  GitCompare, Trophy, AlertCircle, Shield, Flame, LayoutDashboard
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
@@ -12,8 +13,12 @@ import LoadingSpinner from './LoadingSpinner';
 import TrendCard from './TrendCard';
 import AnalysisModal from './AnalysisModal';
 import { analyzeVideo } from '@/services/api';
+import { useChannelData } from '@/context/ChannelDataContext';
 
 const ChannelAnalysisTab = () => {
+  const navigate = useNavigate();
+  const { saveChannelData } = useChannelData();
+  
   const [channelUrl, setChannelUrl] = useState('');
   const [competitorUrl, setCompetitorUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -59,11 +64,19 @@ const ChannelAnalysisTab = () => {
     try {
       const data = await analyzeChannel(channelUrl, competitorUrl.trim() || null);
       setChannelData(data);
+      // Save to shared context for Dashboard
+      saveChannelData(data, channelUrl, competitorUrl);
       toast.success(`Analyzed ${data.channel_info.name}`);
     } catch (error) {
       toast.error(error.message || 'Failed to analyze channel');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleViewDashboard = () => {
+    if (channelData) {
+      navigate('/dashboard');
     }
   };
 
