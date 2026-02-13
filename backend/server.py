@@ -813,7 +813,7 @@ async def get_video_details(video_id: str) -> dict:
         try:
             url = "https://www.googleapis.com/youtube/v3/videos"
             params = {
-                "part": "statistics",  # OPTIMIZED: Only statistics needed
+                "part": "snippet,statistics",  # Need both snippet and statistics
                 "id": video_id,
                 "key": GOOGLE_API_KEY
             }
@@ -825,13 +825,13 @@ async def get_video_details(video_id: str) -> dict:
             if data.get("items"):
                 item = data["items"][0]
                 return {
-                    "title": item["snippet"]["title"],
-                    "description": item["snippet"].get("description", "")[:500],
-                    "channel": item["snippet"]["channelTitle"],
-                    "tags": item["snippet"].get("tags", [])[:10],
-                    "views": int(item["statistics"].get("viewCount", 0)),
-                    "likes": int(item["statistics"].get("likeCount", 0)),
-                    "comments": int(item["statistics"].get("commentCount", 0))
+                    "title": item.get("snippet", {}).get("title", "Unknown"),
+                    "description": item.get("snippet", {}).get("description", "")[:500],
+                    "channel": item.get("snippet", {}).get("channelTitle", "Unknown"),
+                    "tags": item.get("snippet", {}).get("tags", [])[:10],
+                    "views": int(item.get("statistics", {}).get("viewCount", 0)),
+                    "likes": int(item.get("statistics", {}).get("likeCount", 0)),
+                    "comments": int(item.get("statistics", {}).get("commentCount", 0))
                 }
         except httpx.HTTPError as e:
             logger.error(f"YouTube video details error: {e}")
