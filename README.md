@@ -2,7 +2,7 @@
 
 > **AI-powered YouTube analytics platform** that analyzes channels, detects trending topics, and delivers strategic growth recommendations - so creators grow smarter, not harder.
 
-🔗 **Live Demo:** [growth-intel-2.preview.emergentagent.com](https://growth-intel-2.preview.emergentagent.com)
+🔗 **Live :** growth-intel-2.emergent.host](growth-intel-2.emergent.host)
 
 
 
