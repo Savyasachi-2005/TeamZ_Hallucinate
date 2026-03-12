@@ -1,4 +1,4 @@
-# 🚀 NichePulse
+# NichePulse
 
 > **AI-powered YouTube analytics platform** that analyzes channels, detects trending topics, and delivers strategic growth recommendations - so creators grow smarter, not harder.
 
