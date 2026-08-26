@@ -69,7 +69,7 @@ const Landing = () => {
       setActiveFeature((prev) => (prev + 1) % features.length);
     }, 4000);
     return () => clearInterval(interval);
-  }, []);
+  }, [features.length]);
 
   return (
     <div className="min-h-screen bg-slate-50">
