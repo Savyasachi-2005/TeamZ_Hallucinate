@@ -1,0 +1,202 @@
+import re
+from collections import Counter
+from fastapi import HTTPException
+
+STOPWORDS = {
+    "the",
+    "a",
+    "an",
+    "and",
+    "or",
+    "but",
+    "in",
+    "on",
+    "at",
+    "to",
+    "for",
+    "of",
+    "with",
+    "by",
+    "from",
+    "up",
+    "about",
+    "into",
+    "through",
+    "during",
+    "before",
+    "after",
+    "above",
+    "below",
+    "between",
+    "under",
+    "again",
+    "further",
+    "then",
+    "once",
+    "here",
+    "there",
+    "when",
+    "where",
+    "why",
+    "how",
+    "all",
+    "each",
+    "few",
+    "more",
+    "most",
+    "other",
+    "some",
+    "such",
+    "no",
+    "nor",
+    "not",
+    "only",
+    "own",
+    "same",
+    "so",
+    "than",
+    "too",
+    "very",
+    "can",
+    "will",
+    "just",
+    "should",
+    "now",
+    "i",
+    "me",
+    "my",
+    "you",
+    "your",
+    "he",
+    "she",
+    "it",
+    "we",
+    "they",
+    "what",
+    "which",
+    "who",
+    "this",
+    "that",
+    "these",
+    "those",
+    "am",
+    "is",
+    "are",
+    "was",
+    "were",
+    "be",
+    "been",
+    "being",
+    "have",
+    "has",
+    "had",
+    "do",
+    "does",
+    "did",
+    "doing",
+    "would",
+    "could",
+    "ought",
+    "im",
+    "youre",
+    "hes",
+    "shes",
+    "its",
+    "theyre",
+    "ive",
+    "youve",
+    "weve",
+    "theyve",
+    "id",
+    "youd",
+    "hed",
+    "shed",
+    "wed",
+    "theyd",
+    "ill",
+    "youll",
+    "hell",
+    "shell",
+    "well",
+    "theyll",
+    "isnt",
+    "arent",
+    "wasnt",
+    "werent",
+    "hasnt",
+    "havent",
+    "hadnt",
+    "doesnt",
+    "dont",
+    "didnt",
+    "wont",
+    "wouldnt",
+    "shouldnt",
+    "cant",
+    "couldnt",
+    "mustnt",
+    "lets",
+    "thats",
+    "whos",
+    "whats",
+    "heres",
+    "theres",
+    "whens",
+    "wheres",
+    "whys",
+    "hows",
+    "new",
+    "get",
+    "got",
+    "make",
+    "made",
+    "full",
+    "video",
+    "watch",
+    "see",
+    "like",
+    "subscribe",
+    "channel",
+    "part",
+    "episode",
+    "ep",
+}
+
+
+def sanitize_keyword(keyword: str) -> str:
+    if not keyword:
+        return ""
+    keyword = re.sub(r"<[^>]+>", "", keyword.strip())[:100]
+    return re.sub(r'[<>"\';\\]', "", keyword)
+
+
+def extract_themes_from_titles(titles):
+    words = []
+    for title in titles:
+        words.extend(
+            w
+            for w in re.findall(r"\b[a-zA-Z]{3,}\b", title.lower())
+            if w not in STOPWORDS
+        )
+    return [word for word, _ in Counter(words).most_common(5)]
+
+
+def extract_channel_identifier(url: str) -> tuple:
+    url = url.strip()
+    for pattern, kind in [
+        (r"youtube\.com/@([^/?]+)", "handle"),
+        (r"youtube\.com/channel/([^/?]+)", "id"),
+        (r"youtube\.com/c/([^/?]+)", "custom"),
+        (r"youtube\.com/user/([^/?]+)", "user"),
+    ]:
+        match = re.search(pattern, url)
+        if match:
+            return match.group(1), kind
+    if url.startswith("@"):
+        return url[1:], "handle"
+    raise HTTPException(
+        status_code=400,
+        detail={
+            "error": "Invalid YouTube channel URL. Supported formats: @username, /channel/ID, /c/name, /user/name"
+        },
+    )

@@ -1,187 +1,113 @@
-<div align="center">
+# NichePulse
 
-# 📊 NichePulse
-
-### AI-Powered YouTube Analytics Platform
-
-**Stop guessing what to post next. Know it, before your competitors do.**
-
-Built at **HALLUCINATE**, a hackathon conducted by Emergent — by **Team Z**
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](#license)
-[![React](https://img.shields.io/badge/Frontend-React-61DAFB?logo=react&logoColor=white)](#tech-stack)
-[![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?logo=fastapi&logoColor=white)](#tech-stack)
-[![Gemini](https://img.shields.io/badge/AI-Google%20Gemini-4285F4?logo=google&logoColor=white)](#tech-stack)
-[![YouTube API](https://img.shields.io/badge/API-YouTube%20Data%20v3-FF0000?logo=youtube&logoColor=white)](#tech-stack)
-
- [Features](#-features) · [Getting Started](#-getting-started) · [Tech Stack](#-tech-stack)
-
-![NichePulse Screenshot](./ref1.png)
-
-</div>
-
----
-
-## 🧠 Overview
-
-**NichePulse** is an AI-powered YouTube analytics platform that turns raw channel data into actionable growth strategy. It combines the **YouTube Data API v3** with **Google Gemini AI** to surface emerging trends, benchmark competitors, and score channel health — all before a creator sits down to plan their next video.
-
-**What we built:**
-- 🔍 Analyzed YouTube channels to identify emerging niche trends, competitor benchmarks, and missed content opportunities
-- 🤖 Generated AI-driven strategic recommendations using Google Gemini for smarter creator growth decisions
-- 📈 Developed an interactive dashboard integrating the YouTube Data API with real-time analytics and channel health scoring
-
----
-
-## ✨ Features
-
-### 🚀 Niche Trends Explorer `/niche-trends`
-- Discover trending videos in your niche from the **last 5 days**
-- AI-powered **momentum scoring** to catch what's gaining traction early
-- Click any video to get an AI analysis with creator angle suggestions
-
-### 🩺 Channel Analysis `/channel-analysis`
-Paste any YouTube channel URL for a full growth health workup.
-
-**Growth Health Dashboard — 4 key scores:**
-
-| Score | What It Measures |
-|---|---|
-| **Consistency Score** | Upload regularity |
-| **Engagement Stability** | Audience interaction patterns |
-| **Topic Focus Score** | Content coherence across videos |
-| **Growth Momentum** | Channel trajectory indicator |
-
-- **Missed Trend Detection** - topics in your niche you haven't covered yet
-- **Competitor Comparison** - side-by-side benchmarking against rivals
-- **AI Strategic Summary** - risks, opportunities, and action plans
+NichePulse is an AI-powered YouTube creator intelligence tool. It combines the YouTube Data API with Google Gemini to find recent niche trends, analyze channels, compare competitors, and turn metrics into practical growth recommendations.
 
 ![NichePulse Channel Analysis](./ref3.png)
 
-### 📊 Interactive Dashboard `/dashboard`
-- Visual charts and graphs for channel metrics
-- Radial gauges for health scores
-- Bar / Line / Pie charts for views, engagement, and themes
-- Quick stats cards: Subscribers, Engagement Rate, Videos/Month
+## Features
 
-![NichePulse Dashboard](./ref2.png)
+- **Niche Trends**: Find and score recent videos for Coding, Finance, Fitness, Gaming, Education, or a custom keyword.
+- **Video Analysis**: Get Gemini-powered explanations of a video's hook, title pattern, emotional driver, and creator angle.
+- **Channel Analysis**: Inspect channel health, upload consistency, engagement, themes, missed trends, and optional competitor comparisons.
+- **Analytics Dashboard**: Explore channel metrics through interactive charts.
+- **AI Copilot**: Ask contextual questions about the latest trend or channel analysis.
 
-### 💬 AI Copilot Chat *(Global)*
-- Contextual AI assistant available on **every page**
-- Ask questions about your current analysis
-- Get personalized, real-time growth recommendations
+## Project Structure
 
----
-
-## 🏗️ Tech Stack
-
-| Layer | Technology |
-|---|---|
-| **Frontend** | React, Tailwind CSS, Recharts, Framer Motion |
-| **Backend** | FastAPI (Python) |
-| **AI** | Google Gemini AI |
-| **External API** | YouTube Data API v3 |
-| **Database** | None (Stateless) |
-
----
-
-## 🔄 User Flow
-
-```
- Creator visits NichePulse
-            │
-            ▼
- Enters YouTube channel URL or selects a niche
-            │
-            ▼
- System fetches data from YouTube Data API v3
-            │
-            ▼
- Google Gemini AI analyzes and generates insights
-            │
-            ▼
- Creator sees health scores, trends, and recommendations
-            │
-            ▼
- Views interactive dashboard with charts
-            │
-            ▼
- Takes action based on the AI strategic plan
+```text
+backend/
+  server.py                 # Uvicorn compatibility entry point
+  app/
+    app_factory.py          # FastAPI application and router setup
+    config.py               # Environment and application configuration
+    models.py               # API request and response models
+    domain/                 # Pure scoring and analytics logic
+    integrations/           # YouTube and Gemini API clients
+    services/                # Feature orchestration
+    routes/                 # HTTP route handlers
+    state/                  # In-memory cache and Copilot context
+frontend/
+  src/                     # React application
+  plugins/                 # CRACO development plugins
+backend_test.py             # Manual backend integration checks
 ```
 
----
+## Requirements
 
-## 🚦 Getting Started
-
-### Prerequisites
-- Node.js ≥ 18
-- Python ≥ 3.10
+- Python 3.10 or newer
+- Node.js 18 or newer
 - YouTube Data API v3 key
 - Google Gemini API key
 
-### Installation
+## Setup
 
-```bash
-# Clone the repository
-git clone https://github.com/Savyasachi-2005/TeamZ_Hallucinate.git
-cd TeamZ_Hallucinate
+### Backend
+
+From the repository root:
+
+```powershell
+cd backend
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+Copy-Item .env.example .env
 ```
 
-**Frontend**
-```bash
+Add your API keys to `backend/.env`, then start the API:
+
+```powershell
+python -m uvicorn server:app --reload
+```
+
+The backend is available at `http://localhost:8000`. Interactive API documentation is at `http://localhost:8000/docs`.
+
+### Frontend
+
+Open a second terminal at the repository root:
+
+```powershell
 cd frontend
 npm install
 npm run dev
 ```
 
-**Backend**
-```bash
-cd backend
-pip install -r requirements.txt
-uvicorn main:app --reload
+The frontend is available at `http://localhost:3000` and uses the local backend by default. To use another backend URL, set `REACT_APP_BACKEND_URL` before starting the frontend.
+
+## API Routes
+
+| Method | Route | Purpose |
+| --- | --- | --- |
+| `GET` | `/api/` | API welcome message |
+| `GET` | `/api/health` | Configuration health check |
+| `POST` | `/api/trends` | Fetch and score niche trends |
+| `POST` | `/api/analyse` | Analyze one video with Gemini |
+| `POST` | `/api/channel-analyse` | Analyze a channel and optional competitor |
+| `POST` | `/api/copilot-chat` | Ask the contextual AI Copilot |
+
+## Frontend Pages
+
+- `/` - Landing page
+- `/niche-trends` - Trend discovery and video analysis
+- `/channel-analysis` - Channel health and strategic analysis
+- `/dashboard` - Interactive channel dashboard
+
+## Validation
+
+Compile the backend and verify its application wiring:
+
+```powershell
+python -m py_compile backend/server.py
+python -c "import backend.server as s; print(s.app)"
 ```
 
-### Environment Variables
+The project is stateless: analysis results and Copilot context are held in an in-memory cache and are cleared when the backend restarts.
 
-Create a `.env` file in the `backend` directory:
+## Security Notes
 
-```env
-YOUTUBE_API_KEY=your_youtube_data_api_key
-GEMINI_API_KEY=your_google_gemini_api_key
-```
+- Keep API keys in `backend/.env`; never commit that file or paste its values into screenshots.
+- If a key has been exposed, revoke it in Google Cloud or Google AI Studio and create a replacement.
+- The Gemini model can be changed with the optional `GEMINI_MODEL` environment variable.
 
----
-
-## 🗺️ Pages & Routes
-
-| Route | Feature |
-|---|---|
-| `/` | Landing / Home |
-| `/niche-trends` | Niche Trends Explorer |
-| `/channel-analysis` | Channel Health Analysis |
-| `/dashboard` | Interactive Metrics Dashboard |
-
----
-
-## 💡 Value Propositions
-
-| Benefit | Description |
-|---|---|
-| **Stop Guessing** | Data-driven content decisions replace intuition |
-| **Find Trends Early** | 5-day recency filter catches momentum before it peaks |
-| **Know Your Health** | Clear scores across consistency, engagement, and focus |
-| **Beat Competitors** | Side-by-side comparison insights |
-| **Never Miss Trends** | Auto-detect topics your channel hasn't covered |
-| **AI Strategy** | Personalized growth action plans on demand |
-
----
-
-## 🧩 Team
-
-Built by **Team Z** at the HALLUCINATE hackathon (Emergent).
-
----
-
-## 📄 License
+## License
 
 MIT © NichePulse
